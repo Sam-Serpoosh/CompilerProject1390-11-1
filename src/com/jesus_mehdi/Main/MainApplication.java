@@ -26,8 +26,8 @@ public class MainApplication {
 			e.printStackTrace();
 		}
 	
-		CommonTokenStream ts = new CommonTokenStream(scanner);
-		ParserHandler parser = new ParserHandler(ts);
+		CommonTokenStream commonTokenStream = new CommonTokenStream(scanner);
+		ParserHandler parser = new ParserHandler(commonTokenStream);
 		System.out.println(parser.file());
 	}
 

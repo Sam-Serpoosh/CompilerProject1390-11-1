@@ -14,7 +14,8 @@ file 	:	 program EOF;
 
 program :	 (module SEMICOLON)+;
 
-module 	:	 MODULE ID {System.out.println("{Module_Declaration}");} (CHILD_OF ID {System.out.println("{Inheritance}");} )? L_BRACE (member)* R_BRACE  {System.out.println("{Module_End}");};
+module 	:	 {ModuleHandler.startModule();} MODULE ID {ModuleHandler.setName(inupt);}  (CHILD_OF ID {ModuleHandler.setParentModule(input);})?
+				 L_BRACE {ModuleHandler.beginScope()} (member)* R_BRACE {ModuleHandler.endModuleScope();};
 
 member	:	 VIRTUAL? ID {System.out.println("{Method_Declaration}");} L_PAREN ( ID COLON type (COMMA ID COLON type )*)? R_PAREN COLON type L_BRACE st* R_BRACE {System.out.println("{Method_End}");}
 	|        ID (L_BRACKET {System.out.println("{Array_Declaration}");} CONST_INT R_BRACKET )? COLON {System.out.println("{SympleType_Declaration}");} type SEMICOLON 
@@ -64,4 +65,4 @@ e11	:	( L_PAREN {System.out.println("{Function_Call}");} ( e1 (COMMA e1)* )? R_P
 	| 	L_BRACKET {System.out.println("{Array_Address_Calculation}");} e1 R_BRACKET
 	;
 
-type	:	ID | TYPE_INT | TYPE_BOOL | TYPE_STRING | TYPE_VOID ;
+type	:	ID | TYPE_INT | TYPE_BOOL | TYPE_STRING | TYPE_VOID;
