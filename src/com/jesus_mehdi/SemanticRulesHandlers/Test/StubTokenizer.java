@@ -5,13 +5,13 @@ import java.util.List;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.Token;
 
-import com.jesus_mehdi.SemanticRulesHandlers.ModuleHandler;
+import com.jesus_mehdi.SemanticRulesHandlers.Tokenizer;
 
-public class StubModuleHandler extends ModuleHandler {
+public class StubTokenizer extends Tokenizer {
 
 	private int _tokenIndex;
 	
-	public StubModuleHandler(int tokenIndex) {
+	public StubTokenizer(int tokenIndex) {
 		_tokenIndex = tokenIndex;
 	}
 	

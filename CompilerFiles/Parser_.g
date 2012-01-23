@@ -8,7 +8,7 @@ options {
 }
 
 
-@header {package CompilerFiles;}
+@header {package com.jesus_mehdi.CompilerFiles;}
 
 file 	:	 program EOF;
 
@@ -18,7 +18,8 @@ module 	:	 {ModuleHandler moduleHandler = new ModuleHandler(); moduleHandler.sta
 				 L_BRACE {moduleHandler.beginScope();} (member)* R_BRACE {moduleHandler.endModuleScope();};
 
 member	:	 VIRTUAL? ID {System.out.println("{Method_Declaration}");} L_PAREN ( ID COLON type (COMMA ID COLON type )*)? R_PAREN COLON type L_BRACE st* R_BRACE {System.out.println("{Method_End}");}
-	|        ID (L_BRACKET {System.out.println("{Array_Declaration}");} CONST_INT R_BRACKET )? COLON {System.out.println("{SympleType_Declaration}");} type SEMICOLON 
+	|        ID {MemberHandler memberHandler = new MemberHandler(); memberHandler.setName(input);} (L_BRACKET {System.out.println("{Array_Declaration}");} CONST_INT R_BRACKET )? COLON type {memberHandler.setType(input);} 
+		 SEMICOLON {memberHandler.endDeclaration();}
 	;
 
 

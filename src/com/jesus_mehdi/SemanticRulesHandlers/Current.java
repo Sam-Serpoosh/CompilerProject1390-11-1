@@ -14,4 +14,8 @@ public class Current {
 		_scope = _scope.getParentScope();
 	}
 	
+	public static Environment getScope() {
+		return _scope;
+	}
+	
 }

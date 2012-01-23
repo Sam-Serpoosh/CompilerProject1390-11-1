@@ -10,8 +10,17 @@ import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 
 public class ModuleHandler {
 
+	private Tokenizer _tokenizer;
 	private ModuleEnvironment _moduleEnvironment;
 	private final int LAST_TOKEN = -1;
+	
+	public ModuleHandler(Tokenizer tokenizer) {
+		_tokenizer = tokenizer;
+	}
+	
+	public ModuleHandler() {
+		this(new Tokenizer());
+	}
 	
 	public void startModule() {
 		_moduleEnvironment = new ModuleEnvironment();
@@ -22,22 +31,14 @@ public class ModuleHandler {
 	}
 
 	public void setModuleName(TokenStream moduleNameToken) {
-		String moduleName = getSpecificToken((CommonTokenStream)moduleNameToken, LAST_TOKEN);
+		String moduleName = _tokenizer.getSpecificToken((CommonTokenStream)moduleNameToken, LAST_TOKEN);
 		_moduleEnvironment.setName(moduleName);
 		ApplicationMainSymbolTable.addModule(_moduleEnvironment);
 	}
 
 	public void setParentModuleName(TokenStream parentModuleNameToken) {
-		String parentModuleName = getSpecificToken((CommonTokenStream)parentModuleNameToken, LAST_TOKEN);
+		String parentModuleName = _tokenizer.getSpecificToken((CommonTokenStream)parentModuleNameToken, LAST_TOKEN);
 		_moduleEnvironment.setParentName(parentModuleName);
-	}
-
-	public String getSpecificToken(CommonTokenStream inputToken, int tokenIndex) {
-		List<Token> allTokens = ((CommonTokenStream)inputToken).getTokens();
-		int index = ((CommonTokenStream)inputToken).index();
-		String tokenText = allTokens.get(index + tokenIndex).getText();
-		
-		return tokenText;
 	}
 	
 	public void beginScope() {
