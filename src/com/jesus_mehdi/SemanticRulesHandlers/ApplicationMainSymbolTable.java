@@ -11,5 +11,9 @@ public class ApplicationMainSymbolTable {
 	public static void addModule(ModuleEnvironment moduleEnvironment) {
 		_allModules.put(moduleEnvironment.getName(), moduleEnvironment);
 	}
+	
+	public static HashMap<String, ModuleEnvironment> getAllModules() {
+		return _allModules;
+	}
 
 }
