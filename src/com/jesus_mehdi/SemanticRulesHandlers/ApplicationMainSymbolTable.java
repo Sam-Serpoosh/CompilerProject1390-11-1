@@ -15,5 +15,9 @@ public class ApplicationMainSymbolTable {
 	public static HashMap<String, ModuleEnvironment> getAllModules() {
 		return _allModules;
 	}
+	
+	public static boolean moduleAlreadyDefined(String moduleName) {
+		return _allModules.containsKey(moduleName);
+	}
 
 }

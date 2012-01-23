@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Test;
 
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
+import com.jesus_mehdi.Exceptions.DuplicateModuleDeclarationException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.ModuleHandler;
 
@@ -50,6 +51,43 @@ public class ModuleHandlerTest {
 		ModuleEnvironment moduleEnvironment = moduleHandler.getModuleEnvironment();
 		
 		assertEquals("ParentModule", moduleEnvironment.getParentName());
+	}
+	
+	@Test
+	public void shouldHandleMultipleModuleDeclaration() {
+		FileUtility.writeSampleProgramContentToFile("module FirstModule {}\r\nmodule SecondModule {}");
+
+		checkModuleDeclaration("FirstModule", 1);
+		checkModuleDeclaration("SecondModule", 5);
+		
+		HashMap<String, ModuleEnvironment> allModules = ApplicationMainSymbolTable.getAllModules();
+		assertEquals(2, allModules.size());
+	}
+	
+	@Test(expected = DuplicateModuleDeclarationException.class)
+	public void shouldThrowDuplicateModuleDeclarationExceptionWhenTwoModulesDeclaredWithSameName() {
+		FileUtility.writeSampleProgramContentToFile("module SampleModule {}\r\nmodule SampleModule {}");
+		
+		handleModuleDeclaration(1);
+		handleModuleDeclaration(5);
+	}
+
+	private void handleModuleDeclaration(int tokenizerIndex) {
+		ModuleHandler moduleHandler = new ModuleHandler(new StubTokenizer(tokenizerIndex));
+		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
+		moduleHandler.startModule();
+		moduleHandler.setModuleName(commonTokenStream);
+	}
+	
+	private void checkModuleDeclaration(String expectedModuleName, int tokenizerIndex) {
+		ModuleHandler moduleHandler = new ModuleHandler(new StubTokenizer(tokenizerIndex));
+		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
+		
+		moduleHandler.startModule();
+		moduleHandler.setModuleName(commonTokenStream);
+		HashMap<String, ModuleEnvironment> allModules = ApplicationMainSymbolTable.getAllModules();
+		
+		assertNotNull(allModules.get(expectedModuleName));
 	}
 	
 	@After

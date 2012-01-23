@@ -5,6 +5,7 @@ import org.antlr.runtime.TokenStream;
 
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.OffsetFactory;
+import com.jesus_mehdi.Exceptions.DuplicateModuleDeclarationException;
 
 public class ModuleHandler {
 
@@ -33,6 +34,9 @@ public class ModuleHandler {
 	public void setModuleName(TokenStream moduleNameToken) {
 		String moduleName = _tokenizer.getSpecificToken((CommonTokenStream)moduleNameToken, LAST_TOKEN);
 		_moduleEnvironment.setName(moduleName);
+		if (ApplicationMainSymbolTable.moduleAlreadyDefined(moduleName))
+			throw new DuplicateModuleDeclarationException();
+		
 		ApplicationMainSymbolTable.addModule(_moduleEnvironment);
 	}
 

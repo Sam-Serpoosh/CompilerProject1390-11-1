@@ -1,1 +1,2 @@
-module SampleModule childof ParentModule {}
+module SampleModule {}
+module SampleModule {}
