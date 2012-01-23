@@ -18,6 +18,10 @@ public abstract class Environment {
 		return _parentScope;
 	}
 	
+	public int getCurrentOffset() {
+		return _currentOffset;
+	}
+	
 	public void addRow(SymbolTableRow row) {
 		row.Offset = _currentOffset;
 		_symbolTable.addRow(row);

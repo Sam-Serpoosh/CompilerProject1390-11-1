@@ -377,7 +377,7 @@ public TreeAdaptor getTreeAdaptor() {
             adaptor.addChild(root_0, L_BRACE9_tree);
 
 
-            moduleHandler.beginScope();
+            moduleHandler.beginModuleScope();
 
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\Parser_.g:18:44: ( member )*
             loop3:

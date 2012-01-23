@@ -72,19 +72,28 @@ public class MemberHandlerTest {
 		ModuleEnvironment moduleEnvironment = new ModuleEnvironment();
 		Current.setCurrentScope(moduleEnvironment);
 		MemberHandler memberHandler = new MemberHandler();
-		SymbolTableRow firstRow = new SymbolTableRow();
-		firstRow.Name = "testInt";
-		firstRow.Type = "int";
+		SymbolTableRow firstRow = createRow("testInt", "int");
 		memberHandler.setMemberRow(firstRow);
 		memberHandler.endDeclaration();
-		SymbolTableRow secondRow = new SymbolTableRow();
-		secondRow.Name = "testString";
-		secondRow.Type = "string";
+		SymbolTableRow secondRow = createRow("testString", "string");
 		memberHandler.setMemberRow(secondRow);
 		memberHandler.endDeclaration();
 		
 		assertEquals(0, firstRow.Offset);
-		assertEquals(4, secondRow.Offset);
+		assertEquals(1, secondRow.Offset);
+	}
+	
+	@Test
+	public void shouldCalculateSizeOfModule() {
+		ModuleEnvironment moduleEnvironment = new ModuleEnvironment();
+		Current.setCurrentScope(moduleEnvironment);
+		MemberHandler memberHandler = new MemberHandler();
+		memberHandler.setMemberRow(createRow("testInt", "int"));
+		memberHandler.endDeclaration();
+		memberHandler.setMemberRow(createRow("testString", "string"));
+		memberHandler.endDeclaration();
+		
+		assertEquals(2, moduleEnvironment.getCurrentOffset());
 	}
 	
 	private void checkVariableName(String expectedVariableName, int tokenizerIndex) {
@@ -102,6 +111,14 @@ public class MemberHandlerTest {
 		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
 		memberHandler.setName(commonTokenStream);
 		memberHandler.endDeclaration();
+	}
+	
+	private SymbolTableRow createRow(String variableName, String typeName) {
+		SymbolTableRow row = new SymbolTableRow();
+		row.Name = variableName;
+		row.Type = typeName;
+		
+		return row;
 	}
 	
 }

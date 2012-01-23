@@ -1,21 +1,21 @@
 package com.jesus_mehdi.SemanticRulesHandlers;
 
-import java.util.List;
-
 import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
 
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
+import com.jesus_mehdi.DataStructures.OffsetFactory;
 
 public class ModuleHandler {
 
 	private Tokenizer _tokenizer;
 	private ModuleEnvironment _moduleEnvironment;
 	private final int LAST_TOKEN = -1;
+	private OffsetFactory _offsetFactory;
 	
 	public ModuleHandler(Tokenizer tokenizer) {
 		_tokenizer = tokenizer;
+		_offsetFactory = new OffsetFactory();
 	}
 	
 	public ModuleHandler() {
@@ -41,11 +41,13 @@ public class ModuleHandler {
 		_moduleEnvironment.setParentName(parentModuleName);
 	}
 	
-	public void beginScope() {
+	public void beginModuleScope() {
 		Current.setCurrentScope(_moduleEnvironment);
 	}
 	
 	public void endModuleScope() {
+		int moduleSize = _moduleEnvironment.getCurrentOffset();
+		_offsetFactory.registerModuleType(_moduleEnvironment.getName(), moduleSize);
 		Current.setCurrentScopeToPrev();
 	}
 	

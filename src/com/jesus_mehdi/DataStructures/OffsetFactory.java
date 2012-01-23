@@ -12,8 +12,14 @@ public class OffsetFactory {
 	}
 	
 	public void init() {
-		_offsets.put("int", 4);
-		_offsets.put("string", 8);
+		_offsets.put("int", 1);
+		_offsets.put("string", 1);
+		_offsets.put("bool", 1);
+		_offsets.put("object", 1);
+	}
+	
+	public void registerModuleType(String moduleName, int moduleSize) {
+		_offsets.put(moduleName, moduleSize);
 	}
 	
 	public int getSize(String typeName) {
