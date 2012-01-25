@@ -32,6 +32,10 @@ public class MethodHandler {
 		this(new Tokenizer());
 	}
 	
+	public void setArguments(Signature arguments) {
+		_arguments = arguments;
+	}
+	
 	public MethodSymbolTableRow getMethodRow() {
 		return _methodRow;
 	}

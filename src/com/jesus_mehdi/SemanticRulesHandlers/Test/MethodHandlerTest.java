@@ -1,6 +1,10 @@
 package com.jesus_mehdi.SemanticRulesHandlers.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.AbstractMap.SimpleEntry;
 
 import org.antlr.runtime.CommonTokenStream;
 import org.junit.Test;
@@ -113,45 +117,51 @@ public class MethodHandlerTest {
 	public void shouldConcatSignatureOfNewMethodWithSameNameToExistingMethod() {
 		ModuleEnvironment moduleEnvironment = new ModuleEnvironment();
 		Current.setCurrentScope(moduleEnvironment);
-		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
-		methodRow.Name = "testMethod";
-		Signature signature = new Signature();
-		signature.addArgument("test", "int");
-		MethodHandler methodHandler = new MethodHandler();
-		methodHandler.setMethodRow(methodRow);
-		methodHandler.endMethodDeclaration();
-		
-		methodRow = new MethodSymbolTableRow();
-		methodRow.Name = "testMethod";
-		signature = new Signature();
-		signature.addArgument("test", "string");
-		methodHandler = new MethodHandler();
-		methodHandler.setMethodRow(methodRow);
-		methodHandler.endMethodDeclaration();
-		
+		declareMethodWithSignature("testMethod", new SimpleEntry<String, String>("test", "int"));
+		declareMethodWithSignature("testMethod", new SimpleEntry<String, String>("test", "string"));
+
 		MethodSymbolTableRow existingMethodRow = (MethodSymbolTableRow)moduleEnvironment.getRow("testMethod");
-		
-		assertEquals(2, existingMethodRow.getAllSignatures().size());
+		ArrayList<Signature> allSignatures = existingMethodRow.getAllSignatures();
+		assertEquals(2, allSignatures.size());
+		assertTrue(allSignatures.get(0).containsArgument("test", "int"));
+		assertTrue(allSignatures.get(1).containsArgument("test", "string"));
 	}
 	
 	@Test
 	public void shouldHandleMethodWithNoArguments() {
 		ModuleEnvironment moduleEnvironment = new ModuleEnvironment();
 		Current.setCurrentScope(moduleEnvironment);
-		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
-		methodRow.Name = "testMethod";
-		Signature signature = new Signature();
-		signature.addArgument("test", "int");
-		MethodHandler methodHandler = new MethodHandler();
-		methodHandler.setMethodRow(methodRow);
-		methodHandler.endMethodDeclaration();
 		
-		methodRow = new MethodSymbolTableRow();
-		methodRow.Name = "testMethod";
-		signature = new Signature();
-		methodHandler = new MethodHandler();
-		methodHandler.setMethodRow(methodRow);
-		methodHandler.endMethodDeclaration();
+		declareMethodWithSignature("testMethod", new SimpleEntry<String, String>("test", "int"));
+		declareMethodWithSignature("testMethod", new SimpleEntry<String, String>(null, null));
+		
+		MethodSymbolTableRow existingMethodRow = (MethodSymbolTableRow)moduleEnvironment.getRow("testMethod");
+		ArrayList<Signature> allSignatures = existingMethodRow.getAllSignatures();
+		assertEquals(2, allSignatures.size());
+		assertTrue(allSignatures.get(0).containsArgument("test", "int"));
+		assertEquals(0, allSignatures.get(1).getArgumentsCount());
+	}
+	
+	@Test
+	public void shouldHandleMethodsWithSameNamesAndDifferentNumberOfArguments() {
+		ModuleEnvironment moduleEnvironment = new ModuleEnvironment();
+		Current.setCurrentScope(moduleEnvironment);
+		
+		declareMethodWithSignature("testMethod", new SimpleEntry<String, String>("first", "int"), 
+				new SimpleEntry<String, String>("second", "string"));
+		declareMethodWithSignature("testMethod", new SimpleEntry<String, String>("first", "int"));
+		
+		MethodSymbolTableRow existingMethodRow = (MethodSymbolTableRow)moduleEnvironment.getRow("testMethod");
+		ArrayList<Signature> allSignatures = existingMethodRow.getAllSignatures();
+		
+		assertEquals(2, allSignatures.size());
+		assertTrue(allSignatures.get(0).containsArgument("first", "int"));
+		assertTrue(allSignatures.get(0).containsArgument("second", "string"));
+		assertEquals(2, allSignatures.get(0).getArgumentsCount());
+		
+		assertTrue(allSignatures.get(1).containsArgument("first", "int"));
+		assertEquals(1, allSignatures.get(1).getArgumentsCount());
+		
 	}
 	
 	private void declareMethod(int tokenizerIndex) {
@@ -168,6 +178,19 @@ public class MethodHandlerTest {
 		MemberHandler memberHandler = new MemberHandler();
 		memberHandler.setMemberRow(memberRow);
 		memberHandler.endMemberDeclaration();
+	}
+	
+	private void declareMethodWithSignature(String methodName, SimpleEntry<String, String>... arguments) {
+		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
+		methodRow.Name = methodName;
+		Signature signature = new Signature();
+		for (SimpleEntry<String, String> argument : arguments)
+			if (argument.getKey() != null && argument.getValue() != null)
+				signature.addArgument(argument.getKey(), argument.getValue());
+		MethodHandler methodHandler = new MethodHandler();
+		methodHandler.setArguments(signature);
+		methodHandler.setMethodRow(methodRow);
+		methodHandler.endMethodDeclaration();
 	}
 	
 }
