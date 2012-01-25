@@ -1,15 +1,15 @@
 package com.jesus_mehdi.SemanticRulesHandlers;
 
-import java.util.ArrayList;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Map.Entry;
-
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.TokenStream;
 
+import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.OffsetFactory;
+import com.jesus_mehdi.DataStructures.Signature;
+import com.jesus_mehdi.DataStructures.SymbolTableRow;
+import com.jesus_mehdi.Exceptions.MemberAndMethodExistWithSameNameException;
 
 public class MethodHandler {
 
@@ -17,7 +17,7 @@ public class MethodHandler {
 	private MethodSymbolTableRow _methodRow;
 	private final int LAST_TOKEN = -1;
 	private OffsetFactory _offsetFactory;
-	private ArrayList<Entry<String, String>> _arguments;
+	private Signature _arguments;
 	private String _argumentName;
 	private String _argumentType;
 	
@@ -25,7 +25,7 @@ public class MethodHandler {
 		_tokenizer = tokenizer;
 		_offsetFactory = new OffsetFactory();
 		_methodRow = new MethodSymbolTableRow();
-		_arguments = new ArrayList<Entry<String,String>>();
+		_arguments = new Signature();
 	}
 	
 	public MethodHandler() {
@@ -59,8 +59,7 @@ public class MethodHandler {
 
 	public void setArgumentType(TokenStream input) {
 		_argumentType = _tokenizer.getSpecificToken((CommonTokenStream)input, LAST_TOKEN);
-		SimpleEntry<String, String> argument = new SimpleEntry<String, String>(_argumentName, _argumentType);
-		_arguments.add(argument);
+		_arguments.addArgument(_argumentName, _argumentType);
 	}
 
 	public void setReturnType(TokenStream input) {
@@ -70,8 +69,12 @@ public class MethodHandler {
 
 	public void endMethodDeclaration() {
 		ModuleEnvironment moduleEnvironment = (ModuleEnvironment)Current.getScope();
+		_methodRow.addSignature(_arguments);
 		if (_methodRow.Name.toLowerCase().equals("main"))
 			moduleEnvironment.setContainsMainMethod();
+		SymbolTableRow memberRow = moduleEnvironment.getRow(_methodRow.Name);
+		if (memberRow instanceof MemberSymbolTableRow)
+			throw new MemberAndMethodExistWithSameNameException();
 		
 		moduleEnvironment.addRow(_methodRow);
 	}

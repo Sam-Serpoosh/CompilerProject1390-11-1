@@ -769,7 +769,7 @@ public TreeAdaptor getTreeAdaptor() {
                     adaptor.addChild(root_0, ID28_tree);
 
 
-                    MemberHandler memberHandler = new MemberHandler(); memberHandler.setName(input);
+                    MemberHandler memberHandler = new MemberHandler(); memberHandler.setMemberName(input);
 
                     // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\ParserHandler.g:21:97: ( L_BRACKET CONST_INT R_BRACKET )?
                     int alt8=2;
@@ -834,7 +834,7 @@ public TreeAdaptor getTreeAdaptor() {
                     adaptor.addChild(root_0, SEMICOLON34_tree);
 
 
-                    memberHandler.endDeclaration();
+                    memberHandler.endMemberDeclaration();
 
                     }
                     break;

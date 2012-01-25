@@ -21,7 +21,7 @@ public class MemberHandlerTest {
 		MemberHandler memberHandler = new MemberHandler(new StubTokenizer(1));
 		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
 	
-		memberHandler.setName(commonTokenStream);
+		memberHandler.setMemberName(commonTokenStream);
 		SymbolTableRow memberRow = memberHandler.getMemberRow();
 		
 		assertEquals("testVariable", memberRow.Name);
@@ -56,7 +56,7 @@ public class MemberHandlerTest {
 		Current.setCurrentScope(moduleEnvironment);
 		memberRow.Name = "testVariable";
 		memberRow.Type = "int";
-		memberHandler.endDeclaration();
+		memberHandler.endMemberDeclaration();
 		
 		assertEquals(memberRow, moduleEnvironment.getRow("testVariable"));
 	}
@@ -75,10 +75,10 @@ public class MemberHandlerTest {
 		MemberHandler memberHandler = new MemberHandler();
 		MemberSymbolTableRow firstRow = createRow("testInt", "int");
 		memberHandler.setMemberRow(firstRow);
-		memberHandler.endDeclaration();
+		memberHandler.endMemberDeclaration();
 		MemberSymbolTableRow secondRow = createRow("testString", "string");
 		memberHandler.setMemberRow(secondRow);
-		memberHandler.endDeclaration();
+		memberHandler.endMemberDeclaration();
 		
 		assertEquals(0, firstRow.Offset);
 		assertEquals(1, secondRow.Offset);
@@ -90,9 +90,9 @@ public class MemberHandlerTest {
 		Current.setCurrentScope(moduleEnvironment);
 		MemberHandler memberHandler = new MemberHandler();
 		memberHandler.setMemberRow(createRow("testInt", "int"));
-		memberHandler.endDeclaration();
+		memberHandler.endMemberDeclaration();
 		memberHandler.setMemberRow(createRow("testString", "string"));
-		memberHandler.endDeclaration();
+		memberHandler.endMemberDeclaration();
 		
 		assertEquals(2, moduleEnvironment.getModuleSize());
 	}
@@ -103,9 +103,9 @@ public class MemberHandlerTest {
 		Current.setCurrentScope(moduleEnvironment);
 		MemberHandler memberHandler = new MemberHandler();
 		memberHandler.setMemberRow(createRow("testInt", "int"));
-		memberHandler.endDeclaration();
+		memberHandler.endMemberDeclaration();
 		memberHandler.setMemberRow(createRow("testIntArray", "int", 4));
-		memberHandler.endDeclaration();
+		memberHandler.endMemberDeclaration();
 		
 		assertEquals(5, moduleEnvironment.getModuleSize());
 	}
@@ -114,7 +114,7 @@ public class MemberHandlerTest {
 		MemberHandler memberHandler = new MemberHandler(new StubTokenizer(tokenizerIndex));
 		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
 	
-		memberHandler.setName(commonTokenStream);
+		memberHandler.setMemberName(commonTokenStream);
 		SymbolTableRow memberRow = memberHandler.getMemberRow();
 		
 		assertEquals(expectedVariableName, memberRow.Name);
@@ -123,8 +123,8 @@ public class MemberHandlerTest {
 	private void handleVariableDeclaration(int tokenizerIndex) {
 		MemberHandler memberHandler = new MemberHandler(new StubTokenizer(tokenizerIndex));
 		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
-		memberHandler.setName(commonTokenStream);
-		memberHandler.endDeclaration();
+		memberHandler.setMemberName(commonTokenStream);
+		memberHandler.endMemberDeclaration();
 	}
 	
 	private MemberSymbolTableRow createRow(String variableName, String typeName) {

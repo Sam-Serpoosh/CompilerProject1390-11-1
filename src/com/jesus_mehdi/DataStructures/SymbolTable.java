@@ -10,7 +10,16 @@ public class SymbolTable {
 	}
 	
 	public void addRow(SymbolTableRow row) {
-		_rows.put(row.Name, row);
+		if (_rows.containsKey(row.Name))
+			concatSignatureToExistedMethod(row);
+		else
+			_rows.put(row.Name, row);
+	}
+
+	private void concatSignatureToExistedMethod(SymbolTableRow row) {
+		MethodSymbolTableRow methodRow = (MethodSymbolTableRow)_rows.get(row.Name);
+		MethodSymbolTableRow newMethodRow = (MethodSymbolTableRow)row;
+		methodRow.addSignature(newMethodRow.getFirstSignature());
 	}
 	
 	public SymbolTableRow getRow(String rowName) {

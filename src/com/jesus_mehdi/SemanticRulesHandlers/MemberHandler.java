@@ -7,6 +7,7 @@ import com.jesus_mehdi.DataStructures.Environment;
 import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
 import com.jesus_mehdi.DataStructures.SymbolTableRow;
 import com.jesus_mehdi.Exceptions.DuplicateVariableDeclarationException;
+import com.jesus_mehdi.Exceptions.MemberAndMethodExistWithSameNameException;
 
 public class MemberHandler {
 
@@ -30,7 +31,7 @@ public class MemberHandler {
 		_memberRow = memberRow;
 	}
 	
-	public void setName(TokenStream input) {
+	public void setMemberName(TokenStream input) {
 		String variableName = _tokenizer.getSpecificToken((CommonTokenStream)input, -1);
 		_memberRow.Name = variableName;
 	}
@@ -46,12 +47,23 @@ public class MemberHandler {
 		_memberRow.ArraySize = arraySize;
 	}
 	
-	public void endDeclaration() {
+	public void endMemberDeclaration() {
 		Environment currentModuleEnvironment = Current.getScope();
-		if (currentModuleEnvironment.rowAlreadyExisted(_memberRow))
-			throw new DuplicateVariableDeclarationException();
+		
+		if (currentModuleEnvironment.rowAlreadyExisted(_memberRow)) {
+			SymbolTableRow symbolTableRow = currentModuleEnvironment.getRow(_memberRow.Name);
+			throwAppropriateDuplicateException(symbolTableRow);
+		}
 		
 		currentModuleEnvironment.addRow(_memberRow);
+	}
+
+	private void throwAppropriateDuplicateException(
+			SymbolTableRow symbolTableRow) {
+		if(symbolTableRow instanceof MemberSymbolTableRow)
+			throw new DuplicateVariableDeclarationException();
+		else
+			throw new MemberAndMethodExistWithSameNameException();
 	}
 
 }
