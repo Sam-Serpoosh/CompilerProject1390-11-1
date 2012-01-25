@@ -27,9 +27,9 @@ public abstract class Environment {
 	}
 	
 	public void addRow(SymbolTableRow row) {
-		row.Offset = _currentOffset;
+		row.setOffset(_currentOffset);
 		_symbolTable.addRow(row);
-		_currentOffset += _offsetFactory.getSize(row);
+		_currentOffset += row.getSize();
 	}
 	
 	public SymbolTableRow getRow(String rowName) {

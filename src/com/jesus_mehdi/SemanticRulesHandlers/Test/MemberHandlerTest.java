@@ -5,11 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.antlr.runtime.CommonTokenStream;
 import org.junit.Test;
 
+import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.SymbolTableRow;
+import com.jesus_mehdi.Exceptions.DuplicateVariableDeclarationException;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
 import com.jesus_mehdi.SemanticRulesHandlers.MemberHandler;
-import com.jesus_mehdi.Exceptions.DuplicateVariableDeclarationException;
 
 public class MemberHandlerTest {
 
@@ -72,10 +73,10 @@ public class MemberHandlerTest {
 		ModuleEnvironment moduleEnvironment = new ModuleEnvironment();
 		Current.setCurrentScope(moduleEnvironment);
 		MemberHandler memberHandler = new MemberHandler();
-		SymbolTableRow firstRow = createRow("testInt", "int");
+		MemberSymbolTableRow firstRow = createRow("testInt", "int");
 		memberHandler.setMemberRow(firstRow);
 		memberHandler.endDeclaration();
-		SymbolTableRow secondRow = createRow("testString", "string");
+		MemberSymbolTableRow secondRow = createRow("testString", "string");
 		memberHandler.setMemberRow(secondRow);
 		memberHandler.endDeclaration();
 		
@@ -126,16 +127,16 @@ public class MemberHandlerTest {
 		memberHandler.endDeclaration();
 	}
 	
-	private SymbolTableRow createRow(String variableName, String typeName) {
-		SymbolTableRow row = new SymbolTableRow();
+	private MemberSymbolTableRow createRow(String variableName, String typeName) {
+		MemberSymbolTableRow row = new MemberSymbolTableRow();
 		row.Name = variableName;
 		row.Type = typeName;
 		
 		return row;
 	}
 	
-	private SymbolTableRow createRow(String variableName, String typeName, int arraySize) {
-		SymbolTableRow row = createRow(variableName, typeName);
+	private MemberSymbolTableRow createRow(String variableName, String typeName, int arraySize) {
+		MemberSymbolTableRow row = createRow(variableName, typeName);
 		row.ArraySize = arraySize;
 		
 		return row;

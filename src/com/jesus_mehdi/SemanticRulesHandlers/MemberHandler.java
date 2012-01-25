@@ -4,19 +4,18 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.TokenStream;
 
 import com.jesus_mehdi.DataStructures.Environment;
+import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
 import com.jesus_mehdi.DataStructures.SymbolTableRow;
 import com.jesus_mehdi.Exceptions.DuplicateVariableDeclarationException;
 
 public class MemberHandler {
 
-	private SymbolTableRow _memberRow;
+	private MemberSymbolTableRow _memberRow;
 	private Tokenizer _tokenizer;
-	private int _variableSize; 
 	
 	public MemberHandler(Tokenizer tokenizer) {
 		_tokenizer = tokenizer;
-		_memberRow = new SymbolTableRow();
-		_variableSize = 1;
+		_memberRow = new MemberSymbolTableRow();
 	}
 	
 	public MemberHandler() {
@@ -27,7 +26,7 @@ public class MemberHandler {
 		return _memberRow;
 	}
 	
-	public void setMemberRow(SymbolTableRow memberRow) {
+	public void setMemberRow(MemberSymbolTableRow memberRow) {
 		_memberRow = memberRow;
 	}
 	

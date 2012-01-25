@@ -22,11 +22,12 @@ public class OffsetFactory {
 		_offsets.put(moduleName, moduleSize);
 	}
 	
+	public int getSizeOf(String type) {
+		return _offsets.get(type);
+	}
+	
 	public int getSize(SymbolTableRow row) {
-		if (row.isArray())
-			return _offsets.get(row.Type) * row.ArraySize;
-		
-		return _offsets.get(row.Type);
+		return row.getSize();
 	}
 	
 }
