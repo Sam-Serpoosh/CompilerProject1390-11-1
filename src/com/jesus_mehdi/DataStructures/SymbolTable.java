@@ -20,4 +20,9 @@ public class SymbolTable {
 	public boolean rowAlreadyExisted(SymbolTableRow row) {
 		return _rows.containsKey(row.Name);
 	}
+	
+	public HashMap<String, SymbolTableRow> getAllRows() {
+		return _rows;
+	}
+	
 }

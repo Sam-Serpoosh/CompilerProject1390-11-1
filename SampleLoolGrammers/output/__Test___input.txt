@@ -1,1 +1,6 @@
-int a
+module Kooft
+{
+	int a
+	int b
+
+}

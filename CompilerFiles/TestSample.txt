@@ -1,0 +1,12 @@
+module Kooft
+{
+	a : int;
+	b : string;
+	
+};
+
+module Maraz childof Kooft
+{
+	name : string;
+	code : int;
+};

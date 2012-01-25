@@ -93,7 +93,20 @@ public class MemberHandlerTest {
 		memberHandler.setMemberRow(createRow("testString", "string"));
 		memberHandler.endDeclaration();
 		
-		assertEquals(2, moduleEnvironment.getCurrentOffset());
+		assertEquals(2, moduleEnvironment.getModuleSize());
+	}
+	
+	@Test
+	public void shouldCalculateArraySizeAndOffset() {
+		ModuleEnvironment moduleEnvironment = new ModuleEnvironment();
+		Current.setCurrentScope(moduleEnvironment);
+		MemberHandler memberHandler = new MemberHandler();
+		memberHandler.setMemberRow(createRow("testInt", "int"));
+		memberHandler.endDeclaration();
+		memberHandler.setMemberRow(createRow("testIntArray", "int", 4));
+		memberHandler.endDeclaration();
+		
+		assertEquals(5, moduleEnvironment.getModuleSize());
 	}
 	
 	private void checkVariableName(String expectedVariableName, int tokenizerIndex) {
@@ -117,6 +130,13 @@ public class MemberHandlerTest {
 		SymbolTableRow row = new SymbolTableRow();
 		row.Name = variableName;
 		row.Type = typeName;
+		
+		return row;
+	}
+	
+	private SymbolTableRow createRow(String variableName, String typeName, int arraySize) {
+		SymbolTableRow row = createRow(variableName, typeName);
+		row.ArraySize = arraySize;
 		
 		return row;
 	}

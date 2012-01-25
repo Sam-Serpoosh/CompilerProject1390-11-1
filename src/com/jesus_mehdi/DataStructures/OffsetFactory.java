@@ -22,8 +22,11 @@ public class OffsetFactory {
 		_offsets.put(moduleName, moduleSize);
 	}
 	
-	public int getSize(String typeName) {
-		return _offsets.get(typeName);
+	public int getSize(SymbolTableRow row) {
+		if (row.isArray())
+			return _offsets.get(row.Type) * row.ArraySize;
+		
+		return _offsets.get(row.Type);
 	}
 	
 }

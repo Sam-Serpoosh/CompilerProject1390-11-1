@@ -50,7 +50,7 @@ public class ModuleHandler {
 	}
 	
 	public void endModuleScope() {
-		int moduleSize = _moduleEnvironment.getCurrentOffset();
+		int moduleSize = _moduleEnvironment.getModuleSize();
 		_offsetFactory.registerModuleType(_moduleEnvironment.getName(), moduleSize);
 		Current.setCurrentScopeToPrev();
 	}

@@ -9,7 +9,7 @@ options {
 @header {package CompilerFiles;}
 
 file 	:	 program EOF;
-program	:	(decl{Fuck.fuckYou();})+;
+program	:	(decl{System.out.println("Kosse Nanant Ramak");})+;
 type 	:	 TYPE_INT | TYPE_BOOL;
 id	:	ID;
 decl	:	 type id;

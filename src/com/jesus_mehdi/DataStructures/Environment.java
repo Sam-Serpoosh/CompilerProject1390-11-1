@@ -13,19 +13,23 @@ public abstract class Environment {
 		_currentOffset = 0;
 		_offsetFactory = new OffsetFactory();
 	}
+	
+	public SymbolTable getSymbolTable() {
+		return _symbolTable;
+	}
 
 	public Environment getParentScope() {
 		return _parentScope;
 	}
 	
-	public int getCurrentOffset() {
+	public int getModuleSize() {
 		return _currentOffset;
 	}
 	
 	public void addRow(SymbolTableRow row) {
 		row.Offset = _currentOffset;
 		_symbolTable.addRow(row);
-		_currentOffset += _offsetFactory.getSize(row.Type);
+		_currentOffset += _offsetFactory.getSize(row);
 	}
 	
 	public SymbolTableRow getRow(String rowName) {

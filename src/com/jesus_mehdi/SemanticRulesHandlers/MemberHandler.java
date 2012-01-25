@@ -11,10 +11,12 @@ public class MemberHandler {
 
 	private SymbolTableRow _memberRow;
 	private Tokenizer _tokenizer;
+	private int _variableSize; 
 	
 	public MemberHandler(Tokenizer tokenizer) {
 		_tokenizer = tokenizer;
 		_memberRow = new SymbolTableRow();
+		_variableSize = 1;
 	}
 	
 	public MemberHandler() {
@@ -37,6 +39,12 @@ public class MemberHandler {
 	public void setType(TokenStream input) {
 		String type = _tokenizer.getSpecificToken((CommonTokenStream)input, -1);
 		_memberRow.Type = type;
+	}
+	
+	public void setArraySize(TokenStream input) {
+		String arraySizeToken = _tokenizer.getSpecificToken((CommonTokenStream)input, -1);
+		int arraySize = Integer.parseInt(arraySizeToken);
+		_memberRow.ArraySize = arraySize;
 	}
 	
 	public void endDeclaration() {

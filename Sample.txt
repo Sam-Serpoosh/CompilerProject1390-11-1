@@ -1,2 +1,2 @@
-module SampleModule {}
-module SampleModule {}
+int testVariable
+int testVariable

@@ -1,7 +1,7 @@
 
 lexer grammar Lexer_;
 
-@header 	{ package CompilerFiles; }
+@header 	{ package com.jesus_mehdi.CompilerFiles; }
 
 MODULE		:	'module'	;
 CHILD_OF	:	'childof'	;

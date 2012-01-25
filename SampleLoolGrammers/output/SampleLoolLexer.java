@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\JavaProjects\\CompilerProject1390-11-1\\SampleLoolGrammers\\SampleLoolLexer.g 2012-01-22 14:47:13
+// $ANTLR 3.4 C:\\JavaProjects\\CompilerProject1390-11-1\\SampleLoolGrammers\\SampleLoolLexer.g 2012-01-25 11:28:39
 
 import org.antlr.runtime.*;
 import java.util.Stack;
