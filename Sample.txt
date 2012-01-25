@@ -1,1 +1,2 @@
-testMethod(arg : string) : int
+main()
+main()

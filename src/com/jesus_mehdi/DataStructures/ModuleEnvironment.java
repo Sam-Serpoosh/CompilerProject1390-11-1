@@ -1,12 +1,28 @@
 package com.jesus_mehdi.DataStructures;
 
+import com.jesus_mehdi.Exceptions.ModuleContainsTwoMainMethodsException;
+
 public class ModuleEnvironment extends Environment {
 
 	private String _name;
 	private String _parentName;
 	
+	private boolean _containsMainMethod;
+	
 	public ModuleEnvironment() {
 		_parentScope = null;
+		_containsMainMethod = false;
+	}
+	
+	public void setContainsMainMethod() {
+		if (alreadyContainsMainMethod())
+			throw new ModuleContainsTwoMainMethodsException();
+		
+		_containsMainMethod = true;
+	}
+	
+	public boolean alreadyContainsMainMethod() {
+		return _containsMainMethod;
 	}
 	
 	public void setName(String name) {

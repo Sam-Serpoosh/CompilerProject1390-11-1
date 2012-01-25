@@ -9,6 +9,7 @@ import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.SymbolTable;
 import com.jesus_mehdi.DataStructures.SymbolTableRow;
+import com.jesus_mehdi.Exceptions.ModuleContainsTwoMainMethodsException;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
 import com.jesus_mehdi.SemanticRulesHandlers.MethodHandler;
 
@@ -74,6 +75,21 @@ public class MethodHandlerTest {
 		SymbolTable table = moduleEnvironment.getSymbolTable();
 		
 		assertEquals(1, table.getAllRows().size());
+	}
+	
+	@Test(expected = ModuleContainsTwoMainMethodsException.class)
+	public void shouldThrowExceptionWhenTwoMainMethodsInSameModuleDeclared() {
+		FileUtility.writeSampleProgramContentToFile("main()\r\nmain()");
+		
+		declareMethod(0);
+		declareMethod(3);
+	}
+
+	private void declareMethod(int tokenizerIndex) {
+		MethodHandler methodHandler = new MethodHandler(new StubTokenizer(tokenizerIndex));
+		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
+		methodHandler.setMethodName(commonTokenStream);
+		methodHandler.endMethodDeclaration();
 	}
 	
 }

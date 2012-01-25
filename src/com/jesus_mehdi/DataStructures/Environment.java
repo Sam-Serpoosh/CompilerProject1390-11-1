@@ -15,6 +15,10 @@ public abstract class Environment {
 	public SymbolTable getSymbolTable() {
 		return _symbolTable;
 	}
+	
+	public void setSymbolTable(SymbolTable symbolTable) {
+		_symbolTable = symbolTable;
+	}
 
 	public Environment getParentScope() {
 		return _parentScope;

@@ -70,6 +70,9 @@ public class MethodHandler {
 
 	public void endMethodDeclaration() {
 		ModuleEnvironment moduleEnvironment = (ModuleEnvironment)Current.getScope();
+		if (_methodRow.Name.toLowerCase().equals("main"))
+			moduleEnvironment.setContainsMainMethod();
+		
 		moduleEnvironment.addRow(_methodRow);
 	}
 	
