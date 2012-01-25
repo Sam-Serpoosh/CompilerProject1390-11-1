@@ -6,12 +6,10 @@ public abstract class Environment {
 	protected SymbolTable _symbolTable;
 	
 	private int _currentOffset;
-	private OffsetFactory _offsetFactory;
 	
 	public Environment() {
 		_symbolTable = new SymbolTable();
 		_currentOffset = 0;
-		_offsetFactory = new OffsetFactory();
 	}
 	
 	public SymbolTable getSymbolTable() {

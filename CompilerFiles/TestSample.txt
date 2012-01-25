@@ -3,6 +3,9 @@ module Kooft
 	a : int;
 	b : string;
 	
+	Fuck(c : int, d : string) : bool
+	{}
+	
 };
 
 module Maraz childof Kooft
