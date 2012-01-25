@@ -1,22 +1,12 @@
 // $ANTLR 3.4 C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\ParserHandler.g 2012-01-25 21:00:37
 package com.jesus_mehdi.CompilerFiles;
 
-import org.antlr.runtime.BitSet;
-import org.antlr.runtime.EarlyExitException;
-import org.antlr.runtime.MismatchedSetException;
-import org.antlr.runtime.NoViableAltException;
-import org.antlr.runtime.Parser;
-import org.antlr.runtime.ParserRuleReturnScope;
-import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.RecognizerSharedState;
-import org.antlr.runtime.Token;
-import org.antlr.runtime.TokenStream;
-import org.antlr.runtime.tree.CommonTreeAdaptor;
-import org.antlr.runtime.tree.TreeAdaptor;
+import org.antlr.runtime.*;
+import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
 
-import com.jesus_mehdi.SemanticRulesHandlers.MemberHandler;
-import com.jesus_mehdi.SemanticRulesHandlers.MethodHandler;
-import com.jesus_mehdi.SemanticRulesHandlers.ModuleHandler;
+import org.antlr.runtime.tree.*;
 
 
 @SuppressWarnings({"all", "warnings", "unchecked"})

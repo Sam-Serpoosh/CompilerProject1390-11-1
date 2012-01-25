@@ -17,8 +17,8 @@ program :	 (module SEMICOLON)+;
 module 	:	 MODULE {ModuleHandler moduleHandler = new ModuleHandler(); moduleHandler.startModule();} ID {moduleHandler.setModuleName(input);}  (CHILD_OF ID {moduleHandler.setParentModuleName(input);})?
 				 L_BRACE {moduleHandler.beginModuleScope();} (member)* R_BRACE {moduleHandler.endModuleScope();};
 
-member	:	 VIRTUAL? ID {MethodHandler methodHandler = new MethodHandler(); methodHandler.setMethodName(input);} L_PAREN ( ID {methodHandler.addArgumentName(input);} COLON type {methodHandler.setArgumentType(input);} (COMMA ID {methodHandler.addArgumentName(input);} COLON type {methodHandler.addArgumentType(input);} )*)? R_PAREN COLON type {methodHandler.setReturnType(input);} L_BRACE st* R_BRACE {methodHandler.endMethodDeclaration();}
-	|        ID {MemberHandler memberHandler = new MemberHandler(); memberHandler.setName(input);} (L_BRACKET CONST_INT {memberHandler.setArraySize(input);} R_BRACKET)? COLON type {memberHandler.setType(input);} SEMICOLON {memberHandler.endDeclaration();}
+member	:	 VIRTUAL? ID {MethodHandler methodHandler = new MethodHandler(); methodHandler.setMethodName(input);} L_PAREN ( ID {methodHandler.addArgumentName(input);} COLON type {methodHandler.setArgumentType(input);} (COMMA ID {methodHandler.addArgumentName(input);} COLON type {methodHandler.setArgumentType(input);} )*)? R_PAREN COLON type {methodHandler.setReturnType(input);} L_BRACE st* R_BRACE {methodHandler.endMethodDeclaration();}
+	|        ID {MemberHandler memberHandler = new MemberHandler(); memberHandler.setMemberName(input);} (L_BRACKET CONST_INT {memberHandler.setArraySize(input);} R_BRACKET)? COLON type {memberHandler.setType(input);} SEMICOLON {memberHandler.endMemberDeclaration();}
 	;
 
 
