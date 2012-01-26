@@ -24,6 +24,10 @@ public abstract class Environment {
 		return _parentScope;
 	}
 	
+	public void setParentScope(Environment parentEnvironment) {
+		_parentScope = parentEnvironment;
+	}
+	
 	public int getModuleSize() {
 		return _currentOffset;
 	}

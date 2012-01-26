@@ -1,5 +1,6 @@
 package com.jesus_mehdi.DataStructures;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SymbolTable {
@@ -32,6 +33,15 @@ public class SymbolTable {
 	
 	public HashMap<String, SymbolTableRow> getAllRows() {
 		return _rows;
+	}
+	
+	public ArrayList<MemberSymbolTableRow> getAllMemberRows() {
+		ArrayList<MemberSymbolTableRow> allMemberRows = new ArrayList<MemberSymbolTableRow>();
+		for (SymbolTableRow row : _rows.values())
+			if (row instanceof MemberSymbolTableRow)
+				allMemberRows.add((MemberSymbolTableRow)row);
+		
+		return allMemberRows;
 	}
 	
 }

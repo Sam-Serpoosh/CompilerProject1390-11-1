@@ -1,9 +1,9 @@
 package com.jesus_mehdi.SemanticRulesHandlers;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
+import com.jesus_mehdi.Exceptions.BaseModuleNotExistedException;
 import com.jesus_mehdi.Exceptions.MultipleMainMethodsException;
 import com.jesus_mehdi.Exceptions.NoMainMethodException;
 
@@ -47,6 +47,14 @@ public class ApplicationMainSymbolTable {
 		for (ModuleEnvironment module : _allModules.values())
 			if (module.alreadyContainsMainMethod())
 				_applicationEntryModule = module;
+	}
+
+	public static void checkThatAllParentModulesExist() {
+		for (ModuleEnvironment module : _allModules.values()) {
+			String parentName = module.getParentName();
+			if (_allModules.containsKey(parentName) == false)
+				throw new BaseModuleNotExistedException();
+		}
 	}
 	
 }

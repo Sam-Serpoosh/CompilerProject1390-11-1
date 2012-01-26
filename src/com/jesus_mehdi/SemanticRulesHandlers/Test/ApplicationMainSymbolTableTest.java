@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.SymbolTable;
+import com.jesus_mehdi.Exceptions.BaseModuleNotExistedException;
 import com.jesus_mehdi.Exceptions.MultipleMainMethodsException;
 import com.jesus_mehdi.Exceptions.NoMainMethodException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
@@ -75,6 +76,16 @@ public class ApplicationMainSymbolTableTest {
 		ApplicationMainSymbolTable.setApplicationEntryPoint();
 		
 		assertEquals(otherModuleEnvironment, ApplicationMainSymbolTable.getApplicationEntryModule());
+	}
+	
+	@Test(expected = BaseModuleNotExistedException.class)
+	public void shouldThrowExceptionWhenModuleInheritedFromNotExistedModule() {
+		ModuleEnvironment childModule = new ModuleEnvironment();
+		childModule.setName("ChildModule");
+		childModule.setParentName("ParentModule");
+		ApplicationMainSymbolTable.addModule(childModule);
+		
+		ApplicationMainSymbolTable.checkThatAllParentModulesExist();
 	}
 	
 }
