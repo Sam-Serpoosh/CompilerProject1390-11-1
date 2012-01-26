@@ -46,4 +46,8 @@ public abstract class Environment {
 		return _symbolTable.rowAlreadyExisted(row);
 	}
 	
+	public boolean rowAlreadyExisted(String rowName) {
+		return _symbolTable.rowAlreadyExisted(rowName);
+	}
+	
 }

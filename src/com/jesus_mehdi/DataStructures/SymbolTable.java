@@ -35,7 +35,11 @@ public class SymbolTable {
 	}
 	
 	public boolean rowAlreadyExisted(SymbolTableRow row) {
-		return _rows.containsKey(row.Name);
+		return rowAlreadyExisted(row.Name);
+	}
+	
+	public boolean rowAlreadyExisted(String rowName) {
+		return _rows.containsKey(rowName);
 	}
 	
 	public HashMap<String, SymbolTableRow> getAllRows() {
