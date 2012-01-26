@@ -38,14 +38,19 @@ public class MethodHandlerTest {
 	
 	@Test
 	public void shouldSetMethodReturnType() {
+		ModuleEnvironment currentModule = new ModuleEnvironment();
+		Current.setCurrentScope(currentModule);
 		FileUtility.writeSampleProgramContentToFile("testMethod() : int");
 		MethodHandler methodHandler = new MethodHandler(new StubTokenizer(4));
 		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
-	
+		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
+		methodRow.Name = "testMethod";
+		currentModule.addRow(methodRow);
+		methodHandler.setMethodRow(methodRow);
 		methodHandler.setReturnType(commonTokenStream);
-		SymbolTableRow memberRow = methodHandler.getMethodRow();
+		methodHandler.endMethodDeclaration();
 		
-		assertEquals("int", memberRow.Type);
+		assertEquals("int", methodRow.getFirstSignature().getReturnType());
 	}
 	
 	@Test

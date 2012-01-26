@@ -41,4 +41,16 @@ public class ModuleEnvironment extends Environment {
 		return _parentName;
 	}
 	
+	public boolean isSubtypeOf(ModuleEnvironment module) {
+		ModuleEnvironment parentModule = this;
+		while(parentModule != null) {
+			if (parentModule.getName().equals(module.getName()))
+				return true;
+			
+			parentModule = (ModuleEnvironment)parentModule.getParentScope();
+		}
+			
+		return false;
+	}
+	
 }

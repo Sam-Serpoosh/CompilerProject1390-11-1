@@ -1,7 +1,11 @@
 package com.jesus_mehdi.ErrorCheckings;
 
+import java.util.ArrayList;
+
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
+import com.jesus_mehdi.DataStructures.Signature;
+import com.jesus_mehdi.Exceptions.OverloadingException;
 
 public class MethodErrorDetector {
 
@@ -17,5 +21,38 @@ public class MethodErrorDetector {
 		}
 		return null;
 	}
+	
+	public void checkOverloadingProblemsInAllMethodsSignatures(ModuleEnvironment module) {
+		ArrayList<MethodSymbolTableRow> allModuleMethods = module.getSymbolTable().getAllMethodRows();
+		for (MethodSymbolTableRow method : allModuleMethods) {
+			ArrayList<Signature> allMethodSignatures = method.getAllSignatures();
+			checkForOverloadingProblmInMethodSignatures(allMethodSignatures);
+		}
+		
+	}
+
+	private void checkForOverloadingProblmInMethodSignatures(ArrayList<Signature> allMethodSignatures) {
+		for (int i = 0; i < allMethodSignatures.size(); i++) {
+			for (int j = 0; j < i; j++) {
+				Signature currentSignature = allMethodSignatures.get(i);
+				Signature previousSignature = allMethodSignatures.get(j);
+				
+				if (currentSignature.isSubSignatureOf(previousSignature) || 
+						previousSignature.isSubSignatureOf(currentSignature))
+					throw new OverloadingException();
+			}
+		}
+	}
+	
+//	public void checkExistanceOfVirtualMethodWithSameName(ModuleEnvironment module, 
+//			MethodSymbolTableRow methodRow) {
+//		MethodSymbolTableRow virtualMethod = getEquivalentVirtualMethodFromParent(module, methodRow.Name);
+//		if (virtualMethod != null) {
+//			Signature virtualMethodSignature = virtualMethod.getFirstSignature();
+//			ArrayList<Signature> methodSignatures = methodRow.getAllSignatures();
+//			for (Signature signature : methodSignatures)
+//				if ()
+//		}
+//	}
 	
 }

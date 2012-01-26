@@ -1,0 +1,5 @@
+package com.jesus_mehdi.Exceptions;
+
+public class OverloadingException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
+}

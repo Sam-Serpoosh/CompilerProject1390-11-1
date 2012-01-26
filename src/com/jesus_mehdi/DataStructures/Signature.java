@@ -3,16 +3,36 @@ package com.jesus_mehdi.DataStructures;
 import java.util.ArrayList;
 import java.util.AbstractMap.SimpleEntry;
 
+import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
+
 public class Signature {
 	
 	private ArrayList<SimpleEntry<String, String>> _arguments;
+	private String _returnType;
+	
+	public Signature(String returnType) {
+		_arguments = new ArrayList<SimpleEntry<String,String>>();
+		_returnType = returnType;
+	}
 	
 	public Signature() {
-		_arguments = new ArrayList<SimpleEntry<String,String>>();
+		this("void");
+	}
+	
+	public void setReturnType(String returnType) {
+		_returnType = returnType;
+	}
+	
+	public String getReturnType() {
+		return _returnType;
 	}
 	
 	public int getArgumentsCount() {
 		return _arguments.size();
+	}
+	
+	private SimpleEntry<String, String> argumentAt(int argumentIndex) {
+		return _arguments.get(argumentIndex);
 	}
 	
 	public void addArgument(String argumentName, String argumentType) {
@@ -26,6 +46,36 @@ public class Signature {
 				return true;
 		
 		return false;
+	}
+	
+	public boolean isSubSignatureOf(Signature signature) {
+		if (getArgumentsCount() != signature.getArgumentsCount())
+			return false;
+		for (int i = 0; i < getArgumentsCount(); i++)
+			if (argumentIsSubtype(argumentAt(i), signature.argumentAt(i)) == false)
+					return false;
+			
+		return true;
+	}
+	
+	public boolean isSubMethod(Signature signature) {
+		if (signature.isSubSignatureOf(this)) {
+			ModuleEnvironment returnTypeCurrentModule = ApplicationMainSymbolTable.
+				getModuleByName(getReturnType());
+			ModuleEnvironment returnTypeOtherModule = ApplicationMainSymbolTable.
+				getModuleByName(signature.getReturnType());
+			if (returnTypeCurrentModule.isSubtypeOf(returnTypeOtherModule))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean argumentIsSubtype(SimpleEntry<String, String> arg, SimpleEntry<String, String> otherArg) {
+		ModuleEnvironment module = ApplicationMainSymbolTable.getModuleByName(arg.getValue());
+		ModuleEnvironment otherModule = ApplicationMainSymbolTable.getModuleByName(otherArg.getValue());
+		
+		return module.isSubtypeOf(otherModule);
 	}
 
 }

@@ -68,7 +68,7 @@ public class MethodHandler {
 
 	public void setReturnType(TokenStream input) {
 		String returnType = _tokenizer.getSpecificToken((CommonTokenStream)input, LAST_TOKEN);
-		_methodRow.Type = returnType;
+		_arguments.setReturnType(returnType);
 	}
 
 	public void endMethodDeclaration() {

@@ -28,6 +28,10 @@ public class ApplicationMainSymbolTable {
 		return _allModules.containsKey(moduleName);
 	}
 	
+	public static ModuleEnvironment getModuleByName(String moduleName) {
+		return _allModules.get(moduleName); 
+	}
+	
 	private static int numberOfMainMethods() {
 		int mainCount = 0;
 		for (ModuleEnvironment module : _allModules.values())
