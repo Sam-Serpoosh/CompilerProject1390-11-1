@@ -82,5 +82,9 @@ public class MethodHandler {
 		
 		moduleEnvironment.addRow(_methodRow);
 	}
+
+	public void setVirtual() {
+		_methodRow.setVirtual();
+	}
 	
 }

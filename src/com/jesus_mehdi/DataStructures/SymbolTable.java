@@ -3,6 +3,8 @@ package com.jesus_mehdi.DataStructures;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.jesus_mehdi.Exceptions.MethodsDeclaredWithSameNameWhichAtLeastOneOfThemIsVirtualException;
+
 public class SymbolTable {
 	private HashMap<String, SymbolTableRow> _rows;
 	
@@ -11,8 +13,13 @@ public class SymbolTable {
 	}
 	
 	public void addRow(SymbolTableRow row) {
-		if (_rows.containsKey(row.Name))
+		if (_rows.containsKey(row.Name)) {
+			MethodSymbolTableRow methodRow = (MethodSymbolTableRow)_rows.get(row.Name);
+			MethodSymbolTableRow newMethodRow = (MethodSymbolTableRow)row;
+			if (methodRow.isVirtual() || newMethodRow.isVirtual())
+				throw new MethodsDeclaredWithSameNameWhichAtLeastOneOfThemIsVirtualException();
 			concatSignatureToExistedMethod(row);
+		}
 		else
 			_rows.put(row.Name, row);
 	}
@@ -42,6 +49,15 @@ public class SymbolTable {
 				allMemberRows.add((MemberSymbolTableRow)row);
 		
 		return allMemberRows;
+	}
+	
+	public ArrayList<MethodSymbolTableRow> getAllMethodRows() {
+		ArrayList<MethodSymbolTableRow> allMethodRows = new ArrayList<MethodSymbolTableRow>();
+		for (SymbolTableRow row : _rows.values())
+			if (row instanceof MethodSymbolTableRow)
+				allMethodRows.add((MethodSymbolTableRow)row);
+		
+		return allMethodRows;
 	}
 	
 }

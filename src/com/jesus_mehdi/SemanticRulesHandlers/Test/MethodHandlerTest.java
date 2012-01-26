@@ -16,6 +16,7 @@ import com.jesus_mehdi.DataStructures.Signature;
 import com.jesus_mehdi.DataStructures.SymbolTable;
 import com.jesus_mehdi.DataStructures.SymbolTableRow;
 import com.jesus_mehdi.Exceptions.MemberAndMethodExistWithSameNameException;
+import com.jesus_mehdi.Exceptions.MethodsDeclaredWithSameNameWhichAtLeastOneOfThemIsVirtualException;
 import com.jesus_mehdi.Exceptions.ModuleContainsTwoMainMethodsException;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
 import com.jesus_mehdi.SemanticRulesHandlers.MemberHandler;
@@ -162,6 +163,20 @@ public class MethodHandlerTest {
 		assertTrue(allSignatures.get(1).containsArgument("first", "int"));
 		assertEquals(1, allSignatures.get(1).getArgumentsCount());
 		
+	}
+	
+	@Test(expected = MethodsDeclaredWithSameNameWhichAtLeastOneOfThemIsVirtualException.class)
+	public void shouldThrowExceptionWhenMethodsExistWithSameNameWhichAtLeastOneOfThemIsVirtual() {
+		MethodHandler methodHandler = new MethodHandler();
+		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
+		methodRow.Name = "testMethod";
+		methodRow.setVirtual();
+		methodHandler.setMethodRow(methodRow);
+		methodHandler.endMethodDeclaration();
+		MethodSymbolTableRow newMethodRow = new MethodSymbolTableRow();
+		newMethodRow.Name = "testMethod";
+		methodHandler.setMethodRow(newMethodRow);
+		methodHandler.endMethodDeclaration();
 	}
 	
 	private void declareMethod(int tokenizerIndex) {

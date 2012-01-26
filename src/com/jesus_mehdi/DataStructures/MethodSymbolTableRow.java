@@ -5,9 +5,19 @@ import java.util.ArrayList;
 public class MethodSymbolTableRow extends SymbolTableRow {
 
 	private ArrayList<Signature> _signatures;
+	private boolean _isVirtual;
 	
 	public MethodSymbolTableRow() {
 		_signatures = new ArrayList<Signature>();
+		_isVirtual = false;
+	}
+	
+	public void setVirtual() {
+		_isVirtual = true;
+	}
+	
+	public boolean isVirtual() {
+		return _isVirtual;
 	}
 	
 	public void addSignature(Signature signature) {
