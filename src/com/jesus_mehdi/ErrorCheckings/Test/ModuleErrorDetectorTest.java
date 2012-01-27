@@ -45,6 +45,18 @@ public class ModuleErrorDetectorTest {
 		moduleErrorDetector.checkForLoopInInheritance();
 	}
 	
+	@Test(expected = LoopInheritanceException.class)
+	public void shouldThrowExceptionWhenModuleInheritFromItself() {
+		ModuleEnvironment firstModule = new ModuleEnvironment();
+		firstModule.setName("FirstModule");
+		firstModule.setParentScope(firstModule);
+		
+		ApplicationMainSymbolTable.addModule(firstModule);
+		
+		ModuleErrorDetector moduleErrorDetector = new ModuleErrorDetector();
+		moduleErrorDetector.checkForLoopInInheritance();
+	}
+	
 	@Test
 	public void whenThereIsNoLoopInInheritanceShouldNotThrowException() {
 		ModuleEnvironment firstModule = new ModuleEnvironment();
