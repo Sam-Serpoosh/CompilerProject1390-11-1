@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.Signature;
+import com.jesus_mehdi.Exceptions.MethodWithSameNameIsNotSubMethodOfParentVirtualMethodException;
 import com.jesus_mehdi.Exceptions.OverloadingException;
 
 public class MethodErrorDetector {
@@ -44,15 +45,16 @@ public class MethodErrorDetector {
 		}
 	}
 	
-//	public void checkExistanceOfVirtualMethodWithSameName(ModuleEnvironment module, 
-//			MethodSymbolTableRow methodRow) {
-//		MethodSymbolTableRow virtualMethod = getEquivalentVirtualMethodFromParent(module, methodRow.Name);
-//		if (virtualMethod != null) {
-//			Signature virtualMethodSignature = virtualMethod.getFirstSignature();
-//			ArrayList<Signature> methodSignatures = methodRow.getAllSignatures();
-//			for (Signature signature : methodSignatures)
-//				if ()
-//		}
-//	}
+	public void checkExistanceOfVirtualMethodWithSameName(ModuleEnvironment childModule, 
+			MethodSymbolTableRow childMethodRow) {
+		MethodSymbolTableRow virtualMethod = getEquivalentVirtualMethodFromParent(childModule, childMethodRow.Name);
+		if (virtualMethod != null) {
+			Signature virtualMethodSignature = virtualMethod.getFirstSignature();
+			ArrayList<Signature> methodSignatures = childMethodRow.getAllSignatures();
+			for (Signature signature : methodSignatures)
+				if (signature.isSubMethod(virtualMethodSignature) == false)
+					throw new MethodWithSameNameIsNotSubMethodOfParentVirtualMethodException();
+		}
+	}
 	
 }
