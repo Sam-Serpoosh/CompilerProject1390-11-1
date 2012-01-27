@@ -1,5 +1,6 @@
 package com.jesus_mehdi.ErrorCheckings.Test;
 
+import org.junit.After;
 import org.junit.Test;
 
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
@@ -74,6 +75,11 @@ public class ModuleErrorDetectorTest {
 		
 		ModuleErrorDetector moduleErrorDetector = new ModuleErrorDetector();
 		moduleErrorDetector.checkForLoopInInheritance();
+	}
+	
+	@After
+	public void clearMainSymbolTable() {
+		ApplicationMainSymbolTable.getAllModules().clear();
 	}
 	
 }
