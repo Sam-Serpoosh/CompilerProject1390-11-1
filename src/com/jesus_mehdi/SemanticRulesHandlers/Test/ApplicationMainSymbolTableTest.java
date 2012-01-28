@@ -2,6 +2,7 @@ package com.jesus_mehdi.SemanticRulesHandlers.Test;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.After;
 import org.junit.Test;
 
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
@@ -86,6 +87,11 @@ public class ApplicationMainSymbolTableTest {
 		ApplicationMainSymbolTable.addModule(childModule);
 		
 		ApplicationMainSymbolTable.checkThatAllParentModulesExist();
+	}
+	
+	@After
+	public void tearDown() {
+		ApplicationMainSymbolTable.clearMainSymbolTable();
 	}
 	
 }

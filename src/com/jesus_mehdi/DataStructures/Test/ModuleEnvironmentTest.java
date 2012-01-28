@@ -3,9 +3,11 @@ package com.jesus_mehdi.DataStructures.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.After;
 import org.junit.Test;
 
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
+import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 
 public class ModuleEnvironmentTest {
 
@@ -45,6 +47,11 @@ public class ModuleEnvironmentTest {
 		childModule.setName("ModuleName");
 
 		assertFalse(childModule.isSubtypeOf(grandParentModule));
+	}
+	
+	@After
+	public void tearDown() {
+		ApplicationMainSymbolTable.clearMainSymbolTable();
 	}
 
 }

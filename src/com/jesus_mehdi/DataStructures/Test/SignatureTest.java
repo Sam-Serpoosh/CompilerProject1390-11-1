@@ -3,6 +3,7 @@ package com.jesus_mehdi.DataStructures.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.After;
 import org.junit.Test;
 
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
@@ -86,6 +87,11 @@ public class SignatureTest {
 		assertTrue(subSignature.isSubMethod(superSignature));
 		assertTrue(subSignature.isSubMethod(subSignature));
 		assertFalse(superSignature.isSubMethod(subSignature));
+	}
+	
+	@After
+	public void tearDown() {
+		ApplicationMainSymbolTable.clearMainSymbolTable();
 	}
 	
 }

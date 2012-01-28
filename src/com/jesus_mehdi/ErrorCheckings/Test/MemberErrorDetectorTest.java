@@ -1,5 +1,6 @@
 package com.jesus_mehdi.ErrorCheckings.Test;
 
+import org.junit.After;
 import org.junit.Test;
 
 import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
@@ -29,6 +30,11 @@ public class MemberErrorDetectorTest {
 		memberRow.Name = "testVariable";
 		memberRow.Type = "string";
 		module.addRow(memberRow);
+	}
+	
+	@After
+	public void tearDown() {
+		ApplicationMainSymbolTable.clearMainSymbolTable();
 	}
 	
 }

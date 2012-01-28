@@ -55,8 +55,9 @@ public class ModuleHandler {
 		Current.setCurrentScopeToPrev();
 	}
 	
-	private String tokenAt(TokenStream inputToken, int tokenIndex) {
-		return inputToken.LT(tokenIndex).getText();
+	public void setCurrentScopeByModuleName(TokenStream input) {
+		String currentModuleName = _tokenizer.getSpecificToken((CommonTokenStream)input, LAST_TOKEN);
+		Current.setCurrentScopeByModuleName(currentModuleName);
 	}
-
+	
 }

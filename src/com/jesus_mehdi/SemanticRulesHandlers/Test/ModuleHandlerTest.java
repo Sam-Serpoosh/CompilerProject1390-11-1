@@ -2,6 +2,7 @@ package com.jesus_mehdi.SemanticRulesHandlers.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.HashMap;
 
@@ -12,6 +13,7 @@ import org.junit.Test;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.Exceptions.DuplicateModuleDeclarationException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
+import com.jesus_mehdi.SemanticRulesHandlers.Current;
 import com.jesus_mehdi.SemanticRulesHandlers.ModuleHandler;
 
 public class ModuleHandlerTest {
@@ -92,7 +94,7 @@ public class ModuleHandlerTest {
 	
 	@After
 	public void tearDown() {
-		ApplicationMainSymbolTable.getAllModules().clear();
+		ApplicationMainSymbolTable.clearMainSymbolTable();
 	}
 
 }

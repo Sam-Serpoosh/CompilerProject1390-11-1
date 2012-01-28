@@ -79,7 +79,7 @@ public class ModuleErrorDetectorTest {
 	
 	@After
 	public void clearMainSymbolTable() {
-		ApplicationMainSymbolTable.getAllModules().clear();
+		ApplicationMainSymbolTable.clearMainSymbolTable();
 	}
 	
 }

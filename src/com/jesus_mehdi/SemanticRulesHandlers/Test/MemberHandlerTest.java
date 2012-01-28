@@ -3,12 +3,14 @@ package com.jesus_mehdi.SemanticRulesHandlers.Test;
 import static org.junit.Assert.assertEquals;
 
 import org.antlr.runtime.CommonTokenStream;
+import org.junit.After;
 import org.junit.Test;
 
 import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.SymbolTableRow;
 import com.jesus_mehdi.Exceptions.DuplicateVariableDeclarationException;
+import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
 import com.jesus_mehdi.SemanticRulesHandlers.MemberHandler;
 
@@ -63,9 +65,15 @@ public class MemberHandlerTest {
 	
 	@Test(expected = DuplicateVariableDeclarationException.class)
 	public void shouldThrowsDuplicateDeclarationExceptionWhenTwoVariablesWithSameNameDeclared() {
-		FileUtility.writeSampleProgramContentToFile("int testVariable\r\nint testVariable");
-		handleVariableDeclaration(1);
-		handleVariableDeclaration(3);
+		ModuleEnvironment moduleEnvironment = new ModuleEnvironment();
+		Current.setCurrentScope(moduleEnvironment);
+		MemberSymbolTableRow row = createRow("testVariable", "int");
+		MemberSymbolTableRow duplicateRow = createRow("testVariable", "int");
+		MemberHandler memberHandler = new MemberHandler();
+		memberHandler.setMemberRow(row);
+		memberHandler.endMemberDeclaration();
+		memberHandler.setMemberRow(duplicateRow);
+		memberHandler.endMemberDeclaration();
 	}
 	
 	@Test
@@ -140,6 +148,11 @@ public class MemberHandlerTest {
 		row.ArraySize = arraySize;
 		
 		return row;
+	}
+	
+	@After
+	public void tearDown() {
+		ApplicationMainSymbolTable.clearMainSymbolTable();
 	}
 	
 }

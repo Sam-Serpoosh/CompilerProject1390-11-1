@@ -61,4 +61,9 @@ public class ApplicationMainSymbolTable {
 		}
 	}
 	
+	public static void clearMainSymbolTable() {
+		getAllModules().clear();
+		Current.setCurrentScope(null);
+	}
+	
 }

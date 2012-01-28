@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.AbstractMap.SimpleEntry;
 
 import org.antlr.runtime.CommonTokenStream;
+import org.junit.After;
 import org.junit.Test;
 
 import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
@@ -18,6 +19,7 @@ import com.jesus_mehdi.DataStructures.SymbolTableRow;
 import com.jesus_mehdi.Exceptions.MemberAndMethodExistWithSameNameException;
 import com.jesus_mehdi.Exceptions.MethodsDeclaredWithSameNameWhichAtLeastOneOfThemIsVirtualException;
 import com.jesus_mehdi.Exceptions.ModuleContainsTwoMainMethodsException;
+import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
 import com.jesus_mehdi.SemanticRulesHandlers.MemberHandler;
 import com.jesus_mehdi.SemanticRulesHandlers.MethodHandler;
@@ -93,10 +95,17 @@ public class MethodHandlerTest {
 	
 	@Test(expected = ModuleContainsTwoMainMethodsException.class)
 	public void shouldThrowExceptionWhenTwoMainMethodsInSameModuleDeclared() {
-		FileUtility.writeSampleProgramContentToFile("main()\r\nmain()");
-		
-		declareMethod(0);
-		declareMethod(3);
+		ModuleEnvironment module = new ModuleEnvironment();
+		Current.setCurrentScope(module);
+		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
+		methodRow.Name = "main";
+		MethodSymbolTableRow duplicateMethodRow = new MethodSymbolTableRow();
+		duplicateMethodRow.Name = "main";
+		MethodHandler methodHandler = new MethodHandler();
+		methodHandler.setMethodRow(methodRow);
+		methodHandler.endMethodDeclaration();
+		methodHandler.setMethodRow(duplicateMethodRow);
+		methodHandler.endMethodDeclaration();
 	}
 	
 	@Test(expected = MemberAndMethodExistWithSameNameException.class)
@@ -172,6 +181,8 @@ public class MethodHandlerTest {
 	
 	@Test(expected = MethodsDeclaredWithSameNameWhichAtLeastOneOfThemIsVirtualException.class)
 	public void shouldThrowExceptionWhenMethodsExistWithSameNameWhichAtLeastOneOfThemIsVirtual() {
+		ModuleEnvironment module = new ModuleEnvironment();
+		Current.setCurrentScope(module);
 		MethodHandler methodHandler = new MethodHandler();
 		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
 		methodRow.Name = "testMethod";
@@ -211,6 +222,11 @@ public class MethodHandlerTest {
 		methodHandler.setArguments(signature);
 		methodHandler.setMethodRow(methodRow);
 		methodHandler.endMethodDeclaration();
+	}
+	
+	@After
+	public void tearDown() {
+		ApplicationMainSymbolTable.clearMainSymbolTable();
 	}
 	
 }

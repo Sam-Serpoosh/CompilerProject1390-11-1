@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 
-import com.jesus_mehdi.CompilerFiles.LexerHandler;
+import com.jesus_mehdi.CompilerFiles.LexerHandlerFirstIteration;
 
 public class FileUtility {
 
@@ -23,10 +23,10 @@ public class FileUtility {
 	}
 
 	public static CommonTokenStream getCommonTokenStream() {
-		LexerHandler scanner = null;
+		LexerHandlerFirstIteration scanner = null;
 		try {
 			ANTLRFileStream inputFileStream = new ANTLRFileStream(_sampleFileName);
-			scanner = new LexerHandler(inputFileStream);
+			scanner = new LexerHandlerFirstIteration(inputFileStream);
 		} catch (IOException e) { }
 
 		return new CommonTokenStream(scanner);
