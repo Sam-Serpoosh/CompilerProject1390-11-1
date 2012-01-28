@@ -5,6 +5,7 @@ import java.util.Stack;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.TokenStream;
 
+import com.jesus_mehdi.DataStructures.Environment;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.Exceptions.TypeMismatchException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
@@ -43,7 +44,11 @@ public class TypeChecker {
 
 	public void setInputId(TokenStream input) {
 		String variableName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
-		ModuleEnvironment currentModule = (ModuleEnvironment)Current.getScope();
+		fetchVariableTypeAndPutItIntoTypeCheckingStack(variableName);
+	}
+	
+	public void fetchVariableTypeAndPutItIntoTypeCheckingStack(String variableName) {
+		Environment currentModule = Current.getScope();
 		_typeCheckingStack.push(currentModule.getVariableType(variableName));
 	}
 
