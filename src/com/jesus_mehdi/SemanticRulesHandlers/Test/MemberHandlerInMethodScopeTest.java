@@ -18,17 +18,9 @@ public class MemberHandlerInMethodScopeTest {
 	public void shouldFillMethodEnvironmentSymbolTable() {
 		MethodEnvironment methodEnvironment = new MethodEnvironment();
 		Current.setCurrentScope(methodEnvironment);
-		MemberSymbolTableRow memberRow = new MemberSymbolTableRow();
-		memberRow.Name = "testInt";
-		memberRow.Type = "int";
 		MemberHandler memberHandler = new MemberHandler();
-		memberHandler.setMemberRow(memberRow);
-		memberHandler.endMemberDeclaration();
-		memberRow = new MemberSymbolTableRow();
-		memberRow.Name = "testString";
-		memberRow.Type = "string";
-		memberHandler.setMemberRow(memberRow);
-		memberHandler.endMemberDeclaration();
+		declareMemberRowAndAddItToCurrentScope(memberHandler, "testInt", "int");
+		declareMemberRowAndAddItToCurrentScope(memberHandler, "testString", "string");
 		
 		SymbolTable methodSymbolTable = Current.getScope().getSymbolTable();
 		assertEquals(2, methodSymbolTable.getSize());
@@ -38,6 +30,14 @@ public class MemberHandlerInMethodScopeTest {
 		
 		methodMemberRow = (MemberSymbolTableRow)methodSymbolTable.getRow("testInt");
 		assertEquals("int", methodMemberRow.Type);
+	}
+	
+	private void declareMemberRowAndAddItToCurrentScope(MemberHandler memberHandler, String variableName, String type) {
+		MemberSymbolTableRow memberRow = new MemberSymbolTableRow();
+		memberRow.Name = variableName;
+		memberRow.Type = type;
+		memberHandler.setMemberRow(memberRow);
+		memberHandler.endMemberDeclaration();		
 	}
 
 	@After

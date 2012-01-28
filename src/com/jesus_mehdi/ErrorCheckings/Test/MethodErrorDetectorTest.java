@@ -83,6 +83,30 @@ public class MethodErrorDetectorTest {
 		_methodErrorDetector.checkOverloadingProblemsInAllMethodsSignatures(mainModule);
 	}
 	
+	@Test(expected = OverloadingException.class)
+	public void shouldCheckForOverloadingExceptionForAllModules() {
+		MethodSymbolTableRow methodRow = createRowWithSignature("testMethod", 
+				"void", "testArg", "SubModule");
+		MethodSymbolTableRow otherMethodRow = createRowWithSignature("testMethod", 
+				"void", "testArg", "SuperModule");
+		MethodSymbolTableRow standOutMethodRow = createRowWithSignature("standOutMethod", 
+				"void", "testArg", "StandOutModule");
+		ModuleEnvironment superModule = createModuleAndAddMethodRowToIt("SuperModule", standOutMethodRow);
+		ModuleEnvironment subModule = createModuleAndAddMethodRowToIt("SubModule", standOutMethodRow);
+		subModule.setParentScope(superModule);
+		ModuleEnvironment firstModule = createModuleAndAddMethodRowToIt("MainModule", methodRow);
+		firstModule.addRow(otherMethodRow);
+		ModuleEnvironment secondModule = new ModuleEnvironment();
+		secondModule.addRow(standOutMethodRow);
+		
+		ApplicationMainSymbolTable.addModule(subModule);
+		ApplicationMainSymbolTable.addModule(superModule);
+		ApplicationMainSymbolTable.addModule(firstModule);
+		ApplicationMainSymbolTable.addModule(secondModule);
+		
+		_methodErrorDetector.checkOverloadingProblemsInAllModules();
+	}
+	
 	@Test
 	public void shouldNotThrowExceptionWhenChildMethodWithSameNameIsNotSubMethodOfParentVirtualMethod() {
 		MethodSymbolTableRow parentMethodRow = createVirtualRowWithSignature("testVirtualName", 

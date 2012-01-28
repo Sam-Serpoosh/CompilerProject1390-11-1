@@ -1,12 +1,14 @@
 package com.jesus_mehdi.ErrorCheckings;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.Signature;
 import com.jesus_mehdi.Exceptions.MethodWithSameNameIsNotSubMethodOfParentVirtualMethodException;
 import com.jesus_mehdi.Exceptions.OverloadingException;
+import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 
 public class MethodErrorDetector {
 
@@ -21,6 +23,12 @@ public class MethodErrorDetector {
 			parentModule = (ModuleEnvironment)parentModule.getParentScope();
 		}
 		return null;
+	}
+	
+	public void checkOverloadingProblemsInAllModules() {
+		Collection<ModuleEnvironment> allModules = ApplicationMainSymbolTable.getAllModules().values();
+		for (ModuleEnvironment module : allModules)
+			checkOverloadingProblemsInAllMethodsSignatures(module);
 	}
 	
 	public void checkOverloadingProblemsInAllMethodsSignatures(ModuleEnvironment module) {
