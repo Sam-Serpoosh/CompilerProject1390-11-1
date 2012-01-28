@@ -7,6 +7,8 @@ import org.antlr.runtime.Token;
 
 public class Tokenizer {
 
+	public final int LAST_TOKEN = -1;
+	
 	public String getSpecificToken(CommonTokenStream inputToken, int tokenIndex) {
 		List<Token> allTokens = ((CommonTokenStream)inputToken).getTokens();
 		int index = ((CommonTokenStream)inputToken).index();

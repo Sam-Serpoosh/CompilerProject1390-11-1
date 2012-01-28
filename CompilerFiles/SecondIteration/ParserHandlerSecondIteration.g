@@ -16,15 +16,16 @@ program :	 (module SEMICOLON)+;
 
 module 	:	 MODULE ID {ModuleHandler moduleHandler = new ModuleHandler(); moduleHandler.setCurrentScopeByModuleName(input);}(CHILD_OF ID )? L_BRACE (member)* R_BRACE ;
 
-member	:	 (VIRTUAL)? ID L_PAREN ( ID COLON type (COMMA ID COLON type)*)? R_PAREN COLON type L_BRACE st* R_BRACE
+member	:	 (VIRTUAL)? ID L_PAREN ( ID COLON type (COMMA ID COLON type)*)? R_PAREN COLON type L_BRACE 
+		 	{MethodHandler methodHandler = new MethodHandler(); methodHandler.beginMethodScope();} st* R_BRACE {methodHandler.endMethodScope();}
 	|        ID (L_BRACKET CONST_INT R_BRACKET)? COLON type SEMICOLON
 	;
 
 
 
 st	:	L_BRACE {System.out.println("{Block_Start}");} (st)* R_BRACE  {System.out.println("{Block_End}");}
-	| 	ID ( L_BRACKET {System.out.println("{Array_Declaration}");} CONST_INT R_BRACKET )? COLON {System.out.println("{SympleType_Declaration}");} type  SEMICOLON   ///    st_ to COLON
-	|	e1 ( ASSIGN e1 {System.out.println("{Assignment}");} )? SEMICOLON 			// newly added 
+	| 	ID {MemberHandler memberHandler = new MemberHandler(); memberHandler.setMemberName(input);}( L_BRACKET CONST_INT {memberHandler.setArraySize(input);} R_BRACKET )? COLON type {memberHandler.setType(input);} SEMICOLON {memberHandler.endMemberDeclaration();}  ///    st_ to COLON
+	|	{TypeCheckerFactory.createTypeChecker();}e1 ( ASSIGN e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.assignmentOperator();} )? SEMICOLON 			// newly added 
 	| 	IF {System.out.println("{if_Clause}");} e1 THEN st (ELSE st)? END_IF
 	| 	WHILE {System.out.println("{while_Loop}");} e1 LOOP	st ENDLOOP
 	| 	BREAK SEMICOLON 
@@ -55,14 +56,14 @@ e9	:	e10 (DOT {System.out.println("{Access_Member}");} e10)* ;
 e10	:
 	(	CREATE {System.out.println("{Object_creation}");} ID
 	|	L_PAREN e1 R_PAREN
-	|	CONST_INT | CONST_BOOL | CONST_STRING
+	|	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker();}(CONST_INT{typeChecker.setConstIntInput(input);} | CONST_BOOL {typeChecker.setConstBoolInput(input);} | CONST_STRING {typeChecker.setConstStringInput(input);})
 	|	ID e11
 	) 		
 	;
 
 e11	:	L_PAREN {System.out.println("{Function_Call}");} ( e1 (COMMA e1)* )? R_PAREN 
 	| 	L_BRACKET {System.out.println("{Array_Address_Calculation}");} e1 R_BRACKET
-	|
+	|	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInputId(input);}
 	;
 
 type	:	ID | TYPE_INT | TYPE_BOOL | TYPE_STRING | TYPE_VOID;

@@ -1,5 +1,8 @@
 package com.jesus_mehdi.DataStructures;
 
+import com.jesus_mehdi.Exceptions.UndefinedIdentifierException;
+import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
+
 public abstract class Environment {
 	
 	protected Environment _parentScope;
@@ -48,6 +51,22 @@ public abstract class Environment {
 	
 	public boolean rowAlreadyExisted(String rowName) {
 		return _symbolTable.rowAlreadyExisted(rowName);
+	}
+	
+	public ModuleEnvironment getVariableType(String variableName) {
+		if (rowAlreadyExisted(variableName)) {
+			SymbolTableRow row = _symbolTable.getRow(variableName);
+			if (row instanceof MemberSymbolTableRow) {
+				MemberSymbolTableRow memberRow = (MemberSymbolTableRow)row;
+				return ApplicationMainSymbolTable.getModuleByName(memberRow.Type);
+			}
+		}
+		
+		if (getParentScope() == null)
+			throw new UndefinedIdentifierException();
+		
+		Environment parentModule = getParentScope();
+		return parentModule.getVariableType(variableName);
 	}
 	
 }

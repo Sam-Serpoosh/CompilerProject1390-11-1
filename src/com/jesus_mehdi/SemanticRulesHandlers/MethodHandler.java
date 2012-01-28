@@ -4,6 +4,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.TokenStream;
 
 import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
+import com.jesus_mehdi.DataStructures.MethodEnvironment;
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.OffsetFactory;
@@ -15,11 +16,11 @@ public class MethodHandler {
 
 	private Tokenizer _tokenizer;
 	private MethodSymbolTableRow _methodRow;
-	private final int LAST_TOKEN = -1;
 	private OffsetFactory _offsetFactory;
 	private Signature _arguments;
 	private String _argumentName;
 	private String _argumentType;
+	private MethodEnvironment _methodEnvironment;
 	
 	public MethodHandler(Tokenizer tokenizer) {
 		_tokenizer = tokenizer;
@@ -53,21 +54,21 @@ public class MethodHandler {
 	}
 
 	public void setMethodName(TokenStream input) {
-		String methodName = _tokenizer.getSpecificToken((CommonTokenStream)input, LAST_TOKEN);
+		String methodName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
 		_methodRow.Name = methodName;
 	}
 
 	public void addArgumentName(TokenStream input) {
-		_argumentName = _tokenizer.getSpecificToken((CommonTokenStream)input, LAST_TOKEN);
+		_argumentName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
 	}
 
 	public void setArgumentType(TokenStream input) {
-		_argumentType = _tokenizer.getSpecificToken((CommonTokenStream)input, LAST_TOKEN);
+		_argumentType = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
 		_arguments.addArgument(_argumentName, _argumentType);
 	}
 
 	public void setReturnType(TokenStream input) {
-		String returnType = _tokenizer.getSpecificToken((CommonTokenStream)input, LAST_TOKEN);
+		String returnType = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
 		_arguments.setReturnType(returnType);
 	}
 
@@ -85,6 +86,15 @@ public class MethodHandler {
 
 	public void setVirtual() {
 		_methodRow.setVirtual();
+	}
+
+	public void beginMethodScope() {
+		_methodEnvironment = new MethodEnvironment();
+		Current.stepIntoScope(_methodEnvironment);
+	}
+
+	public void endMethodScope() {
+		Current.stepOutToPrevScope();
 	}
 	
 }

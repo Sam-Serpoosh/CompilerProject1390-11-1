@@ -11,6 +11,19 @@ public class ApplicationMainSymbolTable {
 
 	private static HashMap<String, ModuleEnvironment> _allModules = new HashMap<String, ModuleEnvironment>();
 	private static ModuleEnvironment _applicationEntryModule;
+	
+	public static void init() {
+		createBaseModuleAndAddToAllModules("int");
+		createBaseModuleAndAddToAllModules("string");
+		createBaseModuleAndAddToAllModules("bool");
+		createBaseModuleAndAddToAllModules("Object");
+	}
+
+	private static void createBaseModuleAndAddToAllModules(String baseModuleName) {
+		ModuleEnvironment module = new ModuleEnvironment();
+		module.setName(baseModuleName);
+		_allModules.put(baseModuleName, module);
+	}
 
 	public static void addModule(ModuleEnvironment moduleEnvironment) {
 		_allModules.put(moduleEnvironment.getName(), moduleEnvironment);

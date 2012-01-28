@@ -23,6 +23,10 @@ public class SymbolTable {
 		else
 			_rows.put(row.Name, row);
 	}
+	
+	public int getSize() {
+		return _rows.size();
+	}
 
 	private void concatSignatureToExistedMethod(SymbolTableRow row) {
 		MethodSymbolTableRow methodRow = (MethodSymbolTableRow)_rows.get(row.Name);

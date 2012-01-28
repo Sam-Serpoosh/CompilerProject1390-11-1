@@ -11,7 +11,6 @@ public class ModuleHandler {
 
 	private Tokenizer _tokenizer;
 	private ModuleEnvironment _moduleEnvironment;
-	private final int LAST_TOKEN = -1;
 	private OffsetFactory _offsetFactory;
 	
 	public ModuleHandler(Tokenizer tokenizer) {
@@ -32,7 +31,7 @@ public class ModuleHandler {
 	}
 
 	public void setModuleName(TokenStream moduleNameToken) {
-		String moduleName = _tokenizer.getSpecificToken((CommonTokenStream)moduleNameToken, LAST_TOKEN);
+		String moduleName = _tokenizer.getSpecificToken((CommonTokenStream)moduleNameToken, _tokenizer.LAST_TOKEN);
 		_moduleEnvironment.setName(moduleName);
 		if (ApplicationMainSymbolTable.moduleAlreadyDefined(moduleName))
 			throw new DuplicateModuleDeclarationException();
@@ -41,7 +40,7 @@ public class ModuleHandler {
 	}
 
 	public void setParentModuleName(TokenStream parentModuleNameToken) {
-		String parentModuleName = _tokenizer.getSpecificToken((CommonTokenStream)parentModuleNameToken, LAST_TOKEN);
+		String parentModuleName = _tokenizer.getSpecificToken((CommonTokenStream)parentModuleNameToken, _tokenizer.LAST_TOKEN);
 		_moduleEnvironment.setParentName(parentModuleName);
 	}
 	
@@ -52,11 +51,11 @@ public class ModuleHandler {
 	public void endModuleScope() {
 		int moduleSize = _moduleEnvironment.getModuleSize();
 		_offsetFactory.registerModuleType(_moduleEnvironment.getName(), moduleSize);
-		Current.setCurrentScopeToPrev();
+		Current.stepOutToPrevScope();
 	}
 	
 	public void setCurrentScopeByModuleName(TokenStream input) {
-		String currentModuleName = _tokenizer.getSpecificToken((CommonTokenStream)input, LAST_TOKEN);
+		String currentModuleName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
 		Current.setCurrentScopeByModuleName(currentModuleName);
 	}
 	

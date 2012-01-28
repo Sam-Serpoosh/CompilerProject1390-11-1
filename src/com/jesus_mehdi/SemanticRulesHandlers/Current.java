@@ -11,8 +11,13 @@ public class Current {
 		_scope = environment;
 	}
 	
-	public static void setCurrentScopeToPrev() {
+	public static void stepOutToPrevScope() {
 		_scope = _scope.getParentScope();
+	}
+	
+	public static void stepIntoScope(Environment environment) {
+		environment.setParentScope(_scope);
+		_scope = environment;
 	}
 	
 	public static Environment getScope() {
