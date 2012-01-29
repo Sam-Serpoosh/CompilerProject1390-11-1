@@ -119,8 +119,7 @@ public class MethodHandler {
 
 	public void addArgumentNameToMethodEnvironment(TokenStream input) {
 		String argumentName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
-		if (_memberRow == null)
-			_memberRow = new MemberSymbolTableRow();
+		_memberRow = new MemberSymbolTableRow();
 		_memberRow.Name = argumentName;
 	}
 

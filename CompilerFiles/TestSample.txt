@@ -1,22 +1,16 @@
 module Kooft
 {
-	a : int;
 	k : int;
-	b : bool;
+	s : string;
+	zahremar[10] : string;
 	
 	test(c : int, d : string) : bool
 	{
-		k := a;
-		a := -k;
-		b := not b;
+		zahremar[k] := s;
 	}
 	
 	test(c: string, d:string) : bool
-	{
-		b := true;
-		b := a = k;
-		b := a >= k;
-	}
+	{}
 	
 	virtual otherMethod(a: int) : string
 	{}
