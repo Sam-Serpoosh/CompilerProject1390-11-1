@@ -35,9 +35,9 @@ st	:	L_BRACE {System.out.println("{Block_Start}");} (st)* R_BRACE  {System.out.p
 	|	RETURN e1 {System.out.println("{return_Statement}");} SEMICOLON
 	;
 
-e1	:	(e2) (OR e2)*	;
+e1	:	(e2 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInputId(input);}) (OR e2 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInputId(input); typeChecker.orOperator();})*;
 
-e2	:	(e3) (AND e3)*	;
+e2	:	(e3) (AND e3)*;
 
 e3	:	NOT e4 		| e4	;
 
@@ -56,7 +56,7 @@ e9	:	e10 (DOT {System.out.println("{Access_Member}");} e10)* ;
 e10	:
 	(	CREATE {System.out.println("{Object_creation}");} ID
 	|	L_PAREN e1 R_PAREN
-	|	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker();}(CONST_INT{typeChecker.setConstIntInput(input);} | CONST_BOOL {typeChecker.setConstBoolInput(input);} | CONST_STRING {typeChecker.setConstStringInput(input);})
+	|	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker();}(CONST_INT{typeChecker.setConstIntInput();} | CONST_BOOL {typeChecker.setConstBoolInput();} | CONST_STRING {typeChecker.setConstStringInput();})
 	|	ID e11
 	) 		
 	;

@@ -1,5 +1,7 @@
 package com.jesus_mehdi.TypeCheckingHandlers.Test;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +11,7 @@ import com.jesus_mehdi.DataStructures.MethodEnvironment;
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.Exceptions.TypeMismatchException;
+import com.jesus_mehdi.Exceptions.TypesOfBooleanOperatorsMustBeBooleanException;
 import com.jesus_mehdi.Exceptions.UndefinedIdentifierException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
@@ -112,6 +115,36 @@ public class TypeCheckerTest {
 		_typeChecker.fetchVariableTypeAndPutItIntoTypeCheckingStack("rightValueInt");
 		
 		_typeChecker.assignmentOperator();
+	}
+	
+	@Test
+	public void shouldCheckTypesForBooleanOperators() {
+		ModuleEnvironment leftBoolOperandType = new ModuleEnvironment();
+		leftBoolOperandType.setName("bool");
+		ModuleEnvironment rightBoolOperandType = new ModuleEnvironment();
+		rightBoolOperandType.setName("bool");
+		ApplicationMainSymbolTable.init();
+		
+		_typeChecker.pushType(leftBoolOperandType);
+		_typeChecker.pushType(rightBoolOperandType);
+		_typeChecker.andOperator();
+		
+		assertEquals(1, _typeChecker.getTypeCheckingStackSize());
+		assertEquals("bool", _typeChecker.getTypeAt(0).getName());
+	}
+	
+	@Test(expected = TypesOfBooleanOperatorsMustBeBooleanException.class)
+	public void shouldThrowExceptionWhenOperandsTypesOfBooleanOperatorsAreNotBoolean() {
+		ModuleEnvironment leftBoolOperandType = new ModuleEnvironment();
+		leftBoolOperandType.setName("bool");
+		ModuleEnvironment rightBoolOperandType = new ModuleEnvironment();
+		rightBoolOperandType.setName("int");
+		ApplicationMainSymbolTable.init();
+		
+		_typeChecker.pushType(leftBoolOperandType);
+		_typeChecker.pushType(rightBoolOperandType);
+		
+		_typeChecker.orOperator();
 	}
 	
 	private void declareMemberRowAndAddItToCurrentScope(MemberHandler memberHandler, String variableName, String type) {
