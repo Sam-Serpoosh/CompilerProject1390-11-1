@@ -9,6 +9,8 @@ import com.jesus_mehdi.DataStructures.Environment;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.Exceptions.TypeMismatchException;
 import com.jesus_mehdi.Exceptions.TypesOfBooleanOperatorsMustBeBooleanException;
+import com.jesus_mehdi.Exceptions.TypesOfEqualityRelationOperatorsMustBeSameBaseTypesException;
+import com.jesus_mehdi.Exceptions.TypesOfRelationalOperatorsMustBeIntException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
 import com.jesus_mehdi.SemanticRulesHandlers.Tokenizer;
@@ -82,5 +84,51 @@ public class TypeChecker {
 			_typeCheckingStack.push(boolType);
 		else
 			throw new TypesOfBooleanOperatorsMustBeBooleanException();
+	}
+
+	public void notOperator() {
+		ModuleEnvironment operandType = _typeCheckingStack.pop();
+		ModuleEnvironment boolType = ApplicationMainSymbolTable.getModuleByName("bool");
+		
+		if (operandType.isSubtypeOf(boolType))
+			_typeCheckingStack.push(boolType);
+		else
+			throw new TypesOfBooleanOperatorsMustBeBooleanException();
+	}
+
+	public void clearTypeCheckingStack() {
+		_typeCheckingStack.clear();
+	}
+
+	public void equalityRelationOperators() {
+		ModuleEnvironment rightOperandType = _typeCheckingStack.pop();
+		ModuleEnvironment leftOperandType = _typeCheckingStack.pop();
+		ModuleEnvironment boolType = ApplicationMainSymbolTable.getModuleByName("bool");
+		ModuleEnvironment intType = ApplicationMainSymbolTable.getModuleByName("int");
+		ModuleEnvironment stringType = ApplicationMainSymbolTable.getModuleByName("string");
+		
+		if (haveSameType(rightOperandType, leftOperandType, boolType) || 
+			haveSameType(rightOperandType, leftOperandType, intType) ||
+			haveSameType(rightOperandType, leftOperandType, stringType))
+			_typeCheckingStack.push(boolType);
+		else
+			throw new TypesOfEqualityRelationOperatorsMustBeSameBaseTypesException();
+	}
+	
+	private boolean haveSameType(ModuleEnvironment rightOperandType, ModuleEnvironment leftOperandType, 
+			ModuleEnvironment type) {
+		return rightOperandType.isSubtypeOf(type) && leftOperandType.isSubtypeOf(type);
+	}
+
+	public void relationalOperator() {
+		ModuleEnvironment rightOperandType = _typeCheckingStack.pop();
+		ModuleEnvironment leftOperandType = _typeCheckingStack.pop();
+		ModuleEnvironment intType = ApplicationMainSymbolTable.getModuleByName("int");
+		ModuleEnvironment boolType = ApplicationMainSymbolTable.getModuleByName("bool");
+		
+		if (haveSameType(rightOperandType, leftOperandType, intType))
+			_typeCheckingStack.push(boolType);
+		else
+			throw new TypesOfRelationalOperatorsMustBeIntException();
 	}
 }

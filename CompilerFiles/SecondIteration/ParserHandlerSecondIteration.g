@@ -35,15 +35,15 @@ st	:	L_BRACE {System.out.println("{Block_Start}");} (st)* R_BRACE  {System.out.p
 	|	RETURN e1 {System.out.println("{return_Statement}");} SEMICOLON
 	;
 
-e1	:	(e2 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInputId(input);}) (OR e2 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInputId(input); typeChecker.orOperator();})*;
+e1	:	(e2) (OR e2 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.orOperator();})*;
 
-e2	:	(e3) (AND e3)*;
+e2	:	(e3)(AND e3 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.orOperator();})*;
 
-e3	:	NOT e4 		| e4	;
+e3	:	NOT e4 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.notOperator();}		| e4	;
 
-e4	:	(e5) (( RELOP_EQ | RELOP_NE ) e5)* ;
+e4	:	(e5) (( RELOP_EQ | RELOP_NE ) e5 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.equalityRelationOperators();})* ;
 
-e5	:	(e6) (( RELOP_GT | RELOP_LT | RELOP_GE | RELOP_LE ) e6)*;
+e5	:	(e6) (( RELOP_GT | RELOP_LT | RELOP_GE | RELOP_LE ) e6 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.relationalOperator();})*;
 
 e6	:	(e7) ((PLUS {System.out.println("{Sum}");} | MINUS {System.out.println("{Minus}");} ) e7)*;
 

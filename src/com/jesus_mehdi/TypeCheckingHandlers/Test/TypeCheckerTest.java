@@ -12,6 +12,8 @@ import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.Exceptions.TypeMismatchException;
 import com.jesus_mehdi.Exceptions.TypesOfBooleanOperatorsMustBeBooleanException;
+import com.jesus_mehdi.Exceptions.TypesOfEqualityRelationOperatorsMustBeSameBaseTypesException;
+import com.jesus_mehdi.Exceptions.TypesOfRelationalOperatorsMustBeIntException;
 import com.jesus_mehdi.Exceptions.UndefinedIdentifierException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
@@ -147,6 +149,88 @@ public class TypeCheckerTest {
 		_typeChecker.orOperator();
 	}
 	
+	@Test
+	public void shouldCheckOperandTypeOfNotOperatorShouldBeBoolean() {
+		ModuleEnvironment notOperandType = new ModuleEnvironment();
+		notOperandType.setName("bool");
+		ApplicationMainSymbolTable.init();
+		
+		_typeChecker.pushType(notOperandType);
+		_typeChecker.notOperator();
+		
+		assertEquals(1, _typeChecker.getTypeCheckingStackSize());
+		assertEquals("bool", _typeChecker.getTypeAt(0).getName());
+	}
+	
+	@Test(expected = TypesOfBooleanOperatorsMustBeBooleanException.class)
+	public void shouldThrowExceptionWhenOperandTypeOfNotOperatorIsNotBoolean() {
+		ModuleEnvironment notOperandType = new ModuleEnvironment();
+		notOperandType.setName("int");
+		ApplicationMainSymbolTable.init();
+		
+		_typeChecker.pushType(notOperandType);
+		
+		_typeChecker.notOperator();
+	}
+	
+	@Test
+	public void shouldCheckTypesOfEqualityRelationsShouldBeSame() {
+		ModuleEnvironment leftIntOperandType = new ModuleEnvironment();
+		leftIntOperandType.setName("int");
+		ModuleEnvironment rightIntOperandType = new ModuleEnvironment();
+		rightIntOperandType.setName("int");
+		ApplicationMainSymbolTable.init();
+		
+		_typeChecker.pushType(leftIntOperandType);
+		_typeChecker.pushType(rightIntOperandType);
+		_typeChecker.equalityRelationOperators();
+		
+		assertEquals(1, _typeChecker.getTypeCheckingStackSize());
+		assertEquals("bool", _typeChecker.getTypeAt(0).getName());
+	}
+	
+	@Test(expected = TypesOfEqualityRelationOperatorsMustBeSameBaseTypesException.class)
+	public void shouldThrowExceptionWhenTypesOfEqualityRelationsAreNotSame() {
+		ModuleEnvironment leftIntOperandType = new ModuleEnvironment();
+		leftIntOperandType.setName("int");
+		ModuleEnvironment rightStringOperandType = new ModuleEnvironment();
+		rightStringOperandType.setName("string");
+		ApplicationMainSymbolTable.init();
+		
+		_typeChecker.pushType(leftIntOperandType);
+		_typeChecker.pushType(rightStringOperandType);
+		_typeChecker.equalityRelationOperators();
+	}
+	
+	@Test
+	public void shouldCheckOperandsTypesOfRelationalOperatorsShouldBeInt() {
+		ModuleEnvironment leftIntOperandType = new ModuleEnvironment();
+		leftIntOperandType.setName("int");
+		ModuleEnvironment rightIntOperandType = new ModuleEnvironment();
+		rightIntOperandType.setName("int");
+		ApplicationMainSymbolTable.init();
+			
+		_typeChecker.pushType(leftIntOperandType);
+		_typeChecker.pushType(rightIntOperandType);
+		_typeChecker.relationalOperator();
+			
+		assertEquals(1, _typeChecker.getTypeCheckingStackSize());
+		assertEquals("bool", _typeChecker.getTypeAt(0).getName());
+	}
+	
+	@Test(expected = TypesOfRelationalOperatorsMustBeIntException.class)
+	public void shouldThrowExceptionWhenTypesOfRelationalOperatorsAreNotInt() {
+		ModuleEnvironment leftIntOperandType = new ModuleEnvironment();
+		leftIntOperandType.setName("int");
+		ModuleEnvironment rightStringOperandType = new ModuleEnvironment();
+		rightStringOperandType.setName("string");
+		ApplicationMainSymbolTable.init();
+			
+		_typeChecker.pushType(leftIntOperandType);
+		_typeChecker.pushType(rightStringOperandType);
+		_typeChecker.relationalOperator();
+	}
+	
 	private void declareMemberRowAndAddItToCurrentScope(MemberHandler memberHandler, String variableName, String type) {
 		MemberSymbolTableRow memberRow = new MemberSymbolTableRow();
 		memberRow.Name = variableName;
@@ -173,6 +257,7 @@ public class TypeCheckerTest {
 	@After
 	public void tearDown() {
 		ApplicationMainSymbolTable.clearMainSymbolTable();
+		_typeChecker.clearTypeCheckingStack();
 	}
 	
 }
