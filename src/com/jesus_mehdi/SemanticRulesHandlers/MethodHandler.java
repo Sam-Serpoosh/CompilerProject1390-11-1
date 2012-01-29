@@ -16,21 +16,28 @@ public class MethodHandler {
 
 	private Tokenizer _tokenizer;
 	private MethodSymbolTableRow _methodRow;
-	private OffsetFactory _offsetFactory;
 	private Signature _arguments;
 	private String _argumentName;
 	private String _argumentType;
 	private MethodEnvironment _methodEnvironment;
+	private MemberSymbolTableRow _memberRow;
 	
 	public MethodHandler(Tokenizer tokenizer) {
 		_tokenizer = tokenizer;
-		_offsetFactory = new OffsetFactory();
 		_methodRow = new MethodSymbolTableRow();
 		_arguments = new Signature();
 	}
 	
 	public MethodHandler() {
 		this(new Tokenizer());
+	}
+	
+	public MethodEnvironment getMethodEnvironment() {
+		return _methodEnvironment;
+	}
+	
+	public void setMethodEnvironment(MethodEnvironment methodEnvironment) {
+		_methodEnvironment = methodEnvironment;
 	}
 	
 	public void setArguments(Signature arguments) {
@@ -43,6 +50,14 @@ public class MethodHandler {
 	
 	public void setMethodRow(MethodSymbolTableRow methodRow) {
 		_methodRow = methodRow;
+	}
+	
+	public void setMemberRow(MemberSymbolTableRow memberRow) {
+		_memberRow = memberRow;
+	}
+	
+	public MemberSymbolTableRow getMemberRow() {
+		 return _memberRow;
 	}
 	
 	public String getArgumentName() {
@@ -95,6 +110,29 @@ public class MethodHandler {
 
 	public void endMethodScope() {
 		Current.stepOutToPrevScope();
+	}
+
+	public void setMethodEnvironmentName(TokenStream input) {
+		String methodEnvironmentName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
+		_methodEnvironment.setName(methodEnvironmentName);
+	}
+
+	public void addArgumentNameToMethodEnvironment(TokenStream input) {
+		String argumentName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
+		if (_memberRow == null)
+			_memberRow = new MemberSymbolTableRow();
+		_memberRow.Name = argumentName;
+	}
+
+	public void setArgumentTypeInMethodEnvironment(TokenStream input) {
+		String typeName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
+		_memberRow.Type = typeName;
+		_methodEnvironment.addRow(_memberRow);
+	}
+
+	public void setReturnTypeInMethodEnvironment(TokenStream input) {
+		String returnTypeName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
+		_methodEnvironment.setReturnType(returnTypeName);
 	}
 	
 }

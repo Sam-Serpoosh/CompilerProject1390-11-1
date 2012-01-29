@@ -16,8 +16,8 @@ public class Current {
 	}
 	
 	public static void stepIntoScope(Environment environment) {
-		environment.setParentScope(_scope);
-		_scope = environment;
+		environment.setParentScope(getScope());
+		setCurrentScope(environment);
 	}
 	
 	public static Environment getScope() {

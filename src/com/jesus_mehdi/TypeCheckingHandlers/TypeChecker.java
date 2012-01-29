@@ -9,6 +9,7 @@ import com.jesus_mehdi.DataStructures.Environment;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.Exceptions.TypeMismatchException;
 import com.jesus_mehdi.Exceptions.TypeOfUnaryMinusOperatorMustBeIntException;
+import com.jesus_mehdi.Exceptions.TypesOfBinaryMathematicalOperatorsMustBeIntException;
 import com.jesus_mehdi.Exceptions.TypesOfBooleanOperatorsMustBeBooleanException;
 import com.jesus_mehdi.Exceptions.TypesOfEqualityRelationOperatorsMustBeSameBaseTypesException;
 import com.jesus_mehdi.Exceptions.TypesOfRelationalOperatorsMustBeIntException;
@@ -142,4 +143,16 @@ public class TypeChecker {
 		else
 			throw new TypeOfUnaryMinusOperatorMustBeIntException();
 	}
+
+	public void binaryMathematicalOperator() {
+		ModuleEnvironment rightOperandType = _typeCheckingStack.pop();
+		ModuleEnvironment leftOperandType = _typeCheckingStack.pop();
+		ModuleEnvironment intType = ApplicationMainSymbolTable.getModuleByName("int");
+		
+		if (haveSameType(rightOperandType, leftOperandType, intType))
+			_typeCheckingStack.push(intType);
+		else
+			throw new TypesOfBinaryMathematicalOperatorsMustBeIntException();
+	}
+	
 }

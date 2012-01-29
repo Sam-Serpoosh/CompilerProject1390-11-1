@@ -16,8 +16,12 @@ program :	 (module SEMICOLON)+;
 
 module 	:	 MODULE ID {ModuleHandler moduleHandler = new ModuleHandler(); moduleHandler.setCurrentScopeByModuleName(input);}(CHILD_OF ID )? L_BRACE (member)* R_BRACE ;
 
-member	:	 (VIRTUAL)? ID L_PAREN ( ID COLON type (COMMA ID COLON type)*)? R_PAREN COLON type L_BRACE 
-		 	{MethodHandler methodHandler = new MethodHandler(); methodHandler.beginMethodScope();} st* R_BRACE {methodHandler.endMethodScope();}
+member	:	 (VIRTUAL)? {MethodHandler methodHandler = new MethodHandler(); methodHandler.beginMethodScope();} 
+			ID{methodHandler.setMethodEnvironmentName(input);} 
+			L_PAREN ( ID{methodHandler.addArgumentNameToMethodEnvironment(input);} COLON type{methodHandler.setArgumentTypeInMethodEnvironment(input);} 
+				(COMMA ID{methodHandler.addArgumentNameToMethodEnvironment(input);} COLON type{methodHandler.setArgumentTypeInMethodEnvironment(input);})*)? 
+				R_PAREN COLON type{methodHandler.setReturnTypeInMethodEnvironment(input);} L_BRACE 
+		 	st* R_BRACE {methodHandler.endMethodScope();}
 	|        ID (L_BRACKET CONST_INT R_BRACKET)? COLON type SEMICOLON
 	;
 
@@ -45,9 +49,9 @@ e4	:	(e5) (( RELOP_EQ | RELOP_NE ) e5 {TypeChecker typeChecker = TypeCheckerFact
 
 e5	:	(e6) (( RELOP_GT | RELOP_LT | RELOP_GE | RELOP_LE ) e6 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.relationalOperator();})*;
 
-e6	:	(e7) ((PLUS {System.out.println("{Sum}");} | MINUS {System.out.println("{Minus}");} ) e7)*;
+e6	:	(e7) ((PLUS {System.out.println("{Sum}");} | MINUS {System.out.println("{Minus}");} ) e7{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.binaryMathematicalOperator();})*;
 
-e7	:	(e8) (( SLASH {System.out.println("{Div}");} | STAR {System.out.println("{Mult}");} ) e8)*;
+e7	:	(e8) (( SLASH {System.out.println("{Div}");} | STAR {System.out.println("{Mult}");} ) e8{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.binaryMathematicalOperator();})*;
 
 e8	:	 MINUS e9  {{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.unaryMinusOperator();}}| e9;
 

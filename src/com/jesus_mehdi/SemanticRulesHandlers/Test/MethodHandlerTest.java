@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Test;
 
 import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
+import com.jesus_mehdi.DataStructures.MethodEnvironment;
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.Signature;
@@ -23,6 +24,7 @@ import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
 import com.jesus_mehdi.SemanticRulesHandlers.MemberHandler;
 import com.jesus_mehdi.SemanticRulesHandlers.MethodHandler;
+import com.jesus_mehdi.SemanticRulesHandlers.ModuleHandler;
 
 public class MethodHandlerTest {
 
@@ -193,6 +195,62 @@ public class MethodHandlerTest {
 		newMethodRow.Name = "testMethod";
 		methodHandler.setMethodRow(newMethodRow);
 		methodHandler.endMethodDeclaration();
+	}
+	
+	@Test
+	public void shouldSetMethodNameInMethodSymbolTable() {
+		FileUtility.writeSampleProgramContentToFile("testMethod(firstArg : int, secondArg : int) : string");
+		MethodHandler methodHandler = new MethodHandler(new StubTokenizer(0));
+		methodHandler.beginMethodScope();
+		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
+		methodHandler.setMethodEnvironmentName(commonTokenStream);
+		
+		MethodEnvironment methodEnvironment = methodHandler.getMethodEnvironment();
+		
+		assertEquals("testMethod", methodEnvironment.getName());
+	}
+	
+	@Test
+	public void shouldAddArgumentNameToMethodSymbolTable() {
+		FileUtility.writeSampleProgramContentToFile("testMethod(firstArg : int, secondArg : int) : string");
+		MethodHandler methodHandler = new MethodHandler(new StubTokenizer(2));
+		methodHandler.beginMethodScope();
+		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
+		methodHandler.addArgumentNameToMethodEnvironment(commonTokenStream);
+		
+		MethodEnvironment methodEnvironment = methodHandler.getMethodEnvironment();
+		MemberSymbolTableRow memberRow = methodHandler.getMemberRow();
+		memberRow.Type = "int";
+		methodEnvironment.addRow(memberRow);
+		
+		assertEquals("firstArg", methodEnvironment.getRow("firstArg").Name);
+	}
+	
+	@Test
+	public void shouldSetArgumentTypeInMethodSymbolTable() {
+		FileUtility.writeSampleProgramContentToFile("testMethod(firstArg : int, secondArg : int) : string");
+		MethodHandler methodHandler = new MethodHandler(new StubTokenizer(4));
+		methodHandler.beginMethodScope();
+		MemberSymbolTableRow memberRow = new MemberSymbolTableRow();
+		memberRow.Name = "firstArg";
+		methodHandler.setMemberRow(memberRow);
+		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
+		methodHandler.setArgumentTypeInMethodEnvironment(commonTokenStream);
+		
+		MethodEnvironment methodEnvironment = methodHandler.getMethodEnvironment();
+		assertEquals("int", methodEnvironment.getRow("firstArg").Type);
+	}
+	
+	@Test
+	public void shouldSetReturnTypeInMethodSymbolTable() {
+		FileUtility.writeSampleProgramContentToFile("testMethod(firstArg : int, secondArg : int) : string");
+		MethodHandler methodHandler = new MethodHandler(new StubTokenizer(11));
+		methodHandler.beginMethodScope();
+		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
+		methodHandler.setReturnTypeInMethodEnvironment(commonTokenStream);
+		
+		MethodEnvironment methodEnvironment = methodHandler.getMethodEnvironment();
+		assertEquals("string", methodEnvironment.getReturnTypeName());
 	}
 	
 	private void declareMethod(int tokenizerIndex) {

@@ -28,14 +28,6 @@ public class ModuleEnvironment extends Environment {
 	public boolean alreadyContainsMainMethod() {
 		return _containsMainMethod;
 	}
-	
-	public void setName(String name) {
-		_name = name;
-	}
-	
-	public String getName() {
-		return _name;
-	}
 
 	public void setParentName(String parentName) {
 		_parentName = parentName;

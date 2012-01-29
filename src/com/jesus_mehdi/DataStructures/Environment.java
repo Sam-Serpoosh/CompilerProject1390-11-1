@@ -7,6 +7,7 @@ public abstract class Environment {
 	
 	protected Environment _parentScope;
 	protected SymbolTable _symbolTable;
+	protected String _name;
 	
 	private int _currentOffset;
 	
@@ -21,6 +22,14 @@ public abstract class Environment {
 	
 	public void setSymbolTable(SymbolTable symbolTable) {
 		_symbolTable = symbolTable;
+	}
+	
+	public void setName(String name) {
+		_name = name;
+	}
+	
+	public String getName() {
+		return _name;
 	}
 
 	public Environment getParentScope() {

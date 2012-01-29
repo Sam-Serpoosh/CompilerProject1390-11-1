@@ -1,32 +1,24 @@
-module Kooft childof Dard
+module Kooft
 {
 	a : int;
 	k : int;
 	b : bool;
 	
 	test(c : int, d : string) : bool
-	{}
+	{
+		k := a;
+		a := -k;
+		b := not b;
+	}
 	
 	test(c: string, d:string) : bool
-	{}
+	{
+		b := true;
+		b := a = k;
+		b := a >= k;
+	}
 	
 	virtual otherMethod(a: int) : string
 	{}
 	
 };
-
-module Maraz childof Kooft
-{
-	name : string;
-	code : int;
-	k : int;
-	
-	test(c: int, d: int) : bool
-	{}
-	
-	otherMethod(a: int, b: string) : string
-	{}
-};
-
-module Dard childof Maraz
-{};
