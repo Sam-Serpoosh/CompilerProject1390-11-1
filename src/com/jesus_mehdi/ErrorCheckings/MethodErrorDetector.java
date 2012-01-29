@@ -53,6 +53,15 @@ public class MethodErrorDetector {
 		}
 	}
 	
+	public void checkOverridingProblemsInAllModules() {
+		Collection<ModuleEnvironment> allModules = ApplicationMainSymbolTable.getAllModules().values();
+		for (ModuleEnvironment module : allModules) {
+			ArrayList<MethodSymbolTableRow> allMethods = module.getSymbolTable().getAllMethodRows();
+			for (MethodSymbolTableRow methodRow : allMethods)
+				checkExistanceOfVirtualMethodWithSameName(module, methodRow);
+		}
+	}
+	
 	public void checkExistanceOfVirtualMethodWithSameName(ModuleEnvironment childModule, 
 			MethodSymbolTableRow childMethodRow) {
 		MethodSymbolTableRow virtualMethod = getEquivalentVirtualMethodFromParent(childModule, childMethodRow.Name);

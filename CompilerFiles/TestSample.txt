@@ -1,9 +1,16 @@
-module Kooft
+module Kooft childof Dard
 {
 	a : int;
-	b : string;
+	k : int;
+	b : bool;
 	
-	Fuck(c : int, d : string) : bool
+	test(c : int, d : string) : bool
+	{}
+	
+	test(c: string, d:string) : bool
+	{}
+	
+	virtual otherMethod(a: int) : string
 	{}
 	
 };
@@ -12,4 +19,14 @@ module Maraz childof Kooft
 {
 	name : string;
 	code : int;
+	k : int;
+	
+	test(c: int, d: int) : bool
+	{}
+	
+	otherMethod(a: int, b: string) : string
+	{}
 };
+
+module Dard childof Maraz
+{};

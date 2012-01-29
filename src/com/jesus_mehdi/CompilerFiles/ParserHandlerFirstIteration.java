@@ -14,7 +14,7 @@ import org.antlr.runtime.TokenStream;
 import org.antlr.runtime.tree.CommonTreeAdaptor;
 import org.antlr.runtime.tree.TreeAdaptor;
 
-import com.jesus_mehdi.ErrorCheckings.PostModulesDeclarationErrorDetector;
+import com.jesus_mehdi.ErrorCheckings.PostFirstIterationHandler;
 import com.jesus_mehdi.SemanticRulesHandlers.MemberHandler;
 import com.jesus_mehdi.SemanticRulesHandlers.MethodHandler;
 import com.jesus_mehdi.SemanticRulesHandlers.ModuleHandler;
@@ -156,7 +156,7 @@ public TreeAdaptor getTreeAdaptor() {
 
             adaptor.addChild(root_0, program1.getTree());
 
-            PostModulesDeclarationErrorDetector errorDetector = new PostModulesDeclarationErrorDetector(); errorDetector.checkErrors();
+            PostFirstIterationHandler errorDetector = new PostFirstIterationHandler(); errorDetector.checkErrors();
 
             EOF2=(Token)match(input,EOF,FOLLOW_EOF_in_file50); 
             EOF2_tree = 

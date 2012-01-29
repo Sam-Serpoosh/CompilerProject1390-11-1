@@ -6,6 +6,7 @@ import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.Exceptions.BaseModuleNotExistedException;
 import com.jesus_mehdi.Exceptions.MultipleMainMethodsException;
 import com.jesus_mehdi.Exceptions.NoMainMethodException;
+import com.jesus_mehdi.Exceptions.UndefinedModuleException;
 
 public class ApplicationMainSymbolTable {
 
@@ -42,6 +43,11 @@ public class ApplicationMainSymbolTable {
 	}
 	
 	public static ModuleEnvironment getModuleByName(String moduleName) {
+		if (moduleName == "" || moduleName == null)
+			return null;
+		if (_allModules.containsKey(moduleName) == false)
+			throw new UndefinedModuleException();
+		
 		return _allModules.get(moduleName); 
 	}
 	

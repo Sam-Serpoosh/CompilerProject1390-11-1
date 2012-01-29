@@ -10,7 +10,7 @@ options {
 
 @header {package com.jesus_mehdi.CompilerFiles;}
 
-file 	:	 program {PostModulesDeclarationErrorDetector errorDetector = new PostModulesDeclarationErrorDetector(); errorDetector.checkErrors();} EOF;
+file 	:	 program {PostFirstIterationHandler postFirstIterationHandler = new PostFirstIterationHandler(); postFirstIterationHandler.checkErrors();} EOF;
 
 program :	 (module SEMICOLON)+;
 

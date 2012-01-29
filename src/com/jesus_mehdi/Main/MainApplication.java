@@ -9,6 +9,7 @@ import org.antlr.runtime.RecognitionException;
 
 import com.jesus_mehdi.CompilerFiles.LexerHandlerFirstIteration;
 import com.jesus_mehdi.CompilerFiles.ParserHandlerFirstIteration;
+import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 
@@ -18,6 +19,7 @@ public class MainApplication {
 		"C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\TestSample.txt";
 	
 	public static void main(String[] args) throws RecognitionException {
+		ApplicationMainSymbolTable.init();
 		parse();
 		HashMap<String, ModuleEnvironment> allModules = ApplicationMainSymbolTable.getAllModules();
 		System.out.println("finished!");
@@ -34,7 +36,7 @@ public class MainApplication {
 	
 		CommonTokenStream commonTokenStream = new CommonTokenStream(scanner);
 		ParserHandlerFirstIteration parser = new ParserHandlerFirstIteration(commonTokenStream);
-		parser.program();
+		parser.file();
 		//System.out.println(parser.file());
 	}
 
