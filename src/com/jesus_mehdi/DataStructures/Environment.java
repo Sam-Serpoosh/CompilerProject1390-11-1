@@ -63,11 +63,16 @@ public abstract class Environment {
 	}
 	
 	public ModuleEnvironment getVariableType(String variableName) {
+		String variableTypeName = getVariableMemberRow(variableName).Type;
+		return ApplicationMainSymbolTable.getModuleByName(variableTypeName);
+	}
+	
+	public MemberSymbolTableRow getVariableMemberRow(String variableName) {
 		if (rowAlreadyExisted(variableName)) {
 			SymbolTableRow row = _symbolTable.getRow(variableName);
 			if (row instanceof MemberSymbolTableRow) {
 				MemberSymbolTableRow memberRow = (MemberSymbolTableRow)row;
-				return ApplicationMainSymbolTable.getModuleByName(memberRow.Type);
+				return memberRow;
 			}
 		}
 		
@@ -75,7 +80,7 @@ public abstract class Environment {
 			throw new UndefinedIdentifierException();
 		
 		Environment parentModule = getParentScope();
-		return parentModule.getVariableType(variableName);
+		return parentModule.getVariableMemberRow(variableName);
 	}
 	
 }

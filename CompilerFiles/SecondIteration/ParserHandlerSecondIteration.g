@@ -30,8 +30,8 @@ member	:	 (VIRTUAL)? {MethodHandler methodHandler = new MethodHandler(); methodH
 st	:	L_BRACE {System.out.println("{Block_Start}");} (st)* R_BRACE  {System.out.println("{Block_End}");}
 	| 	ID {MemberHandler memberHandler = new MemberHandler(); memberHandler.setMemberName(input);}( L_BRACKET CONST_INT {memberHandler.setArraySize(input);} R_BRACKET )? COLON type {memberHandler.setType(input);} SEMICOLON {memberHandler.endMemberDeclaration();}  ///    st_ to COLON
 	|	{TypeCheckerFactory.createTypeChecker();}e1 ( ASSIGN e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.assignmentOperator();} )? SEMICOLON 			// newly added 
-	| 	IF {System.out.println("{if_Clause}");} e1 THEN st (ELSE st)? END_IF
-	| 	WHILE {System.out.println("{while_Loop}");} e1 LOOP	st ENDLOOP
+	| 	IF e1{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.conditionExpressionShouldBeBoolean();} THEN st (ELSE st)? END_IF
+	| 	WHILE e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.conditionExpressionShouldBeBoolean();} LOOP	st ENDLOOP
 	| 	BREAK SEMICOLON 
 	| 	CONTINUE SEMICOLON 
 	| 	READ ID SEMICOLON 
@@ -66,7 +66,7 @@ e10	:
 	;
 
 e11	:	L_PAREN {System.out.println("{Function_Call}");} ( e1 (COMMA e1)* )? R_PAREN 
-	| 	L_BRACKET {System.out.println("{Array_Address_Calculation}");} e1 R_BRACKET
+	| 	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setArrayInputId(input);} L_BRACKET e1 {typeChecker.checkArrayIndexType();} R_BRACKET
 	|	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInputId(input);}
 	;
 

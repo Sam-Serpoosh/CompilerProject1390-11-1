@@ -6,7 +6,11 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.TokenStream;
 
 import com.jesus_mehdi.DataStructures.Environment;
+import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
+import com.jesus_mehdi.Exceptions.AccessingNonArrayVariableWithIndexException;
+import com.jesus_mehdi.Exceptions.ArrayIndexTypeMustBeIntException;
+import com.jesus_mehdi.Exceptions.ConditionExpressionMustBeBooleanException;
 import com.jesus_mehdi.Exceptions.TypeMismatchException;
 import com.jesus_mehdi.Exceptions.TypeOfUnaryMinusOperatorMustBeIntException;
 import com.jesus_mehdi.Exceptions.TypesOfBinaryMathematicalOperatorsMustBeIntException;
@@ -64,9 +68,23 @@ public class TypeChecker {
 		fetchVariableTypeAndPutItIntoTypeCheckingStack(variableName);
 	}
 	
+	public void setArrayInputId(TokenStream input) {
+		String variableName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
+		fetchVariableAndCheckForBeingArray(variableName);
+	}
+
+	public void fetchVariableAndCheckForBeingArray(String variableName) {
+		Environment currentEnvironment = Current.getScope();
+		MemberSymbolTableRow memberRow = currentEnvironment.getVariableMemberRow(variableName);
+		if (memberRow.isArray())
+			_typeCheckingStack.push(currentEnvironment.getVariableType(variableName));
+		else
+			throw new AccessingNonArrayVariableWithIndexException();
+	}
+	
 	public void fetchVariableTypeAndPutItIntoTypeCheckingStack(String variableName) {
-		Environment currentModule = Current.getScope();
-		_typeCheckingStack.push(currentModule.getVariableType(variableName));
+		Environment currentEnvironment = Current.getScope();
+		_typeCheckingStack.push(currentEnvironment.getVariableType(variableName));
 	}
 
 	public void orOperator() {
@@ -153,6 +171,24 @@ public class TypeChecker {
 			_typeCheckingStack.push(intType);
 		else
 			throw new TypesOfBinaryMathematicalOperatorsMustBeIntException();
+	}
+
+	public void conditionExpressionShouldBeBoolean() {
+		ModuleEnvironment conditionExpressionType = _typeCheckingStack.pop();
+		ModuleEnvironment boolType = ApplicationMainSymbolTable.getModuleByName("bool");
+		
+		if (conditionExpressionType.isSubtypeOf(boolType) == false)
+			throw new ConditionExpressionMustBeBooleanException();
+	}
+
+	public void checkArrayIndexType() {
+		ModuleEnvironment arrayIndexType = _typeCheckingStack.pop();
+		ModuleEnvironment intType = ApplicationMainSymbolTable.getModuleByName("int");
+		
+		if (arrayIndexType.isSubtypeOf(intType) == false) {
+			_typeCheckingStack.pop();
+			throw new ArrayIndexTypeMustBeIntException();
+		}
 	}
 	
 }
