@@ -8,6 +8,7 @@ import org.antlr.runtime.TokenStream;
 import com.jesus_mehdi.DataStructures.Environment;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.Exceptions.TypeMismatchException;
+import com.jesus_mehdi.Exceptions.TypeOfUnaryMinusOperatorMustBeIntException;
 import com.jesus_mehdi.Exceptions.TypesOfBooleanOperatorsMustBeBooleanException;
 import com.jesus_mehdi.Exceptions.TypesOfEqualityRelationOperatorsMustBeSameBaseTypesException;
 import com.jesus_mehdi.Exceptions.TypesOfRelationalOperatorsMustBeIntException;
@@ -130,5 +131,15 @@ public class TypeChecker {
 			_typeCheckingStack.push(boolType);
 		else
 			throw new TypesOfRelationalOperatorsMustBeIntException();
+	}
+
+	public void unaryMinusOperator() {
+		ModuleEnvironment unaryMinusOperandType = _typeCheckingStack.pop();
+		ModuleEnvironment intType = ApplicationMainSymbolTable.getModuleByName("int");
+		
+		if (unaryMinusOperandType.isSubtypeOf(intType))
+			_typeCheckingStack.push(intType);
+		else
+			throw new TypeOfUnaryMinusOperatorMustBeIntException();
 	}
 }

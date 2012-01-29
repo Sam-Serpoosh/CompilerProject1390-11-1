@@ -11,6 +11,7 @@ import com.jesus_mehdi.DataStructures.MethodEnvironment;
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.Exceptions.TypeMismatchException;
+import com.jesus_mehdi.Exceptions.TypeOfUnaryMinusOperatorMustBeIntException;
 import com.jesus_mehdi.Exceptions.TypesOfBooleanOperatorsMustBeBooleanException;
 import com.jesus_mehdi.Exceptions.TypesOfEqualityRelationOperatorsMustBeSameBaseTypesException;
 import com.jesus_mehdi.Exceptions.TypesOfRelationalOperatorsMustBeIntException;
@@ -229,6 +230,30 @@ public class TypeCheckerTest {
 		_typeChecker.pushType(leftIntOperandType);
 		_typeChecker.pushType(rightStringOperandType);
 		_typeChecker.relationalOperator();
+	}
+	
+	@Test
+	public void shouldCheckOperandTypeOfUnaryMinusOperatorShouldBeInt() {
+		ModuleEnvironment unaryMinusOperandType = new ModuleEnvironment();
+		unaryMinusOperandType.setName("int");
+		ApplicationMainSymbolTable.init();
+		
+		_typeChecker.pushType(unaryMinusOperandType);
+		_typeChecker.unaryMinusOperator();
+		
+		assertEquals(1, _typeChecker.getTypeCheckingStackSize());
+		assertEquals("int", _typeChecker.getTypeAt(0).getName());
+	}
+	
+	@Test(expected = TypeOfUnaryMinusOperatorMustBeIntException.class)
+	public void shouldThrowExceptionWhenOperandTypeOfUnaryMinusOperatorIsNotInt() {
+		ModuleEnvironment unaryMinusOperandType = new ModuleEnvironment();
+		unaryMinusOperandType.setName("bool");
+		ApplicationMainSymbolTable.init();
+		
+		_typeChecker.pushType(unaryMinusOperandType);
+		
+		_typeChecker.unaryMinusOperator();
 	}
 	
 	private void declareMemberRowAndAddItToCurrentScope(MemberHandler memberHandler, String variableName, String type) {

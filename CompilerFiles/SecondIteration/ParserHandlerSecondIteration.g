@@ -39,7 +39,7 @@ e1	:	(e2) (OR e2 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker();
 
 e2	:	(e3)(AND e3 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.orOperator();})*;
 
-e3	:	NOT e4 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.notOperator();}		| e4	;
+e3	:	NOT e4 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.notOperator();}| e4	;
 
 e4	:	(e5) (( RELOP_EQ | RELOP_NE ) e5 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.equalityRelationOperators();})* ;
 
@@ -49,7 +49,7 @@ e6	:	(e7) ((PLUS {System.out.println("{Sum}");} | MINUS {System.out.println("{Mi
 
 e7	:	(e8) (( SLASH {System.out.println("{Div}");} | STAR {System.out.println("{Mult}");} ) e8)*;
 
-e8	:	 MINUS e9  {System.out.println("{unaryMinus}");}		| e9;
+e8	:	 MINUS e9  {{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.unaryMinusOperator();}}| e9;
 
 e9	:	e10 (DOT {System.out.println("{Access_Member}");} e10)* ;
 
