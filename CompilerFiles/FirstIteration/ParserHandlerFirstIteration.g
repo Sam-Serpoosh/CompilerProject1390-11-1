@@ -10,7 +10,7 @@ options {
 
 @header {package com.jesus_mehdi.CompilerFiles;}
 
-file 	:	 program {PostFirstIterationHandler postFirstIterationHandler = new PostFirstIterationHandler(); postFirstIterationHandler.checkErrors();} EOF;
+file 	:	 program {PostFirstIterationHandler postFirstIterationHandler = new PostFirstIterationHandler(); postFirstIterationHandler.checkErrors(false);} EOF;
 
 program :	 (module SEMICOLON)+;
 

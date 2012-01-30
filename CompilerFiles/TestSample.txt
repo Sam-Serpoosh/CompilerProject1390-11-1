@@ -11,6 +11,9 @@ module Dard
 	{
 		x[5] := i;
 	}
+	
+	main() : void
+	{}
 };
 
 module Kooft

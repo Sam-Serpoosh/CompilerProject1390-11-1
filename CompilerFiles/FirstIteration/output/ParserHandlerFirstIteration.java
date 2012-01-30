@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\FirstIteration\\ParserHandlerFirstIteration.g 2012-01-28 13:01:30
+// $ANTLR 3.4 C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\FirstIteration\\ParserHandlerFirstIteration.g 2012-01-30 17:52:17
 package com.jesus_mehdi.CompilerFiles;
 
 import org.antlr.runtime.*;
@@ -145,7 +145,7 @@ public TreeAdaptor getTreeAdaptor() {
 
             adaptor.addChild(root_0, program1.getTree());
 
-            PostModulesDeclarationErrorDetector errorDetector = new PostModulesDeclarationErrorDetector(); errorDetector.checkErrors();
+            PostFirstIterationHandler postFirstIterationHandler = new PostFirstIterationHandler(); postFirstIterationHandler.checkErrors(false);
 
             EOF2=(Token)match(input,EOF,FOLLOW_EOF_in_file50); 
             EOF2_tree = 

@@ -27,7 +27,7 @@ module name : Dard
 		address : 0
 
 
-	num of methods : 1
+	num of methods : 2
 		name : test
 		is_virtual : false
 		return type : Kooft
@@ -36,6 +36,12 @@ module name : Dard
 			type : Kooft
 			address : 0
 
+		num of local vars : 0
+
+		name : main
+		is_virtual : false
+		return type : void
+		num of arguments : 0
 		num of local vars : 0
 
 

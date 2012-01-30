@@ -27,7 +27,8 @@ public class PostFirstIterationHandler {
 		_moduleErrorDetector = new ModuleErrorDetector();
 	}
 	
-	public void checkErrors() {
+	public void checkErrors(boolean isTest) {
+		ApplicationMainSymbolTable.setApplicationEntryPoint();
 		_moduleErrorDetector.checkForInheritanceFromBaseTypes();
 		_moduleErrorDetector.checkForLoopInInheritance();
 		_methodErrorDetector.checkOverloadingProblemsInAllModules();
