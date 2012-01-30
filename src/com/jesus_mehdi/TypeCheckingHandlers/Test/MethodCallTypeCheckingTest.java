@@ -13,6 +13,7 @@ import com.jesus_mehdi.DataStructures.Signature;
 import com.jesus_mehdi.DataStructures.SymbolTableRow;
 import com.jesus_mehdi.ErrorCheckings.PostFirstIterationHandler;
 import com.jesus_mehdi.Exceptions.MethodWithSpecifiedSignatureNotExistedException;
+import com.jesus_mehdi.Exceptions.UndefinedIdentifierException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
 
@@ -139,6 +140,17 @@ public class MethodCallTypeCheckingTest extends TypeCheckerTest {
 		assertEquals("SecondModule", _typeChecker.getCurrentContainerEnvironment().getName());
 	}
 	
+	@Test(expected = UndefinedIdentifierException.class)
+	public void shouldThrowExceptionWhenAccessingNotExistedMember() {
+		setUpModulesForUsingInstanceVariables(null);
+
+		_typeChecker.setInstanceScope();
+		assertEquals("FirstModule", _typeChecker.getInstanceEnvironment().getName());
+		_typeChecker.changeToInstanceScope();
+		
+		_typeChecker.fetchVariableTypeAndPutItIntoTypeCheckingStack("variable");
+	}
+	
 	private void setUpModulesForUsingInstanceVariables(SymbolTableRow row) {
 		ModuleEnvironment firstModule = new ModuleEnvironment();
 		firstModule.setName("FirstModule");
@@ -150,7 +162,8 @@ public class MethodCallTypeCheckingTest extends TypeCheckerTest {
 		new PostFirstIterationHandler();
 		Current.setCurrentScope(secondModule);
 		_typeChecker.pushType(firstModule);
-		firstModule.addRow(row);
+		if (row != null)
+			firstModule.addRow(row);
 		MemberSymbolTableRow instanceMember = new MemberSymbolTableRow();
 		instanceMember.Name = "instanceMember";
 		instanceMember.Type = "FirstModule";

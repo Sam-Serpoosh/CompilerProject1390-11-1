@@ -20,7 +20,7 @@ member	:	 (VIRTUAL)? {MethodHandler methodHandler = new MethodHandler(); methodH
 			ID{methodHandler.setMethodEnvironmentName(input);} 
 			L_PAREN ( ID{methodHandler.addArgumentNameToMethodEnvironment(input);} COLON type{methodHandler.setArgumentTypeInMethodEnvironment(input);} 
 				(COMMA ID{methodHandler.addArgumentNameToMethodEnvironment(input);} COLON type{methodHandler.setArgumentTypeInMethodEnvironment(input);})*)? 
-				R_PAREN COLON type{methodHandler.setReturnTypeInMethodEnvironment(input);} L_BRACE 
+				R_PAREN COLON type{methodHandler.setReturnTypeInMethodEnvironment(input); methodHandler.setEnvironmentForAppropriateSignature();} L_BRACE 
 		 	st* R_BRACE {methodHandler.endMethodScope();}
 	|        ID (L_BRACKET CONST_INT R_BRACKET)? COLON type SEMICOLON
 	;

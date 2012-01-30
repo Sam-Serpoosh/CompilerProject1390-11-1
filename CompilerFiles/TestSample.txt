@@ -1,13 +1,29 @@
+module Dard
+{
+	i : int;
+	b : bool;
+	s : string;
+	k : Kooft;
+	ka[10] : Kooft;
+	
+	test(a : Kooft) : Kooft
+	{
+		
+	}
+};
+
 module Kooft
 {
-	m : Maraz;
 	k : int;
 	s : string;
+	d : Dard;
+	b : bool;
+	ka2[10] : Kooft;
 	zahremar[10] : string;
 	
-	test(c : int, d : string) : bool
+	test(c : int, dArg : Dard) : bool
 	{
-		zahremar[k] := s;
+		b := d.ka[5].d.test(ka2[3]).b;
 	}
 	
 	test(c: string, d:string) : bool

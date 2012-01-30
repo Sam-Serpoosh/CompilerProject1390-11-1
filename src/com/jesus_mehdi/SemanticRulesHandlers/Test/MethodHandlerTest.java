@@ -20,6 +20,7 @@ import com.jesus_mehdi.DataStructures.SymbolTableRow;
 import com.jesus_mehdi.Exceptions.MemberAndMethodExistWithSameNameException;
 import com.jesus_mehdi.Exceptions.MethodsDeclaredWithSameNameWhichAtLeastOneOfThemIsVirtualException;
 import com.jesus_mehdi.Exceptions.ModuleContainsTwoMainMethodsException;
+import com.jesus_mehdi.Exceptions.UndefinedMethodException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
 import com.jesus_mehdi.SemanticRulesHandlers.MemberHandler;
@@ -251,6 +252,36 @@ public class MethodHandlerTest {
 		
 		MethodEnvironment methodEnvironment = methodHandler.getMethodEnvironment();
 		assertEquals("string", methodEnvironment.getReturnTypeName());
+	}
+	
+	@Test
+	public void shouldAddMethodEnvironmentToParentModuleEnvironment() {
+		ModuleEnvironment moduleEnvironment = new ModuleEnvironment();
+		moduleEnvironment.setName("CurrentModule");
+		ApplicationMainSymbolTable.addModule(moduleEnvironment);
+		Current.setCurrentScope(moduleEnvironment);
+		MethodHandler methodHandler = new MethodHandler();
+		methodHandler.beginMethodScope();
+		MethodEnvironment methodEnvironment = methodHandler.getMethodEnvironment();
+		methodEnvironment.setName("MethodEnvironment");
+		methodHandler.endMethodScope();
+		
+		assertEquals(1, moduleEnvironment.getAllMethodEnvironments().size());
+		MethodEnvironment methodEnvironmetn = moduleEnvironment.getMethodEnvironmentByName("MethodEnvironment").
+			get(0).getValue();
+		assertEquals("MethodEnvironment", methodEnvironment.getName());
+		
+		moduleEnvironment.clearAllMethodEnvironments();
+	}
+	
+	@Test(expected = UndefinedMethodException.class)
+	public void shouldThrowExceptionWhenMethodNotExistAddMethodEnvironmentToParentModuleEnvironment() {
+		ModuleEnvironment moduleEnvironment = new ModuleEnvironment();
+		moduleEnvironment.setName("CurrentModule");
+		ApplicationMainSymbolTable.addModule(moduleEnvironment);
+		Current.setCurrentScope(moduleEnvironment);
+		
+		moduleEnvironment.getMethodEnvironmentByName("MethodEnvironment");
 	}
 	
 	private void declareMethod(int tokenizerIndex) {

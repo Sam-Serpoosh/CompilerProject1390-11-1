@@ -21,6 +21,7 @@ public class MethodHandler {
 	private String _argumentType;
 	private MethodEnvironment _methodEnvironment;
 	private MemberSymbolTableRow _memberRow;
+	private ModuleEnvironment _parentModuleEnvironment;
 	
 	public MethodHandler(Tokenizer tokenizer) {
 		_tokenizer = tokenizer;
@@ -105,10 +106,12 @@ public class MethodHandler {
 
 	public void beginMethodScope() {
 		_methodEnvironment = new MethodEnvironment();
+		_parentModuleEnvironment = (ModuleEnvironment)Current.getScope();
 		Current.stepIntoScope(_methodEnvironment);
 	}
 
 	public void endMethodScope() {
+		_parentModuleEnvironment.addMethodEnvironment(_methodEnvironment);
 		Current.stepOutToPrevScope();
 	}
 

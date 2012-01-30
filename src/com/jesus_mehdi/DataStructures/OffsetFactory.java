@@ -2,8 +2,6 @@ package com.jesus_mehdi.DataStructures;
 
 import java.util.HashMap;
 
-import com.jesus_mehdi.Exceptions.UndefinedTypeException;
-
 public class OffsetFactory {
 
 	private static HashMap<String, Integer> _offsets;
@@ -34,9 +32,7 @@ public class OffsetFactory {
 	}
 	
 	public int getSizeOf(String type) {
-		if (_offsets.containsKey(type) == false)
-			throw new UndefinedTypeException();
-		return _offsets.get(type);
+		return 1;
 	}
 	
 	public int getSize(SymbolTableRow row) {

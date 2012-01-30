@@ -2,14 +2,19 @@ package com.jesus_mehdi.DataStructures;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.AbstractMap.SimpleEntry;
 
 import com.jesus_mehdi.Exceptions.ModuleContainsTwoMainMethodsException;
+import com.jesus_mehdi.Exceptions.UndefinedMethodException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 
 public class ModuleEnvironment extends Environment {
 
 	private String _name;
 	private String _parentName;
+	private static ArrayList<SimpleEntry<String, MethodEnvironment>> _allMethods = new 
+		ArrayList<SimpleEntry<String,MethodEnvironment>>();
 	
 	private boolean _containsMainMethod;
 	
@@ -65,6 +70,47 @@ public class ModuleEnvironment extends Environment {
 				children.add(module);
 		
 		return children;
+	}
+
+	public void addMethodEnvironment(MethodEnvironment methodEnvironment) {
+		SimpleEntry<String, MethodEnvironment> methodEnvironmentEntry = 
+			new SimpleEntry<String, MethodEnvironment>(methodEnvironment.getName(), methodEnvironment);
+		
+		_allMethods.add(methodEnvironmentEntry);
+	}
+
+	public ArrayList<SimpleEntry<String, MethodEnvironment>> getMethodEnvironmentByName(String methodName) {
+		if (containsMethodEnvironment(methodName) == false)
+			throw new UndefinedMethodException();
+		
+		return getMethodEnvironmentsFor(methodName);
+	}
+
+	public ArrayList<SimpleEntry<String, MethodEnvironment>> getAllMethodEnvironments() {
+		return _allMethods;
+	}
+
+	public void clearAllMethodEnvironments() {
+		_allMethods.clear();
+	}
+	
+	private boolean containsMethodEnvironment(String methodName) {
+		for (SimpleEntry<String, MethodEnvironment> methodEnvironment : _allMethods)
+			if (methodEnvironment.getKey().equals(methodName))
+				return true;
+		
+		return false;
+	}
+	
+	private ArrayList<SimpleEntry<String, MethodEnvironment>> getMethodEnvironmentsFor(String methodName) {
+		ArrayList<SimpleEntry<String, MethodEnvironment>> sameNameMethodEnvironments = new 
+			ArrayList<SimpleEntry<String,MethodEnvironment>>();
+		
+		for (SimpleEntry<String, MethodEnvironment> methodEnvironment : _allMethods)
+			if (methodEnvironment.getKey().equals(methodName))
+				sameNameMethodEnvironments.add(methodEnvironment);
+		
+		return sameNameMethodEnvironments;
 	}
 	
 }

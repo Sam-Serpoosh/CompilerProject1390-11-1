@@ -31,6 +31,10 @@ public class Signature {
 		return _arguments.size();
 	}
 	
+	public ArrayList<SimpleEntry<String, String>> getAllArguments() {
+		return _arguments;
+	}
+	
 	private SimpleEntry<String, String> argumentAt(int argumentIndex) {
 		return _arguments.get(argumentIndex);
 	}
