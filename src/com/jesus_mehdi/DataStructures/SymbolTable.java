@@ -68,4 +68,8 @@ public class SymbolTable {
 		return allMethodRows;
 	}
 	
+	public MethodSymbolTableRow getMethodRowByName(String methodName) {
+		return (MethodSymbolTableRow)getRow(methodName);
+	}
+	
 }

@@ -9,6 +9,7 @@ public class Signature {
 	
 	private ArrayList<SimpleEntry<String, String>> _arguments;
 	private String _returnType;
+	private MethodEnvironment _methodEnvironment;
 	
 	public Signature(String returnType) {
 		_arguments = new ArrayList<SimpleEntry<String,String>>();
@@ -29,6 +30,13 @@ public class Signature {
 	
 	public int getArgumentsCount() {
 		return _arguments.size();
+	}
+	
+	public int getLocalVariablesCount() {
+		int argumentCount = getArgumentsCount();
+		int allMemberCount = _methodEnvironment.getAllMemeberCount();
+		
+		return allMemberCount - argumentCount;
 	}
 	
 	public ArrayList<SimpleEntry<String, String>> getAllArguments() {
@@ -62,6 +70,10 @@ public class Signature {
 		return true;
 	}
 	
+	public boolean isEqualTo(Signature signature) {
+		return isSubMethod(signature) && signature.isSubMethod(this);
+	}
+	
 	public boolean isSubMethod(Signature signature) {
 		if (signature.isSubSignatureOf(this)) {
 			ModuleEnvironment returnTypeCurrentModule = ApplicationMainSymbolTable.
@@ -80,6 +92,14 @@ public class Signature {
 		ModuleEnvironment otherModule = ApplicationMainSymbolTable.getModuleByName(otherArg.getValue());
 		
 		return module.isSubtypeOf(otherModule);
+	}
+
+	public void setMethodEnvironment(MethodEnvironment methodEnvironment) {
+		_methodEnvironment = methodEnvironment;
+	}
+
+	public MethodEnvironment getMethodEnvironment() {
+		return _methodEnvironment;
 	}
 
 }

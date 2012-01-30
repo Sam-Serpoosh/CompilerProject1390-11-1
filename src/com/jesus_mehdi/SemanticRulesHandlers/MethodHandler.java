@@ -7,26 +7,29 @@ import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
 import com.jesus_mehdi.DataStructures.MethodEnvironment;
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
-import com.jesus_mehdi.DataStructures.OffsetFactory;
 import com.jesus_mehdi.DataStructures.Signature;
 import com.jesus_mehdi.DataStructures.SymbolTableRow;
 import com.jesus_mehdi.Exceptions.MemberAndMethodExistWithSameNameException;
+import com.jesus_mehdi.Exceptions.VariableMustNotBeVoidTypeException;
 
 public class MethodHandler {
 
 	private Tokenizer _tokenizer;
 	private MethodSymbolTableRow _methodRow;
 	private Signature _arguments;
+	private Signature _environmentSignature;
 	private String _argumentName;
 	private String _argumentType;
 	private MethodEnvironment _methodEnvironment;
 	private MemberSymbolTableRow _memberRow;
 	private ModuleEnvironment _parentModuleEnvironment;
+	private String _environmentArgumentName;
 	
 	public MethodHandler(Tokenizer tokenizer) {
 		_tokenizer = tokenizer;
 		_methodRow = new MethodSymbolTableRow();
 		_arguments = new Signature();
+		setEnvironmentSignature(new Signature());
 	}
 	
 	public MethodHandler() {
@@ -80,6 +83,8 @@ public class MethodHandler {
 
 	public void setArgumentType(TokenStream input) {
 		_argumentType = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
+		if (_argumentType.equals("void"))
+			throw new VariableMustNotBeVoidTypeException();
 		_arguments.addArgument(_argumentName, _argumentType);
 	}
 
@@ -122,19 +127,42 @@ public class MethodHandler {
 
 	public void addArgumentNameToMethodEnvironment(TokenStream input) {
 		String argumentName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
+		_environmentArgumentName = argumentName;
 		_memberRow = new MemberSymbolTableRow();
 		_memberRow.Name = argumentName;
 	}
 
 	public void setArgumentTypeInMethodEnvironment(TokenStream input) {
 		String typeName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
+		getEnvironmentSignature().addArgument(_environmentArgumentName, typeName);
 		_memberRow.Type = typeName;
 		_methodEnvironment.addRow(_memberRow);
 	}
 
 	public void setReturnTypeInMethodEnvironment(TokenStream input) {
 		String returnTypeName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
+		getEnvironmentSignature().setReturnType(returnTypeName);
 		_methodEnvironment.setReturnType(returnTypeName);
+	}
+
+	public void setEnvironmentForAppropriateSignature() {
+		ModuleEnvironment currentModule = (ModuleEnvironment)Current.getParentScope();
+		MethodSymbolTableRow methodRow = currentModule.getSymbolTable().
+			getMethodRowByName(_methodEnvironment.getName());
+		
+		for (Signature signature : methodRow.getAllSignatures())
+			if (getEnvironmentSignature().isEqualTo(signature)) {
+				signature.setMethodEnvironment(_methodEnvironment);
+				return;
+			}
+	}
+
+	public void setEnvironmentSignature(Signature environmentSignature) {
+		_environmentSignature = environmentSignature;
+	}
+
+	public Signature getEnvironmentSignature() {
+		return _environmentSignature;
 	}
 	
 }

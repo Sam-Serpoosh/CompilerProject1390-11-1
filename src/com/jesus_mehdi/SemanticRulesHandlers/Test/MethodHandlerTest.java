@@ -25,7 +25,6 @@ import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
 import com.jesus_mehdi.SemanticRulesHandlers.MemberHandler;
 import com.jesus_mehdi.SemanticRulesHandlers.MethodHandler;
-import com.jesus_mehdi.SemanticRulesHandlers.ModuleHandler;
 
 public class MethodHandlerTest {
 
@@ -282,6 +281,40 @@ public class MethodHandlerTest {
 		Current.setCurrentScope(moduleEnvironment);
 		
 		moduleEnvironment.getMethodEnvironmentByName("MethodEnvironment");
+	}
+	
+	@Test
+	public void shouldSetEnvironmentForAppropriateSignature() {
+		ModuleEnvironment module = new ModuleEnvironment();
+		module.setName("Module");
+		ApplicationMainSymbolTable.init();
+		ApplicationMainSymbolTable.addModule(module);
+		MethodEnvironment methodEnvironment = new MethodEnvironment();
+		methodEnvironment.setName("testMethod");
+		methodEnvironment.setParentScope(module);
+		Current.setCurrentScope(methodEnvironment);
+		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
+		methodRow.Name = "testMethod";
+		Signature mainSignature = new Signature("int");
+		mainSignature.addArgument("firstArg", "string");
+		methodRow.addSignature(mainSignature);
+		Signature signature = new Signature("int");
+		signature.addArgument("secondArg", "bool");
+		signature.addArgument("thirdArg", "int");
+		methodRow.addSignature(signature);
+		module.addRow(methodRow);
+		signature = new Signature("int");
+		signature.addArgument("testArg", "string");
+		MethodHandler methodHandler = new MethodHandler();
+		methodHandler.setMethodEnvironment(methodEnvironment);
+		methodHandler.setEnvironmentSignature(signature);
+		
+		methodHandler.setEnvironmentForAppropriateSignature();
+		MethodEnvironment signatureEnvironment = mainSignature.getMethodEnvironment();
+		
+		assertEquals("testMethod", signatureEnvironment.getName());
+		
+		module.clearAllMethodEnvironments();
 	}
 	
 	private void declareMethod(int tokenizerIndex) {

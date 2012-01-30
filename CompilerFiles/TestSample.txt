@@ -4,11 +4,12 @@ module Dard
 	b : bool;
 	s : string;
 	k : Kooft;
+	x[10] : int;
 	ka[10] : Kooft;
 	
 	test(a : Kooft) : Kooft
 	{
-		
+		x[5] := i;
 	}
 };
 

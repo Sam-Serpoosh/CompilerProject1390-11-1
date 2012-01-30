@@ -292,6 +292,8 @@ public class TypeChecker {
 	}
 	
 	public void changeToInstanceScope() {
+		if (_instanceEnvironment == null)
+			_instanceEnvironment = Current.getScope();
 		_currentContainerEnvironment = _instanceEnvironment;
 	}
 

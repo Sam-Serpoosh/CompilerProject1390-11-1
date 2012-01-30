@@ -23,6 +23,10 @@ public class Current {
 	public static Environment getScope() {
 		return _scope;
 	}
+	
+	public static Environment getParentScope() {
+		return _scope.getParentScope();
+	}
 
 	public static void setCurrentScopeByModuleName(String currentModuleName) {
 		ModuleEnvironment currentModule = ApplicationMainSymbolTable.getModuleByName(currentModuleName);

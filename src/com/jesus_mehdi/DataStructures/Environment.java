@@ -3,6 +3,7 @@ package com.jesus_mehdi.DataStructures;
 import com.jesus_mehdi.Exceptions.MethodWithSpecifiedSignatureNotExistedException;
 import com.jesus_mehdi.Exceptions.UndefinedIdentifierException;
 import com.jesus_mehdi.Exceptions.UndefinedMethodException;
+import com.jesus_mehdi.Exceptions.VariableMustNotBeVoidTypeException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 
 public abstract class Environment {
@@ -48,8 +49,14 @@ public abstract class Environment {
 	
 	public void addRow(SymbolTableRow row) {
 		row.setOffset(_currentOffset);
+		checkForDeclaringVoidVariable(row);
 		_symbolTable.addRow(row);
 		_currentOffset += row.getSize();
+	}
+
+	public void checkForDeclaringVoidVariable(SymbolTableRow row) {
+		if ((row instanceof MemberSymbolTableRow) && row.Type.equals("void"))
+			throw new VariableMustNotBeVoidTypeException();
 	}
 	
 	public SymbolTableRow getRow(String rowName) {

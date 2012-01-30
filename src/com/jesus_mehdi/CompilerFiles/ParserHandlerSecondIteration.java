@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g 2012-01-30 11:56:40
+// $ANTLR 3.4 C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g 2012-01-30 15:02:10
 package com.jesus_mehdi.CompilerFiles;
 
 import org.antlr.runtime.BitSet;
@@ -700,7 +700,8 @@ public TreeAdaptor getTreeAdaptor() {
 
                     adaptor.addChild(root_0, type24.getTree());
 
-                    methodHandler.setReturnTypeInMethodEnvironment(input);
+                    methodHandler.setReturnTypeInMethodEnvironment(input); 
+                    methodHandler.setEnvironmentForAppropriateSignature();
 
                     L_BRACE25=(Token)match(input,L_BRACE,FOLLOW_L_BRACE_in_member164); 
                     L_BRACE25_tree = 

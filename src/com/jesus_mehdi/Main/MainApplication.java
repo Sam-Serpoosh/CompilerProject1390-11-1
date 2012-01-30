@@ -12,6 +12,7 @@ import com.jesus_mehdi.CompilerFiles.LexerHandlerSecondIteration;
 import com.jesus_mehdi.CompilerFiles.ParserHandlerFirstIteration;
 import com.jesus_mehdi.CompilerFiles.ParserHandlerSecondIteration;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
+import com.jesus_mehdi.ReportGenerators.ReportFormatter;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 
 public class MainApplication {
@@ -23,7 +24,8 @@ public class MainApplication {
 		ApplicationMainSymbolTable.init();
 		parse();
 		secondParse();
-		HashMap<String, ModuleEnvironment> allModules = ApplicationMainSymbolTable.getAllModules();
+		ReportFormatter reportFormatter = new ReportFormatter();
+		reportFormatter.reportToFile();
 		System.out.println("finished!");
 	}
 	

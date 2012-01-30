@@ -3,9 +3,11 @@ package com.jesus_mehdi.ErrorCheckings.Test;
 import org.junit.After;
 import org.junit.Test;
 
+import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.ErrorCheckings.ModuleErrorDetector;
 import com.jesus_mehdi.Exceptions.LoopInheritanceException;
+import com.jesus_mehdi.Exceptions.VariableMustNotBeVoidTypeException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 
 public class ModuleErrorDetectorTest {
@@ -75,6 +77,16 @@ public class ModuleErrorDetectorTest {
 		
 		ModuleErrorDetector moduleErrorDetector = new ModuleErrorDetector();
 		moduleErrorDetector.checkForLoopInInheritance();
+	}
+	
+	@Test(expected = VariableMustNotBeVoidTypeException.class)
+	public void shouldThrowExceptionWhenDeclaringVoidVariable() {
+		ModuleEnvironment module = new ModuleEnvironment();
+		module.setName("Module");
+		MemberSymbolTableRow memberRow = new MemberSymbolTableRow();
+		memberRow.Name = "testVariable";
+		memberRow.Type = "void";
+		module.addRow(memberRow);
 	}
 	
 	@After

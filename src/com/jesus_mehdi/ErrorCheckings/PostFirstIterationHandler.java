@@ -28,6 +28,7 @@ public class PostFirstIterationHandler {
 	}
 	
 	public void checkErrors() {
+		_moduleErrorDetector.checkForInheritanceFromBaseTypes();
 		_moduleErrorDetector.checkForLoopInInheritance();
 		_methodErrorDetector.checkOverloadingProblemsInAllModules();
 		_methodErrorDetector.checkOverridingProblemsInAllModules();

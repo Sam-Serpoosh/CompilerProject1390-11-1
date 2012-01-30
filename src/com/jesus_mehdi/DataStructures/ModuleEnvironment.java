@@ -112,5 +112,15 @@ public class ModuleEnvironment extends Environment {
 		
 		return sameNameMethodEnvironments;
 	}
+
+	public boolean isBaseTypeForReport() {
+		return (getName() == "int") || (getName() == "bool") || (getName() == "string") || 
+				(getName() == "Object") || (getName() == "void");
+	}
+	
+	public boolean isBaseType() {
+		return (getName() == "int") || (getName() == "bool") || (getName() == "string") || 
+			(getName() == "void");
+	}
 	
 }
