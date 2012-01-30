@@ -263,6 +263,7 @@ public class MethodHandlerTest {
 		methodHandler.beginMethodScope();
 		MethodEnvironment methodEnvironment = methodHandler.getMethodEnvironment();
 		methodEnvironment.setName("MethodEnvironment");
+		methodEnvironment.SetReturnSeen(true);
 		methodHandler.endMethodScope();
 		
 		assertEquals(1, moduleEnvironment.getAllMethodEnvironments().size());

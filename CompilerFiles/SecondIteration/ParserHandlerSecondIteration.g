@@ -31,12 +31,12 @@ st	:	L_BRACE {System.out.println("{Block_Start}");} (st)* R_BRACE  {System.out.p
 	| 	ID {MemberHandler memberHandler = new MemberHandler(); memberHandler.setMemberName(input);}( L_BRACKET CONST_INT {memberHandler.setArraySize(input);} R_BRACKET )? COLON type {memberHandler.setType(input);} SEMICOLON {memberHandler.endMemberDeclaration();}  ///    st_ to COLON
 	|	{TypeCheckerFactory.createTypeChecker();}e1 ( ASSIGN e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.assignmentOperator();} )? SEMICOLON 			// newly added 
 	| 	IF e1{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.conditionExpressionShouldBeBoolean();} THEN st (ELSE st)? END_IF
-	| 	WHILE e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.conditionExpressionShouldBeBoolean();} LOOP	st ENDLOOP
-	| 	BREAK {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.clearTypeCheckingStack();} SEMICOLON 
-	| 	CONTINUE {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.clearTypeCheckingStack();} SEMICOLON 
+	| 	WHILE {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.beginLoopScope(); } e1 {typeChecker.conditionExpressionShouldBeBoolean();} LOOP st {typeChecker.endLoopScope();} ENDLOOP
+	| 	BREAK {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.isInsideOfLoopScope(); typeChecker.clearTypeCheckingStack();} SEMICOLON 
+	| 	CONTINUE {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.isInsideOfLoopScope(); typeChecker.clearTypeCheckingStack();} SEMICOLON 
 	| 	READ ID {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForRead(); typeChecker.clearTypeCheckingStack();} SEMICOLON 
 	|	WRITE e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForWrite(); typeChecker.clearTypeCheckingStack();}SEMICOLON 
-	|	RETURN e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.clearTypeCheckingStack();} SEMICOLON
+	|	RETURN (e1)? {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.returnSeen(); typeChecker.clearTypeCheckingStack();} SEMICOLON
 	;
 
 e1	:	(e2) (OR e2 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.orOperator();})*;
@@ -57,11 +57,6 @@ e8	:	 MINUS e9  {{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker();
 
 e9	:	e10 (DOT {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInstanceScope(); typeChecker.changeToInstanceScope();} e10 {typeChecker.returnToCurrentScope();} )* ;
 
-
-e11	:	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setMethodInputId(input);}L_PAREN {typeChecker.returnToCurrentScope();} ( e1 {typeChecker.pushParameter();}(COMMA e1 {typeChecker.pushParameter();})* )? R_PAREN {typeChecker.changeToInstanceScope(); typeChecker.endMethodCall();}
-	| 	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setArrayInputId(input);} L_BRACKET {typeChecker.returnToCurrentScope();} e1 {typeChecker.checkArrayIndexType();} R_BRACKET {typeChecker.changeToInstanceScope();}
-	|	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInputId(input); typeChecker.returnToCurrentScope();}
-	;
 e10	:
 	(	CREATE ID {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForCreation();}
 	|	L_PAREN e1 R_PAREN
@@ -70,5 +65,10 @@ e10	:
 	) 		
 	;
 
+
+e11	:	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setMethodInputId(input);}L_PAREN {typeChecker.returnToCurrentScope();} ( e1 {typeChecker.pushParameter();}(COMMA e1 {typeChecker.pushParameter();})* )? R_PAREN {typeChecker.changeToInstanceScope(); typeChecker.endMethodCall();}
+	| 	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setArrayInputId(input);} L_BRACKET {typeChecker.returnToCurrentScope();} e1 {typeChecker.checkArrayIndexType();} R_BRACKET {typeChecker.changeToInstanceScope();}
+	|	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInputId(input); typeChecker.returnToCurrentScope();}
+	;
 
 type	:	ID | TYPE_INT | TYPE_BOOL | TYPE_STRING | TYPE_VOID;

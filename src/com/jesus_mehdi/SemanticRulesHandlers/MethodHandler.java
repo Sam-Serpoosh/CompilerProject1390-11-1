@@ -10,6 +10,7 @@ import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.Signature;
 import com.jesus_mehdi.DataStructures.SymbolTableRow;
 import com.jesus_mehdi.Exceptions.MemberAndMethodExistWithSameNameException;
+import com.jesus_mehdi.Exceptions.NoReturnForMethodException;
 import com.jesus_mehdi.Exceptions.VariableMustNotBeVoidTypeException;
 
 public class MethodHandler {
@@ -117,7 +118,10 @@ public class MethodHandler {
 
 	public void endMethodScope() {
 		_parentModuleEnvironment.addMethodEnvironment(_methodEnvironment);
+		if (_methodEnvironment.hasReturnSeen() == false)
+			throw new NoReturnForMethodException();
 		Current.stepOutToPrevScope();
+		
 	}
 
 	public void setMethodEnvironmentName(TokenStream input) {

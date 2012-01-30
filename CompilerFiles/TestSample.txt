@@ -3,37 +3,16 @@ module Dard
 	i : int;
 	b : bool;
 	s : string;
-	k : Kooft;
 	x[10] : int;
-	ka[10] : Kooft;
 	
-	test(a : Kooft) : Kooft
-	{
-		x[5] := i;
+	test(a : int) : void
+	{			
+		return ;
 	}
 	
-	main() : void
-	{}
-};
+	main() : int
+	{
+		return i;
+	}
 
-module Kooft
-{
-	k : int;
-	s : string;
-	d : Dard;
-	b : bool;
-	ka2[10] : Kooft;
-	zahremar[10] : string;
-	
-	test(c : int, dArg : Dard) : bool
-	{
-		b := d.ka[5].d.test(ka2[3]).b;
-	}
-	
-	test(c: string, d:string) : bool
-	{}
-	
-	virtual otherMethod(a: int) : string
-	{}
-	
 };

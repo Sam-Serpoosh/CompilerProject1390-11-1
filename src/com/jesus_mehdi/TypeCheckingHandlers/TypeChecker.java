@@ -8,20 +8,25 @@ import org.antlr.runtime.TokenStream;
 
 import com.jesus_mehdi.DataStructures.Environment;
 import com.jesus_mehdi.DataStructures.FrameModuleEnvironment;
+import com.jesus_mehdi.DataStructures.LoopEnvironment;
 import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
+import com.jesus_mehdi.DataStructures.MethodEnvironment;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.Signature;
 import com.jesus_mehdi.Exceptions.AccessingNonArrayVariableWithIndexException;
 import com.jesus_mehdi.Exceptions.ArrayIndexTypeMustBeIntException;
+import com.jesus_mehdi.Exceptions.BreakOrContinueMustBeInsideOfLoopScopeException;
 import com.jesus_mehdi.Exceptions.ConditionExpressionMustBeBooleanException;
 import com.jesus_mehdi.Exceptions.CreationIsApplicableForNonBaseTypesException;
 import com.jesus_mehdi.Exceptions.ReadAndWriteIsApplicableForBaseTypesException;
+import com.jesus_mehdi.Exceptions.ReturnTypeMustBeSubTypeOfMethodReturnType;
 import com.jesus_mehdi.Exceptions.TypeMismatchException;
 import com.jesus_mehdi.Exceptions.TypeOfUnaryMinusOperatorMustBeIntException;
 import com.jesus_mehdi.Exceptions.TypesOfBinaryMathematicalOperatorsMustBeIntException;
 import com.jesus_mehdi.Exceptions.TypesOfBooleanOperatorsMustBeBooleanException;
 import com.jesus_mehdi.Exceptions.TypesOfEqualityRelationOperatorsMustBeSameBaseTypesException;
 import com.jesus_mehdi.Exceptions.TypesOfRelationalOperatorsMustBeIntException;
+import com.jesus_mehdi.Exceptions.UsingReturnOutOfMethodException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
 import com.jesus_mehdi.SemanticRulesHandlers.Tokenizer;
@@ -299,6 +304,61 @@ public class TypeChecker {
 
 	public void returnToCurrentScope() {
 		_currentContainerEnvironment = Current.getScope();
+	}
+
+	public void isInsideOfLoopScope() {
+		Environment currentEnvironment = Current.getScope();
+		while (currentEnvironment != null) {
+			if (currentEnvironment instanceof LoopEnvironment)
+				return;
+			currentEnvironment = currentEnvironment.getParentScope();
+		}
+		
+		throw new BreakOrContinueMustBeInsideOfLoopScopeException();
+	}
+
+	public void beginLoopScope() {
+		LoopEnvironment loopEnvironment = new LoopEnvironment();
+		Current.stepIntoScope(loopEnvironment);
+	}
+
+	public void endLoopScope() {
+		Current.stepOutToPrevScope();
+	}
+
+	public void returnSeen() {
+		Environment currentEnvironment = Current.getScope();
+		if (currentEnvironment instanceof MethodEnvironment) {
+			MethodEnvironment currentMethodEnvironment = (MethodEnvironment)currentEnvironment;
+			currentMethodEnvironment.SetReturnSeen(true);
+		}
+		
+		checkReturnType(currentEnvironment);
+	}
+
+	private void checkReturnType(Environment environment) {
+		if (environment == null)
+			throw new UsingReturnOutOfMethodException();
+		while ((environment instanceof MethodEnvironment) == false) {
+			environment = environment.getParentScope();
+			if (environment == null)
+				throw new UsingReturnOutOfMethodException();
+		}
+		
+		ModuleEnvironment returnTypeStatement = getReturnTypeStatement(); 
+		MethodEnvironment currentMethod = (MethodEnvironment)environment;
+		ModuleEnvironment methodReturnType = ApplicationMainSymbolTable.getModuleByName(
+				currentMethod.getReturnTypeName());
+		
+		if (returnTypeStatement.isSubtypeOf(methodReturnType) == false)
+			throw new ReturnTypeMustBeSubTypeOfMethodReturnType();
+	}
+	
+	private ModuleEnvironment getReturnTypeStatement() {
+		if (_typeCheckingStack.size() == 0)
+			return ApplicationMainSymbolTable.getModuleByName("void");
+		
+		return _typeCheckingStack.pop();
 	}
 	
 }

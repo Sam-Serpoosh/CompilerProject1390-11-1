@@ -1,5 +1,5 @@
 module name : Dard
-	num of attributes : 6
+	num of attributes : 4
 		name : s
 		type : string
 		address : 2
@@ -8,18 +8,9 @@ module name : Dard
 		type : bool
 		address : 1
 
-		name : ka
-		type : Kooft
-		address : 14
-		sizes : 10
-
-		name : k
-		type : Kooft
-		address : 3
-
 		name : x
 		type : int
-		address : 4
+		address : 3
 		sizes : 10
 
 		name : i
@@ -30,87 +21,18 @@ module name : Dard
 	num of methods : 2
 		name : test
 		is_virtual : false
-		return type : Kooft
+		return type : int
 		num of arguments : 1
 			name : a
-			type : Kooft
+			type : int
 			address : 0
 
 		num of local vars : 0
 
 		name : main
 		is_virtual : false
-		return type : void
+		return type : int
 		num of arguments : 0
-		num of local vars : 0
-
-
-module name : Kooft
-	num of attributes : 6
-		name : d
-		type : Dard
-		address : 2
-
-		name : b
-		type : bool
-		address : 3
-
-		name : s
-		type : string
-		address : 1
-
-		name : ka2
-		type : Kooft
-		address : 4
-		sizes : 10
-
-		name : k
-		type : int
-		address : 0
-
-		name : zahremar
-		type : string
-		address : 14
-		sizes : 10
-
-
-	num of methods : 2
-		name : otherMethod
-		is_virtual : true
-		return type : string
-		num of arguments : 1
-			name : a
-			type : int
-			address : 0
-
-		num of local vars : 0
-
-		name : test
-		is_virtual : false
-		return type : bool
-		num of arguments : 2
-			name : c
-			type : int
-			address : 0
-
-			name : dArg
-			type : Dard
-			address : 1
-
-		num of local vars : 0
-
-		name : test
-		is_virtual : false
-		return type : bool
-		num of arguments : 2
-			name : c
-			type : string
-			address : 0
-
-			name : d
-			type : string
-			address : 1
-
 		num of local vars : 0
 
 
