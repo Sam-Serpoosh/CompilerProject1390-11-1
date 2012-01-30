@@ -5,10 +5,11 @@ public class TypeCheckerFactory {
 	private static TypeChecker _typeChecker;
 	
 	public static void createTypeChecker() {
-		_typeChecker = new TypeChecker();
 	}
 	
 	public static TypeChecker getTypeChecker() {
+		if (_typeChecker == null)
+			_typeChecker = new TypeChecker();
 		return _typeChecker;
 	}
 	

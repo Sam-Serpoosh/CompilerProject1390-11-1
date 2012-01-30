@@ -12,7 +12,7 @@ options {
 
 file 	:	 program EOF;
 
-program :	 (module SEMICOLON)+;
+program :	 (module {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.clearTypeCheckingStack();}SEMICOLON)+;
 
 module 	:	 MODULE ID {ModuleHandler moduleHandler = new ModuleHandler(); moduleHandler.setCurrentScopeByModuleName(input);}(CHILD_OF ID )? L_BRACE (member)* R_BRACE ;
 
@@ -22,7 +22,7 @@ member	:	 (VIRTUAL)? {MethodHandler methodHandler = new MethodHandler(); methodH
 				(COMMA ID{methodHandler.addArgumentNameToMethodEnvironment(input);} COLON type{methodHandler.setArgumentTypeInMethodEnvironment(input);})*)? 
 				R_PAREN COLON type{methodHandler.setReturnTypeInMethodEnvironment(input); methodHandler.setEnvironmentForAppropriateSignature();} L_BRACE 
 		 	st* R_BRACE {methodHandler.endMethodScope();}
-	|        ID (L_BRACKET CONST_INT R_BRACKET)? COLON type SEMICOLON
+	|        ID (L_BRACKET CONST_INT R_BRACKET)? COLON type {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.clearTypeCheckingStack();}SEMICOLON
 	;
 
 
@@ -32,11 +32,11 @@ st	:	L_BRACE {System.out.println("{Block_Start}");} (st)* R_BRACE  {System.out.p
 	|	{TypeCheckerFactory.createTypeChecker();}e1 ( ASSIGN e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.assignmentOperator();} )? SEMICOLON 			// newly added 
 	| 	IF e1{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.conditionExpressionShouldBeBoolean();} THEN st (ELSE st)? END_IF
 	| 	WHILE e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.conditionExpressionShouldBeBoolean();} LOOP	st ENDLOOP
-	| 	BREAK SEMICOLON 
-	| 	CONTINUE SEMICOLON 
-	| 	READ ID {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForRead();} SEMICOLON 
-	|	WRITE e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForWrite();}SEMICOLON 
-	|	RETURN e1 {System.out.println("{return_Statement}");} SEMICOLON
+	| 	BREAK {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.clearTypeCheckingStack();} SEMICOLON 
+	| 	CONTINUE {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.clearTypeCheckingStack();} SEMICOLON 
+	| 	READ ID {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForRead(); typeChecker.clearTypeCheckingStack();} SEMICOLON 
+	|	WRITE e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForWrite(); typeChecker.clearTypeCheckingStack();}SEMICOLON 
+	|	RETURN e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.clearTypeCheckingStack();} SEMICOLON
 	;
 
 e1	:	(e2) (OR e2 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.orOperator();})*;
