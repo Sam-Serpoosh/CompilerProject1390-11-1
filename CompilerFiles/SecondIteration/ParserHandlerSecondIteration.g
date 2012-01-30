@@ -34,8 +34,8 @@ st	:	L_BRACE {System.out.println("{Block_Start}");} (st)* R_BRACE  {System.out.p
 	| 	WHILE e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.conditionExpressionShouldBeBoolean();} LOOP	st ENDLOOP
 	| 	BREAK SEMICOLON 
 	| 	CONTINUE SEMICOLON 
-	| 	READ ID SEMICOLON 
-	|	WRITE e1 SEMICOLON 
+	| 	READ ID {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForRead();} SEMICOLON 
+	|	WRITE e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForWrite();}SEMICOLON 
 	|	RETURN e1 {System.out.println("{return_Statement}");} SEMICOLON
 	;
 
@@ -58,14 +58,14 @@ e8	:	 MINUS e9  {{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker();
 e9	:	e10 (DOT {System.out.println("{Access_Member}");} e10)* ;
 
 e10	:
-	(	CREATE {System.out.println("{Object_creation}");} ID
+	(	CREATE ID {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForCreation();}
 	|	L_PAREN e1 R_PAREN
 	|	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker();}(CONST_INT{typeChecker.setConstIntInput();} | CONST_BOOL {typeChecker.setConstBoolInput();} | CONST_STRING {typeChecker.setConstStringInput();})
 	|	ID e11
 	) 		
 	;
 
-e11	:	L_PAREN {System.out.println("{Function_Call}");} ( e1 (COMMA e1)* )? R_PAREN 
+e11	:	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setMethodInputId(input);}L_PAREN ( e1 {typeChecker.pushParameter();}(COMMA e1 {typeChecker.pushParameter();})* )? R_PAREN {typeChecker.endMethodCall();}
 	| 	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setArrayInputId(input);} L_BRACKET e1 {typeChecker.checkArrayIndexType();} R_BRACKET
 	|	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInputId(input);}
 	;

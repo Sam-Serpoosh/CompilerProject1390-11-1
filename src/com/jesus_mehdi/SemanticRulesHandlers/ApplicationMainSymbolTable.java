@@ -17,6 +17,7 @@ public class ApplicationMainSymbolTable {
 		createBaseModuleAndAddToAllModules("int");
 		createBaseModuleAndAddToAllModules("string");
 		createBaseModuleAndAddToAllModules("bool");
+		createBaseModuleAndAddToAllModules("void");
 		createBaseModuleAndAddToAllModules("Object");
 	}
 

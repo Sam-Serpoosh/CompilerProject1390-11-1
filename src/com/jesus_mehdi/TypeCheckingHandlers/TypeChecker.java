@@ -1,16 +1,21 @@
 package com.jesus_mehdi.TypeCheckingHandlers;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.TokenStream;
 
 import com.jesus_mehdi.DataStructures.Environment;
+import com.jesus_mehdi.DataStructures.FrameModuleEnvironment;
 import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
+import com.jesus_mehdi.DataStructures.Signature;
 import com.jesus_mehdi.Exceptions.AccessingNonArrayVariableWithIndexException;
 import com.jesus_mehdi.Exceptions.ArrayIndexTypeMustBeIntException;
 import com.jesus_mehdi.Exceptions.ConditionExpressionMustBeBooleanException;
+import com.jesus_mehdi.Exceptions.CreationIsApplicableForNonBaseTypesException;
+import com.jesus_mehdi.Exceptions.ReadAndWriteIsApplicableForBaseTypesException;
 import com.jesus_mehdi.Exceptions.TypeMismatchException;
 import com.jesus_mehdi.Exceptions.TypeOfUnaryMinusOperatorMustBeIntException;
 import com.jesus_mehdi.Exceptions.TypesOfBinaryMathematicalOperatorsMustBeIntException;
@@ -189,6 +194,85 @@ public class TypeChecker {
 			_typeCheckingStack.pop();
 			throw new ArrayIndexTypeMustBeIntException();
 		}
+	}
+
+	public void checkValidityOfIdForRead() {
+		if (isSubTypeOfBaseTypes() == false)
+			throw new ReadAndWriteIsApplicableForBaseTypesException();
+	}
+
+	public void checkValidityOfIdForWrite() {
+		if (isSubTypeOfBaseTypes() == false)
+			throw new ReadAndWriteIsApplicableForBaseTypesException();
+	}
+	
+	private boolean isSubTypeOfBaseTypes() {
+		ModuleEnvironment variableType = _typeCheckingStack.pop();
+		ModuleEnvironment boolType = ApplicationMainSymbolTable.getModuleByName("bool");
+		ModuleEnvironment intType = ApplicationMainSymbolTable.getModuleByName("int");
+		ModuleEnvironment stringType = ApplicationMainSymbolTable.getModuleByName("string");
+		
+		return variableType.isSubtypeOf(boolType) || variableType.isSubtypeOf(intType) ||
+			variableType.isSubtypeOf(stringType);
+	}
+
+	public void checkValidityOfIdForCreation() {
+		if (isSubTypeOfBaseTypes() == true)
+			throw new CreationIsApplicableForNonBaseTypesException();
+	}
+
+	public void setMethodInputId(TokenStream input) {
+		String methodName = _tokenizer.getSpecificToken((CommonTokenStream)input, _tokenizer.LAST_TOKEN);
+		fetchMethodRowAndPushFrameEnvironment(methodName);
+	}
+
+	public void fetchMethodRowAndPushFrameEnvironment(String methodName) {
+		Environment currentEnvironment = Current.getScope();
+		currentEnvironment.getMethodRow(methodName);
+		FrameModuleEnvironment methodNameEnvironment = new FrameModuleEnvironment();
+		methodNameEnvironment.setName(methodName);
+		_typeCheckingStack.push(methodNameEnvironment);
+	}
+
+	public void pushParameter() { }
+
+	public void endMethodCall() {
+		ArrayList<ModuleEnvironment> parameterTypes = new ArrayList<ModuleEnvironment>();
+		String calledMethodName = fetchParameteresAndMethodName(parameterTypes);
+		
+		Signature calledMethodSignature = fetchCalledMethodSignature(parameterTypes, calledMethodName);
+		
+		ModuleEnvironment methodReturnType = ApplicationMainSymbolTable.getModuleByName(
+				calledMethodSignature.getReturnType());
+		_typeCheckingStack.push(methodReturnType);
+	}
+
+	private Signature fetchCalledMethodSignature(
+			ArrayList<ModuleEnvironment> parameterTypes, String calledMethodName) {
+		Signature signature = createSignature(parameterTypes);
+		Environment currentEnvironment = Current.getScope();
+		Signature calledMethodSignature = currentEnvironment.getMethodRowWithSpecifiedSignature(
+				calledMethodName, signature);
+		return calledMethodSignature;
+	}
+	
+	private String fetchParameteresAndMethodName(ArrayList<ModuleEnvironment> parameterTypes) {
+		ModuleEnvironment parameterType = _typeCheckingStack.pop();
+		while((parameterType instanceof FrameModuleEnvironment) == false) {
+			parameterTypes.add(0, parameterType);
+			parameterType = _typeCheckingStack.pop();
+		}
+		
+		String calledMethodName = parameterType.getName();
+		return calledMethodName;
+	}
+
+	private Signature createSignature(ArrayList<ModuleEnvironment> parameterTypes) {
+		Signature signature = new Signature();
+		for (ModuleEnvironment parameter : parameterTypes)
+			signature.addArgument("", parameter.getName());
+		
+		return signature;
 	}
 	
 }

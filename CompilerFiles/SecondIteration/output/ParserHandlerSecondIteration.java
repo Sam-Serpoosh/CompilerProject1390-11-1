@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g 2012-01-29 20:48:32
+// $ANTLR 3.4 C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g 2012-01-29 22:53:30
 package com.jesus_mehdi.CompilerFiles;
 
 import org.antlr.runtime.*;
@@ -1462,7 +1462,9 @@ public TreeAdaptor getTreeAdaptor() {
                     adaptor.addChild(root_0, ID66_tree);
 
 
-                    SEMICOLON67=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_st348); 
+                    TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForRead();
+
+                    SEMICOLON67=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_st350); 
                     SEMICOLON67_tree = 
                     (Object)adaptor.create(SEMICOLON67)
                     ;
@@ -1477,21 +1479,23 @@ public TreeAdaptor getTreeAdaptor() {
                     root_0 = (Object)adaptor.nil();
 
 
-                    WRITE68=(Token)match(input,WRITE,FOLLOW_WRITE_in_st354); 
+                    WRITE68=(Token)match(input,WRITE,FOLLOW_WRITE_in_st356); 
                     WRITE68_tree = 
                     (Object)adaptor.create(WRITE68)
                     ;
                     adaptor.addChild(root_0, WRITE68_tree);
 
 
-                    pushFollow(FOLLOW_e1_in_st356);
+                    pushFollow(FOLLOW_e1_in_st358);
                     e169=e1();
 
                     state._fsp--;
 
                     adaptor.addChild(root_0, e169.getTree());
 
-                    SEMICOLON70=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_st358); 
+                    TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForWrite();
+
+                    SEMICOLON70=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_st361); 
                     SEMICOLON70_tree = 
                     (Object)adaptor.create(SEMICOLON70)
                     ;
@@ -1506,14 +1510,14 @@ public TreeAdaptor getTreeAdaptor() {
                     root_0 = (Object)adaptor.nil();
 
 
-                    RETURN71=(Token)match(input,RETURN,FOLLOW_RETURN_in_st364); 
+                    RETURN71=(Token)match(input,RETURN,FOLLOW_RETURN_in_st367); 
                     RETURN71_tree = 
                     (Object)adaptor.create(RETURN71)
                     ;
                     adaptor.addChild(root_0, RETURN71_tree);
 
 
-                    pushFollow(FOLLOW_e1_in_st366);
+                    pushFollow(FOLLOW_e1_in_st369);
                     e172=e1();
 
                     state._fsp--;
@@ -1522,7 +1526,7 @@ public TreeAdaptor getTreeAdaptor() {
 
                     System.out.println("{return_Statement}");
 
-                    SEMICOLON73=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_st370); 
+                    SEMICOLON73=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_st373); 
                     SEMICOLON73_tree = 
                     (Object)adaptor.create(SEMICOLON73)
                     ;
@@ -1588,7 +1592,7 @@ public TreeAdaptor getTreeAdaptor() {
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:42:6: ( e2 )
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:42:7: e2
             {
-            pushFollow(FOLLOW_e2_in_e1381);
+            pushFollow(FOLLOW_e2_in_e1384);
             e274=e2();
 
             state._fsp--;
@@ -1613,14 +1617,14 @@ public TreeAdaptor getTreeAdaptor() {
             	case 1 :
             	    // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:42:12: OR e2
             	    {
-            	    OR75=(Token)match(input,OR,FOLLOW_OR_in_e1385); 
+            	    OR75=(Token)match(input,OR,FOLLOW_OR_in_e1388); 
             	    OR75_tree = 
             	    (Object)adaptor.create(OR75)
             	    ;
             	    adaptor.addChild(root_0, OR75_tree);
 
 
-            	    pushFollow(FOLLOW_e2_in_e1387);
+            	    pushFollow(FOLLOW_e2_in_e1390);
             	    e276=e2();
 
             	    state._fsp--;
@@ -1695,7 +1699,7 @@ public TreeAdaptor getTreeAdaptor() {
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:44:6: ( e3 )
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:44:7: e3
             {
-            pushFollow(FOLLOW_e3_in_e2400);
+            pushFollow(FOLLOW_e3_in_e2403);
             e377=e3();
 
             state._fsp--;
@@ -1720,14 +1724,14 @@ public TreeAdaptor getTreeAdaptor() {
             	case 1 :
             	    // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:44:11: AND e3
             	    {
-            	    AND78=(Token)match(input,AND,FOLLOW_AND_in_e2403); 
+            	    AND78=(Token)match(input,AND,FOLLOW_AND_in_e2406); 
             	    AND78_tree = 
             	    (Object)adaptor.create(AND78)
             	    ;
             	    adaptor.addChild(root_0, AND78_tree);
 
 
-            	    pushFollow(FOLLOW_e3_in_e2405);
+            	    pushFollow(FOLLOW_e3_in_e2408);
             	    e379=e3();
 
             	    state._fsp--;
@@ -1817,14 +1821,14 @@ public TreeAdaptor getTreeAdaptor() {
                     root_0 = (Object)adaptor.nil();
 
 
-                    NOT80=(Token)match(input,NOT,FOLLOW_NOT_in_e3417); 
+                    NOT80=(Token)match(input,NOT,FOLLOW_NOT_in_e3420); 
                     NOT80_tree = 
                     (Object)adaptor.create(NOT80)
                     ;
                     adaptor.addChild(root_0, NOT80_tree);
 
 
-                    pushFollow(FOLLOW_e4_in_e3419);
+                    pushFollow(FOLLOW_e4_in_e3422);
                     e481=e4();
 
                     state._fsp--;
@@ -1841,7 +1845,7 @@ public TreeAdaptor getTreeAdaptor() {
                     root_0 = (Object)adaptor.nil();
 
 
-                    pushFollow(FOLLOW_e4_in_e3424);
+                    pushFollow(FOLLOW_e4_in_e3427);
                     e482=e4();
 
                     state._fsp--;
@@ -1907,7 +1911,7 @@ public TreeAdaptor getTreeAdaptor() {
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:48:6: ( e5 )
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:48:7: e5
             {
-            pushFollow(FOLLOW_e5_in_e4434);
+            pushFollow(FOLLOW_e5_in_e4437);
             e583=e5();
 
             state._fsp--;
@@ -1947,7 +1951,7 @@ public TreeAdaptor getTreeAdaptor() {
             	    }
 
 
-            	    pushFollow(FOLLOW_e5_in_e4448);
+            	    pushFollow(FOLLOW_e5_in_e4451);
             	    e585=e5();
 
             	    state._fsp--;
@@ -2022,7 +2026,7 @@ public TreeAdaptor getTreeAdaptor() {
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:50:6: ( e6 )
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:50:7: e6
             {
-            pushFollow(FOLLOW_e6_in_e5462);
+            pushFollow(FOLLOW_e6_in_e5465);
             e686=e6();
 
             state._fsp--;
@@ -2062,7 +2066,7 @@ public TreeAdaptor getTreeAdaptor() {
             	    }
 
 
-            	    pushFollow(FOLLOW_e6_in_e5484);
+            	    pushFollow(FOLLOW_e6_in_e5487);
             	    e688=e6();
 
             	    state._fsp--;
@@ -2139,7 +2143,7 @@ public TreeAdaptor getTreeAdaptor() {
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:52:6: ( e7 )
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:52:7: e7
             {
-            pushFollow(FOLLOW_e7_in_e6497);
+            pushFollow(FOLLOW_e7_in_e6500);
             e789=e7();
 
             state._fsp--;
@@ -2185,7 +2189,7 @@ public TreeAdaptor getTreeAdaptor() {
             	        case 1 :
             	            // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:52:13: PLUS
             	            {
-            	            PLUS90=(Token)match(input,PLUS,FOLLOW_PLUS_in_e6502); 
+            	            PLUS90=(Token)match(input,PLUS,FOLLOW_PLUS_in_e6505); 
             	            PLUS90_tree = 
             	            (Object)adaptor.create(PLUS90)
             	            ;
@@ -2199,7 +2203,7 @@ public TreeAdaptor getTreeAdaptor() {
             	        case 2 :
             	            // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:52:51: MINUS
             	            {
-            	            MINUS91=(Token)match(input,MINUS,FOLLOW_MINUS_in_e6508); 
+            	            MINUS91=(Token)match(input,MINUS,FOLLOW_MINUS_in_e6511); 
             	            MINUS91_tree = 
             	            (Object)adaptor.create(MINUS91)
             	            ;
@@ -2214,7 +2218,7 @@ public TreeAdaptor getTreeAdaptor() {
             	    }
 
 
-            	    pushFollow(FOLLOW_e7_in_e6514);
+            	    pushFollow(FOLLOW_e7_in_e6517);
             	    e792=e7();
 
             	    state._fsp--;
@@ -2291,7 +2295,7 @@ public TreeAdaptor getTreeAdaptor() {
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:54:6: ( e8 )
             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:54:7: e8
             {
-            pushFollow(FOLLOW_e8_in_e7526);
+            pushFollow(FOLLOW_e8_in_e7529);
             e893=e8();
 
             state._fsp--;
@@ -2337,7 +2341,7 @@ public TreeAdaptor getTreeAdaptor() {
             	        case 1 :
             	            // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:54:14: SLASH
             	            {
-            	            SLASH94=(Token)match(input,SLASH,FOLLOW_SLASH_in_e7532); 
+            	            SLASH94=(Token)match(input,SLASH,FOLLOW_SLASH_in_e7535); 
             	            SLASH94_tree = 
             	            (Object)adaptor.create(SLASH94)
             	            ;
@@ -2351,7 +2355,7 @@ public TreeAdaptor getTreeAdaptor() {
             	        case 2 :
             	            // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:54:53: STAR
             	            {
-            	            STAR95=(Token)match(input,STAR,FOLLOW_STAR_in_e7538); 
+            	            STAR95=(Token)match(input,STAR,FOLLOW_STAR_in_e7541); 
             	            STAR95_tree = 
             	            (Object)adaptor.create(STAR95)
             	            ;
@@ -2366,7 +2370,7 @@ public TreeAdaptor getTreeAdaptor() {
             	    }
 
 
-            	    pushFollow(FOLLOW_e8_in_e7544);
+            	    pushFollow(FOLLOW_e8_in_e7547);
             	    e896=e8();
 
             	    state._fsp--;
@@ -2456,14 +2460,14 @@ public TreeAdaptor getTreeAdaptor() {
                     root_0 = (Object)adaptor.nil();
 
 
-                    MINUS97=(Token)match(input,MINUS,FOLLOW_MINUS_in_e8556); 
+                    MINUS97=(Token)match(input,MINUS,FOLLOW_MINUS_in_e8559); 
                     MINUS97_tree = 
                     (Object)adaptor.create(MINUS97)
                     ;
                     adaptor.addChild(root_0, MINUS97_tree);
 
 
-                    pushFollow(FOLLOW_e9_in_e8558);
+                    pushFollow(FOLLOW_e9_in_e8561);
                     e998=e9();
 
                     state._fsp--;
@@ -2480,7 +2484,7 @@ public TreeAdaptor getTreeAdaptor() {
                     root_0 = (Object)adaptor.nil();
 
 
-                    pushFollow(FOLLOW_e9_in_e8564);
+                    pushFollow(FOLLOW_e9_in_e8567);
                     e999=e9();
 
                     state._fsp--;
@@ -2543,7 +2547,7 @@ public TreeAdaptor getTreeAdaptor() {
             root_0 = (Object)adaptor.nil();
 
 
-            pushFollow(FOLLOW_e10_in_e9572);
+            pushFollow(FOLLOW_e10_in_e9575);
             e10100=e10();
 
             state._fsp--;
@@ -2565,7 +2569,7 @@ public TreeAdaptor getTreeAdaptor() {
             	case 1 :
             	    // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:58:11: DOT e10
             	    {
-            	    DOT101=(Token)match(input,DOT,FOLLOW_DOT_in_e9575); 
+            	    DOT101=(Token)match(input,DOT,FOLLOW_DOT_in_e9578); 
             	    DOT101_tree = 
             	    (Object)adaptor.create(DOT101)
             	    ;
@@ -2574,7 +2578,7 @@ public TreeAdaptor getTreeAdaptor() {
 
             	    System.out.println("{Access_Member}");
 
-            	    pushFollow(FOLLOW_e10_in_e9579);
+            	    pushFollow(FOLLOW_e10_in_e9582);
             	    e10102=e10();
 
             	    state._fsp--;
@@ -2695,42 +2699,42 @@ public TreeAdaptor getTreeAdaptor() {
                 case 1 :
                     // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:61:4: CREATE ID
                     {
-                    CREATE103=(Token)match(input,CREATE,FOLLOW_CREATE_in_e10593); 
+                    CREATE103=(Token)match(input,CREATE,FOLLOW_CREATE_in_e10596); 
                     CREATE103_tree = 
                     (Object)adaptor.create(CREATE103)
                     ;
                     adaptor.addChild(root_0, CREATE103_tree);
 
 
-                    System.out.println("{Object_creation}");
-
-                    ID104=(Token)match(input,ID,FOLLOW_ID_in_e10597); 
+                    ID104=(Token)match(input,ID,FOLLOW_ID_in_e10598); 
                     ID104_tree = 
                     (Object)adaptor.create(ID104)
                     ;
                     adaptor.addChild(root_0, ID104_tree);
 
 
+                    TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForCreation();
+
                     }
                     break;
                 case 2 :
                     // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:62:4: L_PAREN e1 R_PAREN
                     {
-                    L_PAREN105=(Token)match(input,L_PAREN,FOLLOW_L_PAREN_in_e10602); 
+                    L_PAREN105=(Token)match(input,L_PAREN,FOLLOW_L_PAREN_in_e10605); 
                     L_PAREN105_tree = 
                     (Object)adaptor.create(L_PAREN105)
                     ;
                     adaptor.addChild(root_0, L_PAREN105_tree);
 
 
-                    pushFollow(FOLLOW_e1_in_e10604);
+                    pushFollow(FOLLOW_e1_in_e10607);
                     e1106=e1();
 
                     state._fsp--;
 
                     adaptor.addChild(root_0, e1106.getTree());
 
-                    R_PAREN107=(Token)match(input,R_PAREN,FOLLOW_R_PAREN_in_e10606); 
+                    R_PAREN107=(Token)match(input,R_PAREN,FOLLOW_R_PAREN_in_e10609); 
                     R_PAREN107_tree = 
                     (Object)adaptor.create(R_PAREN107)
                     ;
@@ -2774,7 +2778,7 @@ public TreeAdaptor getTreeAdaptor() {
                         case 1 :
                             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:63:69: CONST_INT
                             {
-                            CONST_INT108=(Token)match(input,CONST_INT,FOLLOW_CONST_INT_in_e10613); 
+                            CONST_INT108=(Token)match(input,CONST_INT,FOLLOW_CONST_INT_in_e10616); 
                             CONST_INT108_tree = 
                             (Object)adaptor.create(CONST_INT108)
                             ;
@@ -2788,7 +2792,7 @@ public TreeAdaptor getTreeAdaptor() {
                         case 2 :
                             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:63:114: CONST_BOOL
                             {
-                            CONST_BOOL109=(Token)match(input,CONST_BOOL,FOLLOW_CONST_BOOL_in_e10618); 
+                            CONST_BOOL109=(Token)match(input,CONST_BOOL,FOLLOW_CONST_BOOL_in_e10621); 
                             CONST_BOOL109_tree = 
                             (Object)adaptor.create(CONST_BOOL109)
                             ;
@@ -2802,7 +2806,7 @@ public TreeAdaptor getTreeAdaptor() {
                         case 3 :
                             // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:63:162: CONST_STRING
                             {
-                            CONST_STRING110=(Token)match(input,CONST_STRING,FOLLOW_CONST_STRING_in_e10624); 
+                            CONST_STRING110=(Token)match(input,CONST_STRING,FOLLOW_CONST_STRING_in_e10627); 
                             CONST_STRING110_tree = 
                             (Object)adaptor.create(CONST_STRING110)
                             ;
@@ -2822,14 +2826,14 @@ public TreeAdaptor getTreeAdaptor() {
                 case 4 :
                     // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:64:4: ID e11
                     {
-                    ID111=(Token)match(input,ID,FOLLOW_ID_in_e10632); 
+                    ID111=(Token)match(input,ID,FOLLOW_ID_in_e10635); 
                     ID111_tree = 
                     (Object)adaptor.create(ID111)
                     ;
                     adaptor.addChild(root_0, ID111_tree);
 
 
-                    pushFollow(FOLLOW_e11_in_e10634);
+                    pushFollow(FOLLOW_e11_in_e10637);
                     e11112=e11();
 
                     state._fsp--;
@@ -2952,16 +2956,16 @@ public TreeAdaptor getTreeAdaptor() {
                     root_0 = (Object)adaptor.nil();
 
 
-                    L_PAREN113=(Token)match(input,L_PAREN,FOLLOW_L_PAREN_in_e11650); 
+                    TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setMethodInputId(input);
+
+                    L_PAREN113=(Token)match(input,L_PAREN,FOLLOW_L_PAREN_in_e11654); 
                     L_PAREN113_tree = 
                     (Object)adaptor.create(L_PAREN113)
                     ;
                     adaptor.addChild(root_0, L_PAREN113_tree);
 
 
-                    System.out.println("{Function_Call}");
-
-                    // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:68:56: ( e1 ( COMMA e1 )* )?
+                    // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:68:116: ( e1 ( COMMA e1 )* )?
                     int alt29=2;
                     int LA29_0 = input.LA(1);
 
@@ -2970,16 +2974,18 @@ public TreeAdaptor getTreeAdaptor() {
                     }
                     switch (alt29) {
                         case 1 :
-                            // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:68:58: e1 ( COMMA e1 )*
+                            // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:68:118: e1 ( COMMA e1 )*
                             {
-                            pushFollow(FOLLOW_e1_in_e11656);
+                            pushFollow(FOLLOW_e1_in_e11658);
                             e1114=e1();
 
                             state._fsp--;
 
                             adaptor.addChild(root_0, e1114.getTree());
 
-                            // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:68:61: ( COMMA e1 )*
+                            typeChecker.pushParameter();
+
+                            // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:68:151: ( COMMA e1 )*
                             loop28:
                             do {
                                 int alt28=2;
@@ -2992,21 +2998,23 @@ public TreeAdaptor getTreeAdaptor() {
 
                                 switch (alt28) {
                             	case 1 :
-                            	    // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:68:62: COMMA e1
+                            	    // C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\SecondIteration\\ParserHandlerSecondIteration.g:68:152: COMMA e1
                             	    {
-                            	    COMMA115=(Token)match(input,COMMA,FOLLOW_COMMA_in_e11659); 
+                            	    COMMA115=(Token)match(input,COMMA,FOLLOW_COMMA_in_e11662); 
                             	    COMMA115_tree = 
                             	    (Object)adaptor.create(COMMA115)
                             	    ;
                             	    adaptor.addChild(root_0, COMMA115_tree);
 
 
-                            	    pushFollow(FOLLOW_e1_in_e11661);
+                            	    pushFollow(FOLLOW_e1_in_e11664);
                             	    e1116=e1();
 
                             	    state._fsp--;
 
                             	    adaptor.addChild(root_0, e1116.getTree());
+
+                            	    typeChecker.pushParameter();
 
                             	    }
                             	    break;
@@ -3023,12 +3031,14 @@ public TreeAdaptor getTreeAdaptor() {
                     }
 
 
-                    R_PAREN117=(Token)match(input,R_PAREN,FOLLOW_R_PAREN_in_e11668); 
+                    R_PAREN117=(Token)match(input,R_PAREN,FOLLOW_R_PAREN_in_e11673); 
                     R_PAREN117_tree = 
                     (Object)adaptor.create(R_PAREN117)
                     ;
                     adaptor.addChild(root_0, R_PAREN117_tree);
 
+
+                    typeChecker.endMethodCall();
 
                     }
                     break;
@@ -3040,14 +3050,14 @@ public TreeAdaptor getTreeAdaptor() {
 
                     TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setArrayInputId(input);
 
-                    L_BRACKET118=(Token)match(input,L_BRACKET,FOLLOW_L_BRACKET_in_e11677); 
+                    L_BRACKET118=(Token)match(input,L_BRACKET,FOLLOW_L_BRACKET_in_e11683); 
                     L_BRACKET118_tree = 
                     (Object)adaptor.create(L_BRACKET118)
                     ;
                     adaptor.addChild(root_0, L_BRACKET118_tree);
 
 
-                    pushFollow(FOLLOW_e1_in_e11679);
+                    pushFollow(FOLLOW_e1_in_e11685);
                     e1119=e1();
 
                     state._fsp--;
@@ -3056,7 +3066,7 @@ public TreeAdaptor getTreeAdaptor() {
 
                     typeChecker.checkArrayIndexType();
 
-                    R_BRACKET120=(Token)match(input,R_BRACKET,FOLLOW_R_BRACKET_in_e11683); 
+                    R_BRACKET120=(Token)match(input,R_BRACKET,FOLLOW_R_BRACKET_in_e11689); 
                     R_BRACKET120_tree = 
                     (Object)adaptor.create(R_BRACKET120)
                     ;
@@ -3234,59 +3244,59 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_SEMICOLON_in_st337 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_READ_in_st344 = new BitSet(new long[]{0x0000000004000000L});
     public static final BitSet FOLLOW_ID_in_st346 = new BitSet(new long[]{0x0020000000000000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_st348 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_WRITE_in_st354 = new BitSet(new long[]{0x000000460400B800L});
-    public static final BitSet FOLLOW_e1_in_st356 = new BitSet(new long[]{0x0020000000000000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_st358 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RETURN_in_st364 = new BitSet(new long[]{0x000000460400B800L});
-    public static final BitSet FOLLOW_e1_in_st366 = new BitSet(new long[]{0x0020000000000000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_st370 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_e2_in_e1381 = new BitSet(new long[]{0x0000010000000002L});
-    public static final BitSet FOLLOW_OR_in_e1385 = new BitSet(new long[]{0x000000460400B800L});
-    public static final BitSet FOLLOW_e2_in_e1387 = new BitSet(new long[]{0x0000010000000002L});
-    public static final BitSet FOLLOW_e3_in_e2400 = new BitSet(new long[]{0x0000000000000012L});
-    public static final BitSet FOLLOW_AND_in_e2403 = new BitSet(new long[]{0x000000460400B800L});
-    public static final BitSet FOLLOW_e3_in_e2405 = new BitSet(new long[]{0x0000000000000012L});
-    public static final BitSet FOLLOW_NOT_in_e3417 = new BitSet(new long[]{0x000000060400B800L});
-    public static final BitSet FOLLOW_e4_in_e3419 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_e4_in_e3424 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_e5_in_e4434 = new BitSet(new long[]{0x0001080000000002L});
-    public static final BitSet FOLLOW_set_in_e4438 = new BitSet(new long[]{0x000000060400B800L});
-    public static final BitSet FOLLOW_e5_in_e4448 = new BitSet(new long[]{0x0001080000000002L});
-    public static final BitSet FOLLOW_e6_in_e5462 = new BitSet(new long[]{0x0000F00000000002L});
-    public static final BitSet FOLLOW_set_in_e5466 = new BitSet(new long[]{0x000000060400B800L});
-    public static final BitSet FOLLOW_e6_in_e5484 = new BitSet(new long[]{0x0000F00000000002L});
-    public static final BitSet FOLLOW_e7_in_e6497 = new BitSet(new long[]{0x0000020400000002L});
-    public static final BitSet FOLLOW_PLUS_in_e6502 = new BitSet(new long[]{0x000000060400B800L});
-    public static final BitSet FOLLOW_MINUS_in_e6508 = new BitSet(new long[]{0x000000060400B800L});
-    public static final BitSet FOLLOW_e7_in_e6514 = new BitSet(new long[]{0x0000020400000002L});
-    public static final BitSet FOLLOW_e8_in_e7526 = new BitSet(new long[]{0x0300000000000002L});
-    public static final BitSet FOLLOW_SLASH_in_e7532 = new BitSet(new long[]{0x000000060400B800L});
-    public static final BitSet FOLLOW_STAR_in_e7538 = new BitSet(new long[]{0x000000060400B800L});
-    public static final BitSet FOLLOW_e8_in_e7544 = new BitSet(new long[]{0x0300000000000002L});
-    public static final BitSet FOLLOW_MINUS_in_e8556 = new BitSet(new long[]{0x000000020400B800L});
-    public static final BitSet FOLLOW_e9_in_e8558 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_e9_in_e8564 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_e10_in_e9572 = new BitSet(new long[]{0x0000000000020002L});
-    public static final BitSet FOLLOW_DOT_in_e9575 = new BitSet(new long[]{0x000000020400B800L});
-    public static final BitSet FOLLOW_e10_in_e9579 = new BitSet(new long[]{0x0000000000020002L});
-    public static final BitSet FOLLOW_CREATE_in_e10593 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_ID_in_e10597 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_L_PAREN_in_e10602 = new BitSet(new long[]{0x000000460400B800L});
-    public static final BitSet FOLLOW_e1_in_e10604 = new BitSet(new long[]{0x0010000000000000L});
-    public static final BitSet FOLLOW_R_PAREN_in_e10606 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CONST_INT_in_e10613 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CONST_BOOL_in_e10618 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CONST_STRING_in_e10624 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_e10632 = new BitSet(new long[]{0x0000000300000000L});
-    public static final BitSet FOLLOW_e11_in_e10634 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_L_PAREN_in_e11650 = new BitSet(new long[]{0x001000460400B800L});
-    public static final BitSet FOLLOW_e1_in_e11656 = new BitSet(new long[]{0x0010000000000400L});
-    public static final BitSet FOLLOW_COMMA_in_e11659 = new BitSet(new long[]{0x000000460400B800L});
-    public static final BitSet FOLLOW_e1_in_e11661 = new BitSet(new long[]{0x0010000000000400L});
-    public static final BitSet FOLLOW_R_PAREN_in_e11668 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_L_BRACKET_in_e11677 = new BitSet(new long[]{0x000000460400B800L});
-    public static final BitSet FOLLOW_e1_in_e11679 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_R_BRACKET_in_e11683 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMICOLON_in_st350 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_WRITE_in_st356 = new BitSet(new long[]{0x000000460400B800L});
+    public static final BitSet FOLLOW_e1_in_st358 = new BitSet(new long[]{0x0020000000000000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_st361 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RETURN_in_st367 = new BitSet(new long[]{0x000000460400B800L});
+    public static final BitSet FOLLOW_e1_in_st369 = new BitSet(new long[]{0x0020000000000000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_st373 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_e2_in_e1384 = new BitSet(new long[]{0x0000010000000002L});
+    public static final BitSet FOLLOW_OR_in_e1388 = new BitSet(new long[]{0x000000460400B800L});
+    public static final BitSet FOLLOW_e2_in_e1390 = new BitSet(new long[]{0x0000010000000002L});
+    public static final BitSet FOLLOW_e3_in_e2403 = new BitSet(new long[]{0x0000000000000012L});
+    public static final BitSet FOLLOW_AND_in_e2406 = new BitSet(new long[]{0x000000460400B800L});
+    public static final BitSet FOLLOW_e3_in_e2408 = new BitSet(new long[]{0x0000000000000012L});
+    public static final BitSet FOLLOW_NOT_in_e3420 = new BitSet(new long[]{0x000000060400B800L});
+    public static final BitSet FOLLOW_e4_in_e3422 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_e4_in_e3427 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_e5_in_e4437 = new BitSet(new long[]{0x0001080000000002L});
+    public static final BitSet FOLLOW_set_in_e4441 = new BitSet(new long[]{0x000000060400B800L});
+    public static final BitSet FOLLOW_e5_in_e4451 = new BitSet(new long[]{0x0001080000000002L});
+    public static final BitSet FOLLOW_e6_in_e5465 = new BitSet(new long[]{0x0000F00000000002L});
+    public static final BitSet FOLLOW_set_in_e5469 = new BitSet(new long[]{0x000000060400B800L});
+    public static final BitSet FOLLOW_e6_in_e5487 = new BitSet(new long[]{0x0000F00000000002L});
+    public static final BitSet FOLLOW_e7_in_e6500 = new BitSet(new long[]{0x0000020400000002L});
+    public static final BitSet FOLLOW_PLUS_in_e6505 = new BitSet(new long[]{0x000000060400B800L});
+    public static final BitSet FOLLOW_MINUS_in_e6511 = new BitSet(new long[]{0x000000060400B800L});
+    public static final BitSet FOLLOW_e7_in_e6517 = new BitSet(new long[]{0x0000020400000002L});
+    public static final BitSet FOLLOW_e8_in_e7529 = new BitSet(new long[]{0x0300000000000002L});
+    public static final BitSet FOLLOW_SLASH_in_e7535 = new BitSet(new long[]{0x000000060400B800L});
+    public static final BitSet FOLLOW_STAR_in_e7541 = new BitSet(new long[]{0x000000060400B800L});
+    public static final BitSet FOLLOW_e8_in_e7547 = new BitSet(new long[]{0x0300000000000002L});
+    public static final BitSet FOLLOW_MINUS_in_e8559 = new BitSet(new long[]{0x000000020400B800L});
+    public static final BitSet FOLLOW_e9_in_e8561 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_e9_in_e8567 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_e10_in_e9575 = new BitSet(new long[]{0x0000000000020002L});
+    public static final BitSet FOLLOW_DOT_in_e9578 = new BitSet(new long[]{0x000000020400B800L});
+    public static final BitSet FOLLOW_e10_in_e9582 = new BitSet(new long[]{0x0000000000020002L});
+    public static final BitSet FOLLOW_CREATE_in_e10596 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_ID_in_e10598 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_L_PAREN_in_e10605 = new BitSet(new long[]{0x000000460400B800L});
+    public static final BitSet FOLLOW_e1_in_e10607 = new BitSet(new long[]{0x0010000000000000L});
+    public static final BitSet FOLLOW_R_PAREN_in_e10609 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CONST_INT_in_e10616 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CONST_BOOL_in_e10621 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CONST_STRING_in_e10627 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_e10635 = new BitSet(new long[]{0x0000000300000000L});
+    public static final BitSet FOLLOW_e11_in_e10637 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_L_PAREN_in_e11654 = new BitSet(new long[]{0x001000460400B800L});
+    public static final BitSet FOLLOW_e1_in_e11658 = new BitSet(new long[]{0x0010000000000400L});
+    public static final BitSet FOLLOW_COMMA_in_e11662 = new BitSet(new long[]{0x000000460400B800L});
+    public static final BitSet FOLLOW_e1_in_e11664 = new BitSet(new long[]{0x0010000000000400L});
+    public static final BitSet FOLLOW_R_PAREN_in_e11673 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_L_BRACKET_in_e11683 = new BitSet(new long[]{0x000000460400B800L});
+    public static final BitSet FOLLOW_e1_in_e11685 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_R_BRACKET_in_e11689 = new BitSet(new long[]{0x0000000000000002L});
 
 }

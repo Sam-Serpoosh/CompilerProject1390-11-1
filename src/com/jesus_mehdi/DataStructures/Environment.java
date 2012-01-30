@@ -1,6 +1,8 @@
 package com.jesus_mehdi.DataStructures;
 
+import com.jesus_mehdi.Exceptions.MethodWithSpecifiedSignatureNotExistedException;
 import com.jesus_mehdi.Exceptions.UndefinedIdentifierException;
+import com.jesus_mehdi.Exceptions.UndefinedMethodException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 
 public abstract class Environment {
@@ -81,6 +83,35 @@ public abstract class Environment {
 		
 		Environment parentModule = getParentScope();
 		return parentModule.getVariableMemberRow(variableName);
+	}
+	
+	public MethodSymbolTableRow getMethodRow(String methodName) {
+		if (rowAlreadyExisted(methodName)) {
+			SymbolTableRow row = _symbolTable.getRow(methodName);
+			if (row instanceof MethodSymbolTableRow) {
+				MethodSymbolTableRow methodRow = (MethodSymbolTableRow)row;
+				return methodRow;
+			}
+		}
+		
+		if (getParentScope() == null)
+			throw new UndefinedMethodException();
+		
+		Environment parentModule = getParentScope();
+		return parentModule.getMethodRow(methodName);
+	}
+	
+	public Signature getMethodRowWithSpecifiedSignature(String methodName, Signature signature) {
+		MethodSymbolTableRow methodRow = getMethodRow(methodName);
+		for (Signature methodSignature : methodRow.getAllSignatures())
+			if (signature.isSubSignatureOf(methodSignature))
+				return methodSignature;
+		
+		if (getParentScope() == null)
+			throw new MethodWithSpecifiedSignatureNotExistedException();
+		
+		Environment parentEnvironment = getParentScope();
+		return parentEnvironment.getMethodRowWithSpecifiedSignature(methodName, signature);
 	}
 	
 }
