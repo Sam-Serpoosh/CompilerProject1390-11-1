@@ -6,9 +6,12 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.jesus_mehdi.DataStructures.FrameModuleEnvironment;
+import com.jesus_mehdi.DataStructures.MemberSymbolTableRow;
 import com.jesus_mehdi.DataStructures.MethodSymbolTableRow;
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.DataStructures.Signature;
+import com.jesus_mehdi.DataStructures.SymbolTableRow;
+import com.jesus_mehdi.ErrorCheckings.PostFirstIterationHandler;
 import com.jesus_mehdi.Exceptions.MethodWithSpecifiedSignatureNotExistedException;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 import com.jesus_mehdi.SemanticRulesHandlers.Current;
@@ -19,9 +22,11 @@ public class MethodCallTypeCheckingTest extends TypeCheckerTest {
 	public void shouldPushFrameEnvironmentForMethod() {
 		ModuleEnvironment currentEnvironment = new ModuleEnvironment();
 		Current.setCurrentScope(currentEnvironment);
+		_typeChecker.returnToCurrentScope();
 		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
 		methodRow.Name = "testMethod";
 		currentEnvironment.addRow(methodRow);
+	
 		
 		_typeChecker.fetchMethodRowAndPushFrameEnvironment("testMethod");
 		
@@ -34,6 +39,7 @@ public class MethodCallTypeCheckingTest extends TypeCheckerTest {
 		ModuleEnvironment currentModule = new ModuleEnvironment();
 		ApplicationMainSymbolTable.init();
 		Current.setCurrentScope(currentModule);
+		_typeChecker.returnToCurrentScope();
 		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
 		methodRow.Name = "testMethod";
 		addSignatureToMethodRow(methodRow, "testArg", "string", "int");
@@ -41,6 +47,7 @@ public class MethodCallTypeCheckingTest extends TypeCheckerTest {
 		_typeChecker.fetchMethodRowAndPushFrameEnvironment("testMethod");
 		ModuleEnvironment stringType = ApplicationMainSymbolTable.getModuleByName("string");
 		_typeChecker.pushType(stringType);
+		
 		
 		_typeChecker.endMethodCall();
 		
@@ -56,6 +63,7 @@ public class MethodCallTypeCheckingTest extends TypeCheckerTest {
 		currentModule.setParentScope(parentModule);
 		ApplicationMainSymbolTable.init();
 		Current.setCurrentScope(currentModule);
+		_typeChecker.returnToCurrentScope();
 		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
 		methodRow.Name = "testMethod";
 		Signature signature = createSignature("SuperModule", "firstArg", "string");
@@ -79,6 +87,7 @@ public class MethodCallTypeCheckingTest extends TypeCheckerTest {
 		ModuleEnvironment currentModule = new ModuleEnvironment();
 		ApplicationMainSymbolTable.init();
 		Current.setCurrentScope(currentModule);
+		_typeChecker.returnToCurrentScope();
 		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
 		methodRow.Name = "testMethod";
 		addSignatureToMethodRow(methodRow, "testArg", "string", "int");
@@ -88,6 +97,64 @@ public class MethodCallTypeCheckingTest extends TypeCheckerTest {
 		_typeChecker.pushType(intType);
 		
 		_typeChecker.endMethodCall();
+	}
+	
+	@Test
+	public void shouldChangeScopeForInstanceMember() {
+		MemberSymbolTableRow variableRow = new MemberSymbolTableRow();
+		variableRow.Name = "variable";
+		variableRow.Type = "int";
+		setUpModulesForUsingInstanceVariables(variableRow);
+
+		_typeChecker.setInstanceScope();
+		assertEquals("FirstModule", _typeChecker.getInstanceEnvironment().getName());
+		_typeChecker.changeToInstanceScope();
+		
+		_typeChecker.fetchVariableTypeAndPutItIntoTypeCheckingStack("variable");
+		assertEquals(1, _typeChecker.getTypeCheckingStackSize());
+		assertEquals("int", _typeChecker.getTypeAt(0).getName());
+		
+		_typeChecker.returnToCurrentScope();
+		assertEquals("SecondModule", _typeChecker.getCurrentContainerEnvironment().getName());
+	}
+	
+	@Test
+	public void shouldChangeScopeForInstanceMethod() {
+		MethodSymbolTableRow methodRow = new MethodSymbolTableRow();
+		methodRow.Name = "testMethod";
+		Signature signature = new Signature("string");
+		methodRow.addSignature(signature);
+		setUpModulesForUsingInstanceVariables(methodRow);
+		
+		_typeChecker.setInstanceScope();
+		assertEquals("FirstModule", _typeChecker.getInstanceEnvironment().getName());
+		_typeChecker.changeToInstanceScope();
+		
+		_typeChecker.fetchMethodRowAndPushFrameEnvironment("testMethod");
+		_typeChecker.endMethodCall();
+		assertEquals(1, _typeChecker.getTypeCheckingStackSize());
+		assertEquals("string", _typeChecker.getTypeAt(0).getName());
+		
+		_typeChecker.returnToCurrentScope();
+		assertEquals("SecondModule", _typeChecker.getCurrentContainerEnvironment().getName());
+	}
+	
+	private void setUpModulesForUsingInstanceVariables(SymbolTableRow row) {
+		ModuleEnvironment firstModule = new ModuleEnvironment();
+		firstModule.setName("FirstModule");
+		ModuleEnvironment secondModule = new ModuleEnvironment();
+		secondModule.setName("SecondModule");
+		ApplicationMainSymbolTable.init();
+		ApplicationMainSymbolTable.addModule(firstModule);
+		ApplicationMainSymbolTable.addModule(secondModule);
+		new PostFirstIterationHandler();
+		Current.setCurrentScope(secondModule);
+		_typeChecker.pushType(firstModule);
+		firstModule.addRow(row);
+		MemberSymbolTableRow instanceMember = new MemberSymbolTableRow();
+		instanceMember.Name = "instanceMember";
+		instanceMember.Type = "FirstModule";
+		secondModule.addRow(instanceMember);
 	}
 	
 	private void addSignatureToMethodRow(MethodSymbolTableRow methodRow, String argumentName, 

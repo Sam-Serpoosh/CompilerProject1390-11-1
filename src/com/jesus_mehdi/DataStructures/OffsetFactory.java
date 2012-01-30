@@ -2,13 +2,23 @@ package com.jesus_mehdi.DataStructures;
 
 import java.util.HashMap;
 
+import com.jesus_mehdi.Exceptions.UndefinedTypeException;
+
 public class OffsetFactory {
 
-	private HashMap<String, Integer> _offsets;
+	private static HashMap<String, Integer> _offsets;
 	
 	public OffsetFactory() {
-		_offsets = new HashMap<String, Integer>();
-		init();
+		getOffsetFactory();
+	}
+	
+	public HashMap<String, Integer> getOffsetFactory() {
+		if (_offsets == null) {
+			_offsets = new HashMap<String, Integer>();
+			init();
+		}
+		
+		return _offsets;
 	}
 	
 	public void init() {
@@ -16,6 +26,7 @@ public class OffsetFactory {
 		_offsets.put("string", 1);
 		_offsets.put("bool", 1);
 		_offsets.put("object", 1);
+		_offsets.put("void", 0);
 	}
 	
 	public void registerModuleType(String moduleName, int moduleSize) {
@@ -23,6 +34,8 @@ public class OffsetFactory {
 	}
 	
 	public int getSizeOf(String type) {
+		if (_offsets.containsKey(type) == false)
+			throw new UndefinedTypeException();
 		return _offsets.get(type);
 	}
 	

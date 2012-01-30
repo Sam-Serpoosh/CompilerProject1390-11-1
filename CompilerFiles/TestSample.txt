@@ -1,5 +1,6 @@
 module Kooft
 {
+	m : Maraz;
 	k : int;
 	s : string;
 	zahremar[10] : string;

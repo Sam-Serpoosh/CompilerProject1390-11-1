@@ -55,8 +55,13 @@ e7	:	(e8) (( SLASH {System.out.println("{Div}");} | STAR {System.out.println("{M
 
 e8	:	 MINUS e9  {{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.unaryMinusOperator();}}| e9;
 
-e9	:	e10 (DOT {System.out.println("{Access_Member}");} e10)* ;
+e9	:	e10 (DOT {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInstanceScope(); typeChecker.changeToInstanceScope();} e10 {typeChecker.returnToCurrentScope();} )* ;
 
+
+e11	:	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setMethodInputId(input);}L_PAREN {typeChecker.returnToCurrentScope();} ( e1 {typeChecker.pushParameter();}(COMMA e1 {typeChecker.pushParameter();})* )? R_PAREN {typeChecker.changeToInstanceScope(); typeChecker.endMethodCall();}
+	| 	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setArrayInputId(input);} L_BRACKET {typeChecker.returnToCurrentScope();} e1 {typeChecker.checkArrayIndexType();} R_BRACKET {typeChecker.changeToInstanceScope();}
+	|	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInputId(input); typeChecker.returnToCurrentScope();}
+	;
 e10	:
 	(	CREATE ID {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.checkValidityOfIdForCreation();}
 	|	L_PAREN e1 R_PAREN
@@ -65,9 +70,5 @@ e10	:
 	) 		
 	;
 
-e11	:	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setMethodInputId(input);}L_PAREN ( e1 {typeChecker.pushParameter();}(COMMA e1 {typeChecker.pushParameter();})* )? R_PAREN {typeChecker.endMethodCall();}
-	| 	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setArrayInputId(input);} L_BRACKET e1 {typeChecker.checkArrayIndexType();} R_BRACKET
-	|	{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.setInputId(input);}
-	;
 
 type	:	ID | TYPE_INT | TYPE_BOOL | TYPE_STRING | TYPE_VOID;

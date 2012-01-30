@@ -3,6 +3,7 @@ package com.jesus_mehdi.ErrorCheckings;
 import java.util.Collection;
 
 import com.jesus_mehdi.DataStructures.ModuleEnvironment;
+import com.jesus_mehdi.DataStructures.OffsetFactory;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 
 
@@ -13,6 +14,7 @@ public class PostFirstIterationHandler {
 	private ModuleErrorDetector _moduleErrorDetector;
 	
 	public PostFirstIterationHandler() {
+		addAllModulesWithSizeToOffsetFactory();
 		setParentScopesForAllModules();
 		_methodErrorDetector = new MethodErrorDetector();
 		_memberErrorDetector = new MemberErrorDetector();
@@ -32,6 +34,13 @@ public class PostFirstIterationHandler {
 			ModuleEnvironment parentModule = ApplicationMainSymbolTable.getModuleByName(module.getParentName());
 			module.setParentScope(parentModule);
 		}
+	}
+	
+	public void addAllModulesWithSizeToOffsetFactory() {
+		OffsetFactory offsetFactory = new OffsetFactory();
+		Collection<ModuleEnvironment> allModules = ApplicationMainSymbolTable.getAllModules().values();
+		for (ModuleEnvironment module : allModules)
+			offsetFactory.registerModuleType(module.getName(), 1);
 	}
 
 }

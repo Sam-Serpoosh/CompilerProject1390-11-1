@@ -20,6 +20,7 @@ public class ArrayIndexTypeCheckingException extends TypeCheckerTest {
 		ApplicationMainSymbolTable.init();
 		MethodEnvironment currentEnvironment = new MethodEnvironment();
 		Current.setCurrentScope(currentEnvironment);
+		_typeChecker.returnToCurrentScope();
 		MemberSymbolTableRow memberRow = new MemberSymbolTableRow();
 		memberRow.Name = "testArray";
 		memberRow.Type = "int";
@@ -36,6 +37,7 @@ public class ArrayIndexTypeCheckingException extends TypeCheckerTest {
 	public void shouldThrowExceptionWhenAccessingNonArrayVariableWithIndex() {
 		MethodEnvironment currentEnvironment = new MethodEnvironment();
 		Current.setCurrentScope(currentEnvironment);
+		_typeChecker.returnToCurrentScope();
 		MemberSymbolTableRow memberRow = new MemberSymbolTableRow();
 		memberRow.Name = "testNonArray";
 		memberRow.Type = "int";

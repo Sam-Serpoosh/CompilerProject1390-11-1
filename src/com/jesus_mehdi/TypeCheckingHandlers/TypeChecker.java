@@ -30,10 +30,13 @@ public class TypeChecker {
 
 	private Stack<ModuleEnvironment> _typeCheckingStack;
 	private Tokenizer _tokenizer;
+	private Environment _instanceEnvironment;
+	private Environment _currentContainerEnvironment;
 	
 	public TypeChecker() {
 		_typeCheckingStack = new Stack<ModuleEnvironment>();
 		_tokenizer = new Tokenizer();
+		_currentContainerEnvironment = Current.getScope();
 	}
 	
 	public void assignmentOperator() {
@@ -54,6 +57,14 @@ public class TypeChecker {
 	
 	public int getTypeCheckingStackSize() {
 		return _typeCheckingStack.size();
+	}
+	
+	public Environment getInstanceEnvironment() {
+		return _instanceEnvironment;
+	}
+	
+	public Environment getCurrentContainerEnvironment() {
+		return _currentContainerEnvironment;
 	}
 
 	public void setConstStringInput() {
@@ -79,7 +90,7 @@ public class TypeChecker {
 	}
 
 	public void fetchVariableAndCheckForBeingArray(String variableName) {
-		Environment currentEnvironment = Current.getScope();
+		Environment currentEnvironment = _currentContainerEnvironment;
 		MemberSymbolTableRow memberRow = currentEnvironment.getVariableMemberRow(variableName);
 		if (memberRow.isArray())
 			_typeCheckingStack.push(currentEnvironment.getVariableType(variableName));
@@ -88,7 +99,7 @@ public class TypeChecker {
 	}
 	
 	public void fetchVariableTypeAndPutItIntoTypeCheckingStack(String variableName) {
-		Environment currentEnvironment = Current.getScope();
+		Environment currentEnvironment = _currentContainerEnvironment;
 		_typeCheckingStack.push(currentEnvironment.getVariableType(variableName));
 	}
 
@@ -227,7 +238,7 @@ public class TypeChecker {
 	}
 
 	public void fetchMethodRowAndPushFrameEnvironment(String methodName) {
-		Environment currentEnvironment = Current.getScope();
+		Environment currentEnvironment = _currentContainerEnvironment;
 		currentEnvironment.getMethodRow(methodName);
 		FrameModuleEnvironment methodNameEnvironment = new FrameModuleEnvironment();
 		methodNameEnvironment.setName(methodName);
@@ -250,7 +261,7 @@ public class TypeChecker {
 	private Signature fetchCalledMethodSignature(
 			ArrayList<ModuleEnvironment> parameterTypes, String calledMethodName) {
 		Signature signature = createSignature(parameterTypes);
-		Environment currentEnvironment = Current.getScope();
+		Environment currentEnvironment = _currentContainerEnvironment;
 		Signature calledMethodSignature = currentEnvironment.getMethodRowWithSpecifiedSignature(
 				calledMethodName, signature);
 		return calledMethodSignature;
@@ -273,6 +284,19 @@ public class TypeChecker {
 			signature.addArgument("", parameter.getName());
 		
 		return signature;
+	}
+
+	public void setInstanceScope() {
+		ModuleEnvironment instanceType = _typeCheckingStack.pop();
+		_instanceEnvironment = instanceType;
+	}
+	
+	public void changeToInstanceScope() {
+		_currentContainerEnvironment = _instanceEnvironment;
+	}
+
+	public void returnToCurrentScope() {
+		_currentContainerEnvironment = Current.getScope();
 	}
 	
 }

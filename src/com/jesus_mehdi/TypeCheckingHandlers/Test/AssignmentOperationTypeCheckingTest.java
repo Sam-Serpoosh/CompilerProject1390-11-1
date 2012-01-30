@@ -19,6 +19,7 @@ public class AssignmentOperationTypeCheckingTest extends TypeCheckerTest {
 	public void shouldCheckTypesForAssignment_WhenRightValueIsInTheSameScope() {
 		MethodEnvironment methodEnvironment = new MethodEnvironment();
 		Current.setCurrentScope(methodEnvironment);
+		_typeChecker.returnToCurrentScope();
 		MemberHandler memberHandler = new MemberHandler();
 		declareMemberRowAndAddItToCurrentScope(memberHandler, "leftValueInt", "int");
 		declareMemberRowAndAddItToCurrentScope(memberHandler, "rightValueInt", "int");
@@ -34,6 +35,7 @@ public class AssignmentOperationTypeCheckingTest extends TypeCheckerTest {
 	public void shoudThrowExceptionWhenTypeMismatchOccuresInAssignment_WhenRightValueIsInSameScope() {
 		MethodEnvironment methodEnvironment = new MethodEnvironment();
 		Current.setCurrentScope(methodEnvironment);
+		_typeChecker.returnToCurrentScope();
 		MemberHandler memberHandler = new MemberHandler();
 		declareMemberRowAndAddItToCurrentScope(memberHandler, "leftValueInt", "int");
 		declareMemberRowAndAddItToCurrentScope(memberHandler, "rightValueInt", "string");
@@ -54,6 +56,7 @@ public class AssignmentOperationTypeCheckingTest extends TypeCheckerTest {
 		MethodEnvironment methodEnvironment = new MethodEnvironment();
 		methodEnvironment.setParentScope(parentModule);
 		Current.setCurrentScope(methodEnvironment);
+		_typeChecker.returnToCurrentScope();
 		memberHandler = new MemberHandler();
 		declareMemberRowAndAddItToCurrentScope(memberHandler, "leftValueInt", "int");
 		
@@ -74,6 +77,7 @@ public class AssignmentOperationTypeCheckingTest extends TypeCheckerTest {
 		MethodEnvironment methodEnvironment = new MethodEnvironment();
 		methodEnvironment.setParentScope(parentModule);
 		Current.setCurrentScope(methodEnvironment);
+		_typeChecker.returnToCurrentScope();
 		memberHandler = new MemberHandler();
 		declareMemberRowAndAddItToCurrentScope(memberHandler, "leftValueInt", "int");
 		
@@ -94,6 +98,7 @@ public class AssignmentOperationTypeCheckingTest extends TypeCheckerTest {
 		MethodEnvironment methodEnvironment = new MethodEnvironment();
 		methodEnvironment.setParentScope(moduleEnvironment);
 		Current.setCurrentScope(methodEnvironment);
+		_typeChecker.returnToCurrentScope();
 		MemberHandler memberHandler = new MemberHandler();
 	
 		declareMemberRowAndAddItToCurrentScope(memberHandler, "leftValueInt", "int");
