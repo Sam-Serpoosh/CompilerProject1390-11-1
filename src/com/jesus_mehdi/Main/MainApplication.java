@@ -1,7 +1,6 @@
 package com.jesus_mehdi.Main;
 
 import java.io.IOException;
-import java.util.Collection;
 
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -11,7 +10,6 @@ import com.jesus_mehdi.CompilerFiles.LexerHandlerFirstIteration;
 import com.jesus_mehdi.CompilerFiles.LexerHandlerSecondIteration;
 import com.jesus_mehdi.CompilerFiles.ParserHandlerFirstIteration;
 import com.jesus_mehdi.CompilerFiles.ParserHandlerSecondIteration;
-import com.jesus_mehdi.DataStructures.ModuleEnvironment;
 import com.jesus_mehdi.ReportGenerators.ReportFormatter;
 import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 
@@ -23,10 +21,10 @@ public class MainApplication {
 	public static void main(String[] args) throws RecognitionException {
 		ApplicationMainSymbolTable.init();
 		firstIterationParsing();
-		Collection<ModuleEnvironment> allModules = ApplicationMainSymbolTable.getAllModules().values();
 		secondIterationParsing();
 		ReportFormatter reportFormatter = new ReportFormatter();
 		reportFormatter.reportToFile();
+		System.out.println("Finished!");
 	}
 	
 	private static void firstIterationParsing() throws RecognitionException {

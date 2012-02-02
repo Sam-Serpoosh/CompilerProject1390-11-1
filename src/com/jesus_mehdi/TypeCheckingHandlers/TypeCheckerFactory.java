@@ -10,6 +10,8 @@ public class TypeCheckerFactory {
 	public static TypeChecker getTypeChecker() {
 		if (_typeChecker == null)
 			_typeChecker = new TypeChecker();
+		
+		_typeChecker.resetCurrentContainerEnvironment();
 		return _typeChecker;
 	}
 	

@@ -71,6 +71,10 @@ public class TypeChecker {
 	public Environment getCurrentContainerEnvironment() {
 		return _currentContainerEnvironment;
 	}
+	
+	public void resetCurrentContainerEnvironment() {
+		_currentContainerEnvironment = Current.getScope();
+	}
 
 	public void setConstStringInput() {
 		_typeCheckingStack.push(ApplicationMainSymbolTable.getModuleByName("string"));
@@ -298,7 +302,8 @@ public class TypeChecker {
 	
 	public void changeToInstanceScope() {
 		if (_instanceEnvironment == null)
-			_instanceEnvironment = Current.getScope();
+			return;
+		
 		_currentContainerEnvironment = _instanceEnvironment;
 	}
 
@@ -336,22 +341,28 @@ public class TypeChecker {
 		checkReturnType(currentEnvironment);
 	}
 
-	private void checkReturnType(Environment environment) {
+	public void checkReturnType(Environment environment) {
+		environment = getContainerMethodEnvironment(environment);
+		
+		ModuleEnvironment returnTypeStatement = getReturnTypeStatement(); 
+		MethodEnvironment currentMethod = (MethodEnvironment)environment;
+		ModuleEnvironment methodReturnType = ApplicationMainSymbolTable.getModuleByName(currentMethod.getReturnTypeName());
+		
+		if (returnTypeStatement.isSubtypeOf(methodReturnType) == false)
+			throw new ReturnTypeMustBeSubTypeOfMethodReturnType();
+	}
+
+	private Environment getContainerMethodEnvironment(Environment environment) {
 		if (environment == null)
 			throw new UsingReturnOutOfMethodException();
+		
 		while ((environment instanceof MethodEnvironment) == false) {
 			environment = environment.getParentScope();
 			if (environment == null)
 				throw new UsingReturnOutOfMethodException();
 		}
 		
-		ModuleEnvironment returnTypeStatement = getReturnTypeStatement(); 
-		MethodEnvironment currentMethod = (MethodEnvironment)environment;
-		ModuleEnvironment methodReturnType = ApplicationMainSymbolTable.getModuleByName(
-				currentMethod.getReturnTypeName());
-		
-		if (returnTypeStatement.isSubtypeOf(methodReturnType) == false)
-			throw new ReturnTypeMustBeSubTypeOfMethodReturnType();
+		return environment;
 	}
 	
 	private ModuleEnvironment getReturnTypeStatement() {

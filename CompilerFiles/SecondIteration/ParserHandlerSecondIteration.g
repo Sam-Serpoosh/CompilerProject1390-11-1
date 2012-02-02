@@ -29,7 +29,7 @@ member	:	 (VIRTUAL)? {MethodHandler methodHandler = new MethodHandler(); methodH
 
 st	:	L_BRACE {System.out.println("{Block_Start}");} (st)* R_BRACE  {System.out.println("{Block_End}");}
 	| 	ID {MemberHandler memberHandler = new MemberHandler(); memberHandler.setMemberName(input);}( L_BRACKET CONST_INT {memberHandler.setArraySize(input);} R_BRACKET )? COLON type {memberHandler.setType(input);} SEMICOLON {memberHandler.endMemberDeclaration();}  ///    st_ to COLON
-	|	{TypeCheckerFactory.createTypeChecker();}e1 ( ASSIGN e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.assignmentOperator();} )? SEMICOLON 			// newly added 
+	|	e1 ( ASSIGN e1 {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.assignmentOperator();} )? SEMICOLON 			// newly added 
 	| 	IF e1{TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.conditionExpressionShouldBeBoolean();} THEN st (ELSE st)? END_IF
 	| 	WHILE {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.beginLoopScope(); } e1 {typeChecker.conditionExpressionShouldBeBoolean();} LOOP st {typeChecker.endLoopScope();} ENDLOOP
 	| 	BREAK {TypeChecker typeChecker = TypeCheckerFactory.getTypeChecker(); typeChecker.isInsideOfLoopScope(); typeChecker.clearTypeCheckingStack();} SEMICOLON 
