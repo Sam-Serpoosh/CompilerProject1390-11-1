@@ -1,1 +1,0 @@
-testMethod(firstArg : int, secondArg : int) : string
