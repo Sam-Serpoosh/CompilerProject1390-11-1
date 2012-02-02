@@ -1,0 +1,81 @@
+module name : Dard
+	num of attributes : 6
+		name : s
+		type : string
+		address : 2
+
+		name : b
+		type : bool
+		address : 1
+
+		name : ka
+		type : Kooft
+		address : 14
+		sizes : 10
+
+		name : k
+		type : Kooft
+		address : 3
+
+		name : x
+		type : int
+		address : 4
+		sizes : 10
+
+		name : i
+		type : int
+		address : 0
+
+
+	num of methods : 2
+		name : firstMethod
+		is_virtual : false
+		return type : Kooft
+		num of arguments : 1
+			name : a
+			type : Kooft
+			address : 0
+
+		num of local vars : 0
+
+		name : secondMethod
+		is_virtual : false
+		return type : string
+		num of arguments : 1
+			name : a
+			type : int
+			address : 0
+
+		num of local vars : 0
+
+
+module name : Kooft
+	num of attributes : 2
+		name : name
+		type : string
+		address : 1
+
+		name : number
+		type : int
+		address : 0
+
+
+	num of methods : 2
+		name : testMethod
+		is_virtual : false
+		return type : string
+		num of arguments : 1
+			name : a
+			type : int
+			address : 0
+
+		num of local vars : 0
+
+		name : main
+		is_virtual : false
+		return type : int
+		num of arguments : 0
+		num of local vars : 0
+
+
+
