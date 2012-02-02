@@ -15,8 +15,11 @@ import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 public class ReportFormatter {
 
 	private StringBuilder _reportBuilder;
+	
 	private final String REPORT_FILE_NAME = 
 		"C:\\JavaProjects\\CompilerProject1390-11-1\\CompilerFiles\\Report.txt";
+	private final String END_LINE = "\r\n";
+	private final String TAB = "\t";
 	
 	public ReportFormatter() {
 		_reportBuilder = new StringBuilder();
@@ -40,7 +43,7 @@ public class ReportFormatter {
 		for (ModuleEnvironment module : ApplicationMainSymbolTable.getAllModules().values())
 			if (module.isBaseTypeForReport() == false) {
 				shapeModuleReport(module);
-				_reportBuilder.append("\r\n");
+				_reportBuilder.append(END_LINE);
 			}
 	}
 	
@@ -48,15 +51,15 @@ public class ReportFormatter {
 		ArrayList<MemberSymbolTableRow> memberRows = module.getSymbolTable().getAllMemberRows();
 		ArrayList<MethodSymbolTableRow> methodRows = module.getSymbolTable().getAllMethodRows();
 		
-		createAttribute("module name", module.getName(), 0);
+		appendAttribute("module name", module.getName(), 0);
 		if (module.getParentScope() != null)
-			createAttribute("parnt name", module.getParentName(), 1);
-		createAttribute("num of attributes", memberRows.size(), 1);
+			appendAttribute("parnt name", module.getParentName(), 1);
+		appendAttribute("num of attributes", memberRows.size(), 1);
 		for (MemberSymbolTableRow memberRow : memberRows)
 			reportVariable(memberRow, 2);
-		_reportBuilder.append("\r\n");
+		_reportBuilder.append(END_LINE);
 		
-		createAttribute("num of methods", methodRows.size(), 1);
+		appendAttribute("num of methods", methodRows.size(), 1);
 		shapeAllModuleMethodsReport(methodRows);
 	}
 	
@@ -68,14 +71,14 @@ public class ReportFormatter {
 	
 	public void shapeMethodReport(Signature signature, boolean isVirtual) {
 		MethodEnvironment methodEnvironment = signature.getMethodEnvironment();
-		createAttribute("name", methodEnvironment.getName(), 2);
-		createAttribute("is_virtual", isVirtual, 2);
-		createAttribute("return type", methodEnvironment.getReturnTypeName(), 2);
-		createAttribute("num of arguments", signature.getArgumentsCount(), 2);
+		appendAttribute("name", methodEnvironment.getName(), 2);
+		appendAttribute("is_virtual", isVirtual, 2);
+		appendAttribute("return type", methodEnvironment.getReturnTypeName(), 2);
+		appendAttribute("num of arguments", signature.getArgumentsCount(), 2);
 		shapeArgumentReport(signature);
-		createAttribute("num of local vars", signature.getLocalVariablesCount(), 2);
+		appendAttribute("num of local vars", signature.getLocalVariablesCount(), 2);
 		shapeLocalVariablesReport(signature);
-		_reportBuilder.append("\r\n");
+		_reportBuilder.append(END_LINE);
 	}
 	
 	private void shapeLocalVariablesReport(Signature signature) {
@@ -92,12 +95,12 @@ public class ReportFormatter {
 	}
 	
 	private void reportVariable(MemberSymbolTableRow variableRow, int tabCount) {
-		createAttribute("name", variableRow.Name, tabCount);
-		createAttribute("type", variableRow.Type, tabCount);
-		createAttribute("address", variableRow.Offset, tabCount);
+		appendAttribute("name", variableRow.Name, tabCount);
+		appendAttribute("type", variableRow.Type, tabCount);
+		appendAttribute("address", variableRow.Offset, tabCount);
 		if (variableRow.isArray())
-			createAttribute("sizes", variableRow.ArraySize, tabCount);
-		_reportBuilder.append("\r\n");
+			appendAttribute("sizes", variableRow.ArraySize, tabCount);
+		_reportBuilder.append(END_LINE);
 	}
 
 	private boolean isArgument(String variableName, Signature signature) {
@@ -108,12 +111,12 @@ public class ReportFormatter {
 		return false;
 	}
 
-	private void createAttribute(String name, Object value, int tabCount) {
+	private void appendAttribute(String name, Object value, int tabCount) {
 		String tab = "";
 		for (int i = 0; i < tabCount; i++)
-			tab += "\t";
+			tab += TAB;
 		
-		_reportBuilder.append(tab + name + " : " + value.toString() + "\r\n");
+		_reportBuilder.append(tab + name + " : " + value.toString() + END_LINE);
 	}
 	
 }

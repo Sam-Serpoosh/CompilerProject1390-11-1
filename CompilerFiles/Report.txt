@@ -1,27 +1,18 @@
-module name : Dard
-	num of attributes : 4
-		name : s
+module name : Kooft
+	num of attributes : 2
+		name : name
 		type : string
-		address : 2
-
-		name : b
-		type : bool
 		address : 1
 
-		name : x
-		type : int
-		address : 3
-		sizes : 10
-
-		name : i
+		name : number
 		type : int
 		address : 0
 
 
 	num of methods : 2
-		name : test
+		name : testMethod
 		is_virtual : false
-		return type : int
+		return type : string
 		num of arguments : 1
 			name : a
 			type : int

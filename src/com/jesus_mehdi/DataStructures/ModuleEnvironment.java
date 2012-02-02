@@ -2,7 +2,6 @@ package com.jesus_mehdi.DataStructures;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.AbstractMap.SimpleEntry;
 
 import com.jesus_mehdi.Exceptions.ModuleContainsTwoMainMethodsException;
@@ -11,7 +10,6 @@ import com.jesus_mehdi.SemanticRulesHandlers.ApplicationMainSymbolTable;
 
 public class ModuleEnvironment extends Environment {
 
-	private String _name;
 	private String _parentName;
 	private static ArrayList<SimpleEntry<String, MethodEnvironment>> _allMethods = new 
 		ArrayList<SimpleEntry<String,MethodEnvironment>>();

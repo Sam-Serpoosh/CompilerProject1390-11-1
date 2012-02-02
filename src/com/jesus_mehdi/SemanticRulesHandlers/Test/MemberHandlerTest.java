@@ -128,13 +128,6 @@ public class MemberHandlerTest {
 		assertEquals(expectedVariableName, memberRow.Name);
 	}
 	
-	private void handleVariableDeclaration(int tokenizerIndex) {
-		MemberHandler memberHandler = new MemberHandler(new StubTokenizer(tokenizerIndex));
-		CommonTokenStream commonTokenStream = FileUtility.getCommonTokenStream();
-		memberHandler.setMemberName(commonTokenStream);
-		memberHandler.endMemberDeclaration();
-	}
-	
 	private MemberSymbolTableRow createRow(String variableName, String typeName) {
 		MemberSymbolTableRow row = new MemberSymbolTableRow();
 		row.Name = variableName;
